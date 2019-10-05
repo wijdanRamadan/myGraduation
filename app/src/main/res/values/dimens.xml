@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="space_between_content_very_very_large">64dp</dimen>
+    <dimen name="space_between_content_very_large">32dp</dimen>
+    <dimen name="space_between_content_large">16dp</dimen>
+    <dimen name="space_between_content">8dp</dimen>
+</resources>

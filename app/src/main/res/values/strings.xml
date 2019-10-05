@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">graduation project(Gallery)</string>
+    <string name="photos">photos</string>
+    <string name="foryou">For You</string>
+    <string name="albums">Albums</string>
+    <string name="search">Search</string>
 </resources>
