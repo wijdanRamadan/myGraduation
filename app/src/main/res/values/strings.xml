@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">graduation project(Gallery)</string>
+    <string name="app_name">Gallery</string>
     <string name="photos">photos</string>
     <string name="foryou">For You</string>
     <string name="albums">Albums</string>
     <string name="search">Search</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="image_content_description">description</string>
 </resources>
