@@ -15,12 +15,12 @@ public class BaseFragment extends Fragment {
         return findNavController(this);
     }
 
-    @Override
+  /*  @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         TextView photos = getActivity().findViewById(R.id.photos);
-        TextView foryou = getActivity().findViewById(R.id.forYou);
+        TextView foryou = getActivity().findViewById(R.id.foryou);
         TextView albums = getActivity().findViewById(R.id.albums);
         TextView search = getActivity().findViewById(R.id.search);
 
@@ -34,7 +34,7 @@ public class BaseFragment extends Fragment {
         });
         // TODO: fix navigation bug :D
 
-    /*    foryou.setOnClickListener(new View.OnClickListener() {
+      foryou.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (findNavController(BaseFragment.this).getCurrentDestination().getId()!= R.id.foryouFragment){
@@ -60,8 +60,8 @@ public class BaseFragment extends Fragment {
 
                     findNavigationController().navigate(R.id.action_mainActivityFragment_to_searchFragment);
                 }            }
-        });*/
+        });
+*/
 
 
-    }
 }
