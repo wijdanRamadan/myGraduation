@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -12,6 +13,9 @@ import android.view.ViewGroup;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+
+import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 
 public class PhotosFragment extends BaseFragment {
@@ -60,4 +64,56 @@ public class PhotosFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_photos, container, false);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        
+        
+    }
+    public void setNav ()
+    {
+        BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
+        BottomNavigationItemView foryou = getActivity().findViewById(R.id.foryou);
+        BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
+        BottomNavigationItemView search = getActivity().findViewById(R.id.search);
+
+
+        photos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(PhotosFragment.this).getCurrentDestination().getId()!= R.id.photosFragment){
+                }
+            }
+        });
+        // TODO: fix navigation bug :D
+
+        foryou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(PhotosFragment.this).getCurrentDestination().getId()!= R.id.foryouFragment){
+
+                    findNavigationController().navigate(R.id.action_photosFragment_to_foryouFragment);
+                }
+            }
+        });
+
+        albums.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(PhotosFragment.this).getCurrentDestination().getId()!= R.id.albumsFragment) {
+
+                    findNavigationController().navigate(R.id.action_photosFragment_to_albumsFragment2);
+                }            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(PhotosFragment.this).getCurrentDestination().getId()!= R.id.searchFragment) {
+
+                    findNavigationController().navigate(R.id.action_photosFragment_to_searchFragment2);
+                }            }
+        });
+
+    }
 }

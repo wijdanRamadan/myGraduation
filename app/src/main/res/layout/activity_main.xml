@@ -22,7 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/options_menu">
+        app:menu="@menu/options_menu"
+        app:labelVisibilityMode="labeled"
+        >
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 </RelativeLayout>

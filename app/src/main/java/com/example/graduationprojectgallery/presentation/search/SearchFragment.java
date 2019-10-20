@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+
+import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 
 public class SearchFragment extends BaseFragment {
@@ -60,6 +63,51 @@ public class SearchFragment extends BaseFragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
+    public void setNav ()
+    {
+        BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
+        BottomNavigationItemView foryou = getActivity().findViewById(R.id.foryou);
+        BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
+        BottomNavigationItemView search = getActivity().findViewById(R.id.search);
 
+
+        photos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(SearchFragment.this).getCurrentDestination().getId()!= R.id.photosFragment){
+                    findNavigationController().navigate(R.id.action_searchFragment_to_photosFragment);
+                }
+            }
+        });
+        // TODO: fix navigation bug :D
+
+        foryou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(SearchFragment.this).getCurrentDestination().getId()!= R.id.foryouFragment){
+
+                    findNavigationController().navigate(R.id.action_searchFragment_to_foryouFragment);
+                }
+            }
+        });
+
+        albums.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(SearchFragment.this).getCurrentDestination().getId()!= R.id.albumsFragment) {
+
+                    findNavigationController().navigate(R.id.action_searchFragment_to_albumsFragment);
+                }            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(SearchFragment.this).getCurrentDestination().getId()!= R.id.searchFragment) {
+
+                }            }
+        });
+
+    }
 
 }

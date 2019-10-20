@@ -11,7 +11,10 @@
         android:label="photos_fragment_layout"
         tools:layout="@layout/fragment_photos" >
         <action
-            android:id="@+id/action_photosFragment_to_foryouFragment3"
+            android:id="@+id/action_photosFragment_to_foryouFragment"
+            app:destination="@id/foryouFragment" />
+        <action
+            android:id="@+id/action_photosFragment_to_foryouFragment2"
             app:destination="@id/foryouFragment" />
         <action
             android:id="@+id/action_photosFragment_to_albumsFragment2"
@@ -24,17 +27,47 @@
         android:id="@+id/foryouFragment"
         android:name="com.example.graduationprojectgallery.presentation.foryou.ForyouFragment"
         android:label="fragment_foryou"
-        tools:layout="@layout/fragment_foryou" />
+        tools:layout="@layout/fragment_foryou" >
+        <action
+            android:id="@+id/action_foryouFragment_to_albumsFragment"
+            app:destination="@id/albumsFragment" />
+        <action
+            android:id="@+id/action_foryouFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_foryouFragment_to_photosFragment"
+            app:destination="@id/photosFragment" />
+    </fragment>
     <fragment
         android:id="@+id/albumsFragment"
         android:name="com.example.graduationprojectgallery.presentation.albums.AlbumsFragment"
         android:label="fragment_albums"
-        tools:layout="@layout/fragment_albums" />
+        tools:layout="@layout/fragment_albums" >
+        <action
+            android:id="@+id/action_albumsFragment_to_foryouFragment"
+            app:destination="@id/foryouFragment" />
+        <action
+            android:id="@+id/action_albumsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_albumsFragment_to_photosFragment"
+            app:destination="@id/photosFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.graduationprojectgallery.presentation.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_albumsFragment"
+            app:destination="@id/albumsFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_photosFragment"
+            app:destination="@id/photosFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_foryouFragment"
+            app:destination="@id/foryouFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mainActivityFragment"
         android:name="com.example.graduationprojectgallery.ui.mainactivity.MainActivityFragment"
@@ -52,5 +85,6 @@
         <action
             android:id="@+id/action_mainActivityFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+
     </fragment>
 </navigation>

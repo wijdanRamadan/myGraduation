@@ -8,8 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.example.graduationprojectgallery.presentation.albums.AlbumsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+
+import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 
 public class ForyouFragment extends BaseFragment {
@@ -61,5 +67,59 @@ public class ForyouFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_foryou, container, false);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setNav();
+    }
 
+    public void setNav()
+    {
+
+        BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
+        BottomNavigationItemView foryou = getActivity().findViewById(R.id.foryou);
+        BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
+        BottomNavigationItemView search = getActivity().findViewById(R.id.search);
+        photos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(ForyouFragment.this).getCurrentDestination().getId() != R.id.photosFragment) {
+                    findNavigationController().navigate(R.id.action_foryouFragment_to_photosFragment);
+                }
+            }
+        });
+        // TODO: fix navigation bug :D
+
+        foryou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(ForyouFragment.this).getCurrentDestination().getId() != R.id.foryouFragment) {
+
+                }
+            }
+        });
+
+        albums.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(ForyouFragment.this).getCurrentDestination().getId() != R.id.albumsFragment) {
+                    findNavigationController().navigate(R.id.action_foryouFragment_to_albumsFragment);
+
+                }
+            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(ForyouFragment.this).getCurrentDestination().getId() != R.id.searchFragment) {
+
+                    findNavigationController().navigate(R.id.action_foryouFragment_to_searchFragment);
+                }
+            }
+        });
+
+
+
+    }
 }
