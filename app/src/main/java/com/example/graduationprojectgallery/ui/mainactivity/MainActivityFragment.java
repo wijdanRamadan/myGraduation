@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static androidx.navigation.Navigation.findNavController;
 import static com.example.graduationprojectgallery.ui.mainactivity.MainActivityFragmentDirections.actionMainActivityFragmentToPhotosFragment;

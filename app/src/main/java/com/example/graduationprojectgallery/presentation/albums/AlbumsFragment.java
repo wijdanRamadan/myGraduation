@@ -5,11 +5,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.navigation.NavController;
+
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+
+import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 
 public class AlbumsFragment extends BaseFragment {
+
+    protected NavController findNavigationController() {
+        return findNavController(this);
+    }
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -24,14 +37,7 @@ public class AlbumsFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    public static AlbumsFragment newInstance(String param1, String param2) {
-        AlbumsFragment fragment = new AlbumsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,5 +55,61 @@ public class AlbumsFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_albums, container, false);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setNav();
 
+    }
+    @Override
+    public void setNav()
+    {
+
+        BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
+        BottomNavigationItemView foryou = getActivity().findViewById(R.id.foryou);
+        BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
+        BottomNavigationItemView search = getActivity().findViewById(R.id.search);
+        photos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(AlbumsFragment.this).getCurrentDestination().getId() != R.id.photosFragment) {
+                    findNavigationController().navigate(R.id.action_albumsFragment_to_photosFragment);
+                }
+            }
+        });
+        // TODO: fix navigation bug :D
+
+        foryou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(AlbumsFragment.this).getCurrentDestination().getId() != R.id.foryouFragment) {
+
+                    findNavigationController().navigate(R.id.action_albumsFragment_to_foryouFragment);
+                }
+            }
+        });
+
+        albums.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(AlbumsFragment.this).getCurrentDestination().getId() != R.id.albumsFragment) {
+
+                }
+            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (findNavController(AlbumsFragment.this).getCurrentDestination().getId() != R.id.searchFragment) {
+
+                    findNavigationController().navigate(R.id.action_albumsFragment_to_searchFragment);
+                }
+            }
+        });
+
+
+
+    }
 }
+
