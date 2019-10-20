@@ -1,8 +1,11 @@
 package com.example.graduationprojectgallery.presentation.photos;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -10,12 +13,20 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
+
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.io.File;
+import java.net.URI;
 
 
 public class PhotosFragment extends BaseFragment {
@@ -65,6 +76,7 @@ public class PhotosFragment extends BaseFragment {
     }
 
     @Override
+
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         
@@ -116,4 +128,19 @@ public class PhotosFragment extends BaseFragment {
         });
 
     }
+
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        File imgFile = new  File("/storage/emulated/0/DCIM/Camera/20191001_191037.jpg");
+        if(imgFile.exists()){
+
+            Uri uri = UriUtil.getUriForFile(imgFile);
+            SimpleDraweeView draweeView = (SimpleDraweeView) getActivity().findViewById(R.id.my_image_view);
+            draweeView.setImageURI(uri);
+
+
+
+
+    }}
 }
