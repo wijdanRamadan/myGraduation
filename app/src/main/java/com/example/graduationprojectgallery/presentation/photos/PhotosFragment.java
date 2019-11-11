@@ -1,35 +1,47 @@
 package com.example.graduationprojectgallery.presentation.photos;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.SimpleAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
-
+import com.example.graduationprojectgallery.presentation.photos.adapter.photoAdapter;
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
-import com.facebook.common.util.UriUtil;
-import com.facebook.drawee.view.SimpleDraweeView;
-
-import java.io.File;
-import java.net.URI;
-
 
 public class PhotosFragment extends BaseFragment {
+
+    private static final int SPAN_COUNT = 3;
+
+    private List<photoModel> test;
+    photoModel x = new photoModel();
+    photoModel y = new photoModel();
+    photoModel z  = new photoModel();
+
+    private @Nullable ResizeOptions mResizeOptions;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,6 +76,20 @@ public class PhotosFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        test = new ArrayList<>();
+        File ximgFile = new  File("/storage/emulated/0/DCIM/Camera/20191107_161824.jpg");
+        Uri xuri = UriUtil.getUriForFile(ximgFile);
+        File yimgFile = new  File("/storage/emulated/0/DCIM/Camera/20191107_161824.jpg");
+        Uri yuri = UriUtil.getUriForFile(ximgFile);
+        File zimgFile = new  File("/storage/emulated/0/DCIM/Camera/20191107_161824.jpg");
+        Uri zuri = UriUtil.getUriForFile(ximgFile);
+
+        x.setUri(xuri);
+        y.setUri(yuri);
+        z.setUri(zuri);
+        test.add(x);
+        test.add(y);
+        test.add(z);
 
 
     }
@@ -71,38 +97,40 @@ public class PhotosFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photos, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_photos, container, false);
+
+
+        return view;
     }
 
     @Override
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        
-        
+
+
     }
-    public void setNav ()
-    {
+
+    public void setNav() {
         BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
         BottomNavigationItemView foryou = getActivity().findViewById(R.id.foryou);
         BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
         BottomNavigationItemView search = getActivity().findViewById(R.id.search);
 
-
         photos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(PhotosFragment.this).getCurrentDestination().getId()!= R.id.photosFragment){
+                if (findNavController(PhotosFragment.this).getCurrentDestination().getId() != R.id.photosFragment) {
                 }
             }
         });
-        // TODO: fix navigation bug :D
+
 
         foryou.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(PhotosFragment.this).getCurrentDestination().getId()!= R.id.foryouFragment){
+                if (findNavController(PhotosFragment.this).getCurrentDestination().getId() != R.id.foryouFragment) {
 
                     findNavigationController().navigate(R.id.action_photosFragment_to_foryouFragment);
                 }
@@ -112,35 +140,34 @@ public class PhotosFragment extends BaseFragment {
         albums.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(PhotosFragment.this).getCurrentDestination().getId()!= R.id.albumsFragment) {
+                if (findNavController(PhotosFragment.this).getCurrentDestination().getId() != R.id.albumsFragment) {
 
                     findNavigationController().navigate(R.id.action_photosFragment_to_albumsFragment2);
-                }            }
+                }
+            }
         });
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(PhotosFragment.this).getCurrentDestination().getId()!= R.id.searchFragment) {
+                if (findNavController(PhotosFragment.this).getCurrentDestination().getId() != R.id.searchFragment) {
 
                     findNavigationController().navigate(R.id.action_photosFragment_to_searchFragment2);
-                }            }
+                }
+            }
         });
 
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        File imgFile = new  File("/storage/emulated/0/DCIM/Camera/20191001_191037.jpg");
-        if(imgFile.exists()){
-
-            Uri uri = UriUtil.getUriForFile(imgFile);
-            SimpleDraweeView draweeView = (SimpleDraweeView) getActivity().findViewById(R.id.my_image_view);
-            draweeView.setImageURI(uri);
+        RecyclerView photosFragmentRecycler  = getActivity().findViewById(R.id.photos_recycler_view);
+        photoAdapter ss = new photoAdapter(test);
+        photosFragmentRecycler.setAdapter(ss);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        photosFragmentRecycler.setLayoutManager(llm);
 
 
+    }
 
-
-    }}
 }
