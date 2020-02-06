@@ -1,38 +1,45 @@
 package com.example.graduationprojectgallery.presentation.photos;
 
-import android.graphics.drawable.ColorDrawable;
+
 import android.net.Uri;
+
 import android.os.Bundle;
+
 import android.view.LayoutInflater;
+
 import android.view.View;
+
 import android.view.ViewGroup;
-import android.widget.SimpleAdapter;
 
 import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
+
 import com.example.graduationprojectgallery.base.BaseFragment;
-import com.example.graduationprojectgallery.presentation.photos.adapter.photoAdapter;
+
 import com.facebook.common.util.UriUtil;
+
 import com.facebook.drawee.view.SimpleDraweeView;
+
 import com.facebook.imagepipeline.common.ResizeOptions;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
+
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 
-public class PhotosFragment extends BaseFragment {
+public class PhotosFragment extends BaseFragment  {
+
+    File ximgFile;
+    Uri xuri;
 
     private static final int SPAN_COUNT = 3;
 
@@ -65,6 +72,7 @@ public class PhotosFragment extends BaseFragment {
      */
     // TODO: Rename and change types and number of parameters
     public static PhotosFragment newInstance(String param1, String param2) {
+
         PhotosFragment fragment = new PhotosFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -77,16 +85,14 @@ public class PhotosFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         test = new ArrayList<>();
-        File ximgFile = new  File("/storage/emulated/0/DCIM/Camera/20191107_161824.jpg");
-        Uri xuri = UriUtil.getUriForFile(ximgFile);
-        File yimgFile = new  File("/storage/emulated/0/DCIM/Camera/20191107_161824.jpg");
+        ximgFile = new  File("/storage/emulated/0/DCIM/Camera/20200206_222309.jpg");
+        xuri = UriUtil.getUriForFile(ximgFile);
+        File yimgFile = new  File("/storage/emulated/0/DCIM/Camera/20200206_222309.jpg");
         Uri yuri = UriUtil.getUriForFile(ximgFile);
-        File zimgFile = new  File("/storage/emulated/0/DCIM/Camera/20191107_161824.jpg");
+        File zimgFile = new  File("/storage/emulated/0/DCIM/Camera/20200206_222309.jpg");
         Uri zuri = UriUtil.getUriForFile(ximgFile);
 
-        x.setUri(xuri);
-        y.setUri(yuri);
-        z.setUri(zuri);
+
         test.add(x);
         test.add(y);
         test.add(z);
@@ -161,11 +167,12 @@ public class PhotosFragment extends BaseFragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView photosFragmentRecycler  = getActivity().findViewById(R.id.photos_recycler_view);
-        photoAdapter ss = new photoAdapter(test);
-        photosFragmentRecycler.setAdapter(ss);
+        SimpleDraweeView photosFragmentRecycler  = getActivity().findViewById(R.id.my_image_view);
+        //photoAdapter ss = new photoAdapter(test);
+       // photosFragmentRecycler.setAdapter(ss);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        photosFragmentRecycler.setLayoutManager(llm);
+
+        photosFragmentRecycler.setImageURI(xuri);
 
 
     }
