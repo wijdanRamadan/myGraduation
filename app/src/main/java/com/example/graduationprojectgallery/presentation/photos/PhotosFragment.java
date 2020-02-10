@@ -23,10 +23,17 @@ import com.example.graduationprojectgallery.base.BaseFragment;
 
 import com.facebook.common.util.UriUtil;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import com.facebook.imagepipeline.common.ResizeOptions;
 
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.facebook.imagepipeline.request.Postprocessor;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import java.io.File;
@@ -70,7 +77,6 @@ public class PhotosFragment extends BaseFragment  {
      * @param param2 Parameter 2.
      * @return A new instance of fragment PhotosFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static PhotosFragment newInstance(String param1, String param2) {
 
         PhotosFragment fragment = new PhotosFragment();
@@ -172,7 +178,17 @@ public class PhotosFragment extends BaseFragment  {
        // photosFragmentRecycler.setAdapter(ss);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
 
-        photosFragmentRecycler.setImageURI(xuri);
+
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.fromFile(ximgFile))
+                .build();
+
+        ControllerListener listener = new BaseControllerListener();
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setImageRequest(request)
+                .setControllerListener(listener)
+                .build();
+
+        photosFragmentRecycler.setController(controller);
 
 
     }

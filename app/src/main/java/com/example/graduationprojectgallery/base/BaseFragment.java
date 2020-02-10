@@ -42,7 +42,7 @@ public class BaseFragment extends Fragment {
                 }
             }
         });
-        // TODO: fix navigation bug :D
+
 
         foryou.setOnClickListener(new View.OnClickListener() {
             @Override
