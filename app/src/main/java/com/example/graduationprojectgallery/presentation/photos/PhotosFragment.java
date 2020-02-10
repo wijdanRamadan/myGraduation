@@ -10,30 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
 import androidx.annotation.Nullable;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.graduationprojectgallery.R;
 
 import com.example.graduationprojectgallery.base.BaseFragment;
 
-import com.facebook.common.util.UriUtil;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.controller.BaseControllerListener;
-import com.facebook.drawee.controller.ControllerListener;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.SimpleDraweeView;
-
-import com.facebook.imagepipeline.common.ResizeOptions;
-
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.facebook.imagepipeline.request.Postprocessor;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import java.io.File;
@@ -55,7 +44,6 @@ public class PhotosFragment extends BaseFragment  {
     photoModel y = new photoModel();
     photoModel z  = new photoModel();
 
-    private @Nullable ResizeOptions mResizeOptions;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -92,11 +80,7 @@ public class PhotosFragment extends BaseFragment  {
         super.onCreate(savedInstanceState);
         test = new ArrayList<>();
         ximgFile = new  File("/storage/emulated/0/DCIM/Camera/20200206_222309.jpg");
-        xuri = UriUtil.getUriForFile(ximgFile);
-        File yimgFile = new  File("/storage/emulated/0/DCIM/Camera/20200206_222309.jpg");
-        Uri yuri = UriUtil.getUriForFile(ximgFile);
-        File zimgFile = new  File("/storage/emulated/0/DCIM/Camera/20200206_222309.jpg");
-        Uri zuri = UriUtil.getUriForFile(ximgFile);
+
 
 
         test.add(x);
@@ -173,24 +157,15 @@ public class PhotosFragment extends BaseFragment  {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SimpleDraweeView photosFragmentRecycler  = getActivity().findViewById(R.id.my_image_view);
-        //photoAdapter ss = new photoAdapter(test);
-       // photosFragmentRecycler.setAdapter(ss);
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
 
+        ImageView imageView = view.findViewById(R.id.hello) ;
 
-        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.fromFile(ximgFile))
-                .build();
+       Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView);
 
-        ControllerListener listener = new BaseControllerListener();
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setImageRequest(request)
-                .setControllerListener(listener)
-                .build();
-
-        photosFragmentRecycler.setController(controller);
 
 
     }
+
+    
 
 }
