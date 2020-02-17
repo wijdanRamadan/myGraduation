@@ -1,48 +1,40 @@
 package com.example.graduationprojectgallery.presentation.photos;
 
 
-import android.net.Uri;
-
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
-
 import android.view.View;
-
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.bumptech.glide.Glide;
+import com.example.graduationprojectgallery.HelperClass;
 import com.example.graduationprojectgallery.R;
-
 import com.example.graduationprojectgallery.base.BaseFragment;
-
-
+import com.example.graduationprojectgallery.presentation.albums.AlbumsFragment;
+import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
+import com.example.graduationprojectgallery.presentation.photos.slideshow.SlideShowDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 
-public class PhotosFragment extends BaseFragment  {
+public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapter.PhotoClickListener {
 
-    File ximgFile;
-    Uri xuri;
+    static List<String> urls;
 
-    private static final int SPAN_COUNT = 3;
 
-    private List<photoModel> test;
-    photoModel x = new photoModel();
-    photoModel y = new photoModel();
-    photoModel z  = new photoModel();
+    private PhotosFragmentAdapter mAdapter;
+
+    private PhotosFragmentAdapter.PhotoClickListener photoClickListener;
+    private RecyclerView recyclerView;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,17 +46,9 @@ public class PhotosFragment extends BaseFragment  {
     private String mParam2;
 
     public PhotosFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PhotosFragment.
-     */
+
     public static PhotosFragment newInstance(String param1, String param2) {
 
         PhotosFragment fragment = new PhotosFragment();
@@ -78,15 +62,7 @@ public class PhotosFragment extends BaseFragment  {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        test = new ArrayList<>();
-        ximgFile = new  File("/storage/emulated/0/DCIM/Camera/20200206_222309.jpg");
-
-
-
-        test.add(x);
-        test.add(y);
-        test.add(z);
-
+        urls = HelperClass.getImagePaths(getContext());
 
     }
 
@@ -158,14 +134,24 @@ public class PhotosFragment extends BaseFragment  {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageView imageView = view.findViewById(R.id.hello) ;
+        mAdapter = new PhotosFragmentAdapter(getActivity(), urls);
+        mAdapter.setPhotoClickListener(this);
 
-       Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView);
-
+        recyclerView = view.findViewById(R.id.photos_recycler_view);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 2));
 
 
     }
 
-    
 
+    @Override
+    // TODO: 2/17/2020  implement this method to open slide show fragment
+    public void OnPhotoClick(int position ) {
+
+
+            // findNavigationController().navigate(R.id.action_photosFragment_to_slideShowDialogFragment);
+
+
+    }
 }
