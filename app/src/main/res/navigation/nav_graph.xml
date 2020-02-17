@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_photosFragment_to_searchFragment2"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_photosFragment_to_slideShowDialogFragment"
+            app:destination="@id/slideShowDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/foryouFragment"
@@ -86,5 +89,14 @@
             android:id="@+id/action_mainActivityFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/slideShowDialogFragment"
+        android:name="com.example.graduationprojectgallery.presentation.photos.slideshow.SlideShowDialogFragment"
+        android:label="fragment_slide_show_dialog"
+        tools:layout="@layout/fragment_slide_show_dialog" >
+        <action
+            android:id="@+id/action_slideShowDialogFragment_to_photosFragment"
+            app:destination="@id/photosFragment" />
     </fragment>
 </navigation>
