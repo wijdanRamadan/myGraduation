@@ -23,6 +23,7 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
     private List<String> photos;
     private Context mContext;
     private int globalPosition;
+    private  int x ;
 
     public PhotoClickListener getPhotoClickListener() {
         if (photoClickListener==null)
