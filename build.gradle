@@ -4,9 +4,8 @@ buildscript {
     repositories {
         google()
         jcenter()
-
-        
     }
+
     dependencies {
         def nav_version = "2.1.0"
         classpath 'com.android.tools.build:gradle:3.4.1'
@@ -21,6 +20,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://jitpack.io" }
         google()
         jcenter()
         
