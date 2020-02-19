@@ -5,32 +5,28 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.graduationprojectgallery.HelperClass;
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
-import com.example.graduationprojectgallery.presentation.albums.AlbumsFragment;
 import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
-import com.example.graduationprojectgallery.presentation.photos.slideshow.SlideShowDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-
-import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
+import static com.example.graduationprojectgallery.MainActivity.urls;
 
 
 public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapter.PhotoClickListener {
 
-    static List<String> urls;
 
 
     private PhotosFragmentAdapter mAdapter;
+    private BottomNavigationView bottomNavigationView;
 
     private PhotosFragmentAdapter.PhotoClickListener photoClickListener;
     private RecyclerView recyclerView;
@@ -62,8 +58,8 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        urls = HelperClass.getImagePaths(getContext());
 
+        bottomNavigationView = getActivity().findViewById(R.id.bottom_nav);
     }
 
     @Override
@@ -146,11 +142,16 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
 
 
     @Override
-    // TODO: 2/17/2020  implement this method to open slide show fragment
     public void OnPhotoClick(int position ) {
 
+            findNavigationController().navigate(R.id.action_photosFragment_to_slideShowDialogFragment);
 
-            // findNavigationController().navigate(R.id.action_photosFragment_to_slideShowDialogFragment);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bottomNavigationView.setVisibility(View.VISIBLE);
 
 
     }
