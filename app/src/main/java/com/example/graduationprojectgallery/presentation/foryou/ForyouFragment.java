@@ -1,6 +1,8 @@
 package com.example.graduationprojectgallery.presentation.foryou;
 
 
+import android.app.ActionBar;
+import android.content.Context;
 import android.os.Bundle;
 
 
@@ -8,14 +10,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.view.Window;
+import android.view.WindowManager;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import java.util.ArrayList;
@@ -38,6 +43,7 @@ public class ForyouFragment extends BaseFragment {
     View view;
     LayoutInflater inflater;
     ViewGroup container;
+    ActionBar actionBar;
 
     /**
      * Use this factory method to create a new instance of
@@ -54,6 +60,8 @@ public class ForyouFragment extends BaseFragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
+
 
         return fragment;
 
@@ -121,6 +129,8 @@ public class ForyouFragment extends BaseFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -160,34 +170,28 @@ public class ForyouFragment extends BaseFragment {
         mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
         mNames.add("Austrailia");
 
-        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
+        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
         mNames.add("Washington");
-       // initRecyclerView();
+
 
     } //tazzy this is to have place holders for testing
-
-
-    private void initRecyclerView(){
-        Log.d(TAG, "initRecyclerView: init recyclerview.");
-
-
-
-    }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.fragment_foryou, container, false);
+
         recyclerView = view.findViewById(R.id.foryou_recycleView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, true );
         //recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-
         recyclerView.setLayoutManager(layoutManager);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(), mNames, mImageUrls);
         recyclerView.setAdapter(adapter);
+
+
         return view;
     }
 
