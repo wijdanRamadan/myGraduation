@@ -131,6 +131,8 @@ public class ForyouFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
+
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
