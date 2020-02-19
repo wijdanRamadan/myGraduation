@@ -8,4 +8,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="image_content_description">description</string>
     <string name="drawee_recycler_title">xx</string>
+    <string name="my_albums">My Albums</string>
 </resources>
