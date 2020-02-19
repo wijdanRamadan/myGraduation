@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        android:theme="@style/NoShadowBarTheme">
+        android:theme="@style/NoShadowNormalTheme">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -35,23 +35,21 @@
                 android:id="@+id/plus_imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="22dp"
+                android:layout_centerVertical="true"
                 app:srcCompat="@drawable/plus" />
 
             <TextView
                 android:id="@+id/albums_word_textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginEnd="19dp"
-                android:layout_marginRight="20dp"
-                android:fontFamily="@font/fts"
-                android:text="@string/see_all"
-                android:textColor="@android:color/darker_gray"
+                android:fontFamily="@font/bold"
+                android:text="@string/albums"
+                android:textColor="@android:color/black"
                 android:textSize="21sp"
-                android:layout_marginTop="8dp"/>
+  />
         </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -59,7 +57,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/albums_appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="#ffff"
 
         android:label="@string/my_albums"
@@ -71,7 +69,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             >
 
@@ -79,7 +77,8 @@
                 android:id="@+id/My_albums_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
+                android:layout_centerVertical="true"
+
                 android:layout_marginLeft="25dp"
                 android:contentDescription="@string/albums"
                 android:fontFamily="@font/bold"
@@ -93,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginEnd="19dp"
                 android:layout_marginRight="20dp"

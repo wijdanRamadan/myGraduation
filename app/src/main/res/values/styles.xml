@@ -18,4 +18,10 @@
 
     </style>
 
+    <style name="NoShadowNormalTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#ffff</item>
+        <item name="colorPrimaryDark">#ffff</item>
+        <item name="colorAccent">#ffff</item>
+    </style>
 </resources>
