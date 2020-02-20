@@ -8,9 +8,6 @@
     <item android:id="@+id/albums"
         android:title="@string/albums"
         android:icon="@drawable/albums"/>
-    <item android:id="@+id/foryou"
-        android:title="@string/foryou"
-        android:icon="@drawable/foryou"/>
     <item android:id="@+id/search"
         android:title="@string/search"
         android:icon="@drawable/search"

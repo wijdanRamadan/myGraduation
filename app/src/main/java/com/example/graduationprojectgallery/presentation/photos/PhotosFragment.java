@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -82,7 +83,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
 
     public void setNav() {
         BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
-        BottomNavigationItemView foryou = getActivity().findViewById(R.id.foryou);
         BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
         BottomNavigationItemView search = getActivity().findViewById(R.id.search);
 
@@ -95,25 +95,8 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         });
 
 
-        foryou.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (findNavController(PhotosFragment.this).getCurrentDestination().getId() != R.id.foryouFragment) {
 
-                    findNavigationController().navigate(R.id.action_photosFragment_to_foryouFragment);
-                }
-            }
-        });
 
-        albums.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (findNavController(PhotosFragment.this).getCurrentDestination().getId() != R.id.albumsFragment) {
-
-                    findNavigationController().navigate(R.id.action_photosFragment_to_albumsFragment2);
-                }
-            }
-        });
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +104,15 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
                 if (findNavController(PhotosFragment.this).getCurrentDestination().getId() != R.id.searchFragment) {
 
                     findNavigationController().navigate(R.id.action_photosFragment_to_searchFragment2);
+                }
+            }
+        });
+        albums.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(findNavController(PhotosFragment.this).getCurrentDestination().getId()!=R.id.albumsFragment)
+                {
+                    findNavigationController().navigate(R.id.action_photosFragment_to_albumsFragment);
                 }
             }
         });
@@ -152,6 +144,7 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
     public void onResume() {
         super.onResume();
         bottomNavigationView.setVisibility(View.VISIBLE);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
 
     }

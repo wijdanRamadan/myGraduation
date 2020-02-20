@@ -2,7 +2,6 @@ package com.example.graduationprojectgallery.presentation.foryou;
 
 
 import android.app.ActionBar;
-import android.content.Context;
 import android.os.Bundle;
 
 
@@ -10,17 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import java.util.ArrayList;
@@ -28,7 +24,7 @@ import java.util.ArrayList;
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 
-public class ForyouFragment extends BaseFragment {
+public class AlbumFragment extends BaseFragment {
 
     //region crap tazzy didn't create
     // TODO: Rename parameter arguments, choose names that match
@@ -51,11 +47,11 @@ public class ForyouFragment extends BaseFragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ForyouFragment.
+     * @return A new instance of fragment AlbumFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ForyouFragment newInstance(String param1, String param2) {
-        ForyouFragment fragment = new ForyouFragment();
+    public static AlbumFragment newInstance(String param1, String param2) {
+        AlbumFragment fragment = new AlbumFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -73,42 +69,26 @@ public class ForyouFragment extends BaseFragment {
     {
 
         BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
-        BottomNavigationItemView foryou = getActivity().findViewById(R.id.foryou);
         BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
         BottomNavigationItemView search = getActivity().findViewById(R.id.search);
+
         photos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(ForyouFragment.this).getCurrentDestination().getId() != R.id.photosFragment) {
+                if (findNavController(AlbumFragment.this).getCurrentDestination().getId() != R.id.photosFragment) {
                     findNavigationController().navigate(R.id.action_foryouFragment_to_photosFragment);
                 }
             }
         });
         // TODO: fix navigation bug :D
 
-        foryou.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (findNavController(ForyouFragment.this).getCurrentDestination().getId() != R.id.foryouFragment) {
 
-                }
-            }
-        });
 
-        albums.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (findNavController(ForyouFragment.this).getCurrentDestination().getId() != R.id.albumsFragment) {
-                    findNavigationController().navigate(R.id.action_foryouFragment_to_albumsFragment);
-
-                }
-            }
-        });
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(ForyouFragment.this).getCurrentDestination().getId() != R.id.searchFragment) {
+                if (findNavController(AlbumFragment.this).getCurrentDestination().getId() != R.id.searchFragment) {
 
                     findNavigationController().navigate(R.id.action_foryouFragment_to_searchFragment);
                 }
@@ -120,7 +100,7 @@ public class ForyouFragment extends BaseFragment {
     }
 //endregion
 
-    private static final String TAG = "RecyclerViewAdapter";
+    private static final String TAG = "AlbumAdapter";
 
     //vars
     private ArrayList<String> mNames = new ArrayList<>();
@@ -129,8 +109,9 @@ public class ForyouFragment extends BaseFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
         getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         super.onCreate(savedInstanceState);
@@ -184,13 +165,13 @@ public class ForyouFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        view = inflater.inflate(R.layout.fragment_foryou, container, false);
+        view = inflater.inflate(R.layout.fragment_album, container, false);
 
         recyclerView = view.findViewById(R.id.foryou_recycleView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, true );
         //recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(), mNames, mImageUrls);
+        AlbumAdapter adapter = new AlbumAdapter(this.getContext(), mNames, mImageUrls);
         recyclerView.setAdapter(adapter);
 
 

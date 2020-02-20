@@ -1,8 +1,6 @@
 package com.example.graduationprojectgallery.presentation.foryou;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.nfc.Tag;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,17 +21,17 @@ import java.util.ArrayList;
 //tazzy this :https://www.youtube.com/watch?v=94rCjYxvzEE
 
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
 
 
-    private static final String TAG = "RecyclerViewAdapter";
+    private static final String TAG = "AlbumAdapter";
 
     //vars
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private Context mContext ;
 
-    public RecyclerViewAdapter( Context mContext, ArrayList<String> mNames, ArrayList<String> mImageUrls) {
+    public AlbumAdapter(Context mContext, ArrayList<String> mNames, ArrayList<String> mImageUrls) {
         this.mNames = mNames;
         this.mImageUrls = mImageUrls;
         this.mContext = mContext;
