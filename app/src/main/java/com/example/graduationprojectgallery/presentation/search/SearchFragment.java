@@ -2,6 +2,7 @@ package com.example.graduationprojectgallery.presentation.search;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -66,7 +67,6 @@ public class SearchFragment extends BaseFragment {
     public void setNav ()
     {
         BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
-        BottomNavigationItemView foryou = getActivity().findViewById(R.id.foryou);
         BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
         BottomNavigationItemView search = getActivity().findViewById(R.id.search);
 
@@ -81,15 +81,7 @@ public class SearchFragment extends BaseFragment {
         });
         // TODO: fix navigation bug :D
 
-        foryou.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (findNavController(SearchFragment.this).getCurrentDestination().getId()!= R.id.foryouFragment){
 
-                    findNavigationController().navigate(R.id.action_searchFragment_to_foryouFragment);
-                }
-            }
-        });
 
         albums.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,15 +91,13 @@ public class SearchFragment extends BaseFragment {
                     findNavigationController().navigate(R.id.action_searchFragment_to_albumsFragment);
                 }            }
         });
+            }
 
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (findNavController(SearchFragment.this).getCurrentDestination().getId()!= R.id.searchFragment) {
-
-                }            }
-        });
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
-
 }
+
+

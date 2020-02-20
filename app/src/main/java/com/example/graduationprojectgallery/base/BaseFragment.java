@@ -29,9 +29,8 @@ public class BaseFragment extends Fragment {
     public void setNav ()
     {
         BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
-        BottomNavigationItemView foryou = getActivity().findViewById(R.id.foryou);
-        BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
         BottomNavigationItemView search = getActivity().findViewById(R.id.search);
+        BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
 
 
         photos.setOnClickListener(new View.OnClickListener() {
@@ -43,15 +42,13 @@ public class BaseFragment extends Fragment {
             }
         });
 
-
-        foryou.setOnClickListener(new View.OnClickListener() {
+        search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(BaseFragment.this).getCurrentDestination().getId()!= R.id.foryouFragment){
+                if (findNavController(BaseFragment.this).getCurrentDestination().getId()!= R.id.searchFragment) {
 
-                    findNavigationController().navigate(R.id.action_mainActivityFragment_to_foryouFragment);
-                }
-            }
+                    findNavigationController().navigate(R.id.action_mainActivityFragment_to_searchFragment);
+                }            }
         });
 
         albums.setOnClickListener(new View.OnClickListener() {
@@ -60,16 +57,8 @@ public class BaseFragment extends Fragment {
                 if (findNavController(BaseFragment.this).getCurrentDestination().getId()!= R.id.albumsFragment) {
 
                     findNavigationController().navigate(R.id.action_mainActivityFragment_to_albumsFragment);
-                }            }
-        });
-
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (findNavController(BaseFragment.this).getCurrentDestination().getId()!= R.id.searchFragment) {
-
-                    findNavigationController().navigate(R.id.action_mainActivityFragment_to_searchFragment);
-                }            }
+                }
+            }
         });
 
     }

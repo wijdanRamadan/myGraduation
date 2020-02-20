@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="#ffff"
     android:orientation="vertical"
-    tools:context=".presentation.foryou.ForyouFragment">
+    tools:context=".presentation.foryou.AlbumFragment">
 
 
     <com.google.android.material.appbar.AppBarLayout
