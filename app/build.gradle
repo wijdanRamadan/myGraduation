@@ -61,6 +61,8 @@ dependencies {
     implementation "androidx.room:room-rxjava2:$room_version"
 
 
+    //Cardview
+    implementation "androidx.cardview:cardview:1.0.0"
 
 
 }
