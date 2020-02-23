@@ -1,4 +1,4 @@
-package com.example.graduationprojectgallery;
+package com.example.graduationprojectgallery.helperClasses;
 
 import android.content.Context;
 import android.database.Cursor;

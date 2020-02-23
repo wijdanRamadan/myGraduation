@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.graduationprojectgallery.HelperClass;
+import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.R;
 
 import java.util.List;

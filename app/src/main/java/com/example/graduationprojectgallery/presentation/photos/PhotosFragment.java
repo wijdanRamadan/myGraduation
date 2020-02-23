@@ -1,6 +1,7 @@
 package com.example.graduationprojectgallery.presentation.photos;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +14,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
+import com.example.graduationprojectgallery.activities.PhotosViewActivity;
 import com.example.graduationprojectgallery.base.BaseFragment;
 import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
-import static com.example.graduationprojectgallery.MainActivity.urls;
+import static com.example.graduationprojectgallery.activities.MainActivity.urls;
 
 
 public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapter.PhotoClickListener {
@@ -127,7 +129,7 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
 
         recyclerView = view.findViewById(R.id.photos_recycler_view);
         recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 3));
 
 
     }
@@ -135,9 +137,8 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
 
     @Override
     public void OnPhotoClick(int position ) {
-
-            findNavigationController().navigate(R.id.action_photosFragment_to_slideShowDialogFragment);
-
+        Intent intent = new Intent(getContext() , PhotosViewActivity.class);
+        startActivity(intent);
     }
 
     @Override

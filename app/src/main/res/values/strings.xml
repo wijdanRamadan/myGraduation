@@ -10,4 +10,7 @@
     <string name="drawee_recycler_title">xx</string>
     <string name="my_albums">My Albums</string>
     <string name="see_all">See All</string>
+    <string name="share">share</string>
+    <string name="favorite">favorite</string>
+    <string name="delete">delete</string>
 </resources>
