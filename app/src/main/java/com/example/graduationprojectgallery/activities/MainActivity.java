@@ -1,6 +1,5 @@
-package com.example.graduationprojectgallery;
+package com.example.graduationprojectgallery.activities;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,13 +7,14 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.graduationprojectgallery.presentation.photos.slideshow.SlideShowDialogFragment;
+import com.example.graduationprojectgallery.helperClasses.HelperClass;
+import com.example.graduationprojectgallery.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity  implements SlideShowDialogFragment.OnFragmentInteractionListener
+public class MainActivity extends AppCompatActivity
 {
     public static List<String> urls;
 
@@ -32,9 +32,6 @@ public class MainActivity extends AppCompatActivity  implements SlideShowDialogF
     }
 
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 }
 

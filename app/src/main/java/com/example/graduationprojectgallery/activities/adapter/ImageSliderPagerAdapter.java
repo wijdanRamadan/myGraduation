@@ -1,4 +1,4 @@
-package com.example.graduationprojectgallery.presentation.photos.slideshow.adapter;
+package com.example.graduationprojectgallery.activities.adapter;
 
 import android.content.Context;
 
@@ -18,7 +18,7 @@ import com.github.chrisbanes.photoview.PhotoView;
 
 
 
-import static com.example.graduationprojectgallery.MainActivity.urls;
+import static com.example.graduationprojectgallery.activities.MainActivity.urls;
 
 
 public class ImageSliderPagerAdapter extends PagerAdapter
