@@ -3,8 +3,6 @@ package com.example.graduationprojectgallery.presentation.foryou;
 
 import android.app.ActionBar;
 import android.os.Bundle;
-
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,15 +56,13 @@ public class AlbumFragment extends BaseFragment {
         fragment.setArguments(args);
 
 
-
         return fragment;
 
 
     }
 
 
-    public void setNav()
-    {
+    public void setNav() {
 
         BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
         BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
@@ -80,9 +76,6 @@ public class AlbumFragment extends BaseFragment {
                 }
             }
         });
-        // TODO: fix navigation bug :D
-
-
 
 
         search.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +87,6 @@ public class AlbumFragment extends BaseFragment {
                 }
             }
         });
-
 
 
     }
@@ -111,7 +103,7 @@ public class AlbumFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
 
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         super.onCreate(savedInstanceState);
@@ -124,7 +116,7 @@ public class AlbumFragment extends BaseFragment {
     }
 
 
-    private void getImages(){
+    private void getImages() {
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
         mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
@@ -168,7 +160,7 @@ public class AlbumFragment extends BaseFragment {
         view = inflater.inflate(R.layout.fragment_album, container, false);
 
         recyclerView = view.findViewById(R.id.foryou_recycleView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, true );
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, true);
         //recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(layoutManager);
         AlbumAdapter adapter = new AlbumAdapter(this.getContext(), mNames, mImageUrls);

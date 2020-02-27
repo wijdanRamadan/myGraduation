@@ -16,16 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.activities.PhotosViewActivity;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.example.graduationprojectgallery.helperClasses.RecyclerItemDecoration;
+import com.example.graduationprojectgallery.models.PhotoModel;
 import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.List;
+
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
-import static com.example.graduationprojectgallery.activities.MainActivity.urls;
 
 
 public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapter.PhotoClickListener {
-
 
 
     private PhotosFragmentAdapter mAdapter;
@@ -97,9 +99,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         });
 
 
-
-
-
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,8 +111,7 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         albums.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(findNavController(PhotosFragment.this).getCurrentDestination().getId()!=R.id.albumsFragment)
-                {
+                if (findNavController(PhotosFragment.this).getCurrentDestination().getId() != R.id.albumsFragment) {
                     findNavigationController().navigate(R.id.action_photosFragment_to_albumsFragment);
                 }
             }
@@ -124,7 +122,7 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mAdapter = new PhotosFragmentAdapter(getActivity(), urls);
+        mAdapter = new PhotosFragmentAdapter(getActivity());
         mAdapter.setPhotoClickListener(this);
 
         recyclerView = view.findViewById(R.id.photos_recycler_view);
@@ -134,18 +132,36 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
 
     }
 
+ /*   private RecyclerItemDecoration.SectionCallback getSectionCallback(final List<PhotoModel> list) {
+
+        return new RecyclerItemDecoration.SectionCallback() {
+            @Override
+            public boolean isSectionHeader(int position) {
+                return position == 0 || !list.get(position).getDate().equals(list.get(position - 1).date);
+
+            }
+
+            @Override
+            public String getSetionHeader(int position) {
+                return list.get(position).getDate();
+            }
+        };
+    }
+*/
 
     @Override
-    public void OnPhotoClick(int position ) {
-        Intent intent = new Intent(getContext() , PhotosViewActivity.class);
+    public void OnPhotoClick(int position) {
+        Intent intent = new Intent(getContext(), PhotosViewActivity.class);
+        intent.putExtra("position" , position);
         startActivity(intent);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         bottomNavigationView.setVisibility(View.VISIBLE);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
 
     }
