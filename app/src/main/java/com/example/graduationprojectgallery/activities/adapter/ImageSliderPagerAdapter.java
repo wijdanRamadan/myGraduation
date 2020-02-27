@@ -1,4 +1,4 @@
-package com.example.graduationprojectgallery.activities.adapter;
+/*package com.example.graduationprojectgallery.activities.adapter;
 
 import android.content.Context;
 
@@ -17,26 +17,27 @@ import com.example.graduationprojectgallery.R;
 import com.github.chrisbanes.photoview.PhotoView;
 
 
-
-import static com.example.graduationprojectgallery.activities.MainActivity.urls;
+import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 
 public class ImageSliderPagerAdapter extends PagerAdapter
 {
     private LayoutInflater layoutInflater;
     private Context context;
+    int photoPosition;
 
 
-    public ImageSliderPagerAdapter(Context context)
+    public ImageSliderPagerAdapter(Context context , int photoPosition)
     {
         this.context=context;
+        this.photoPosition=photoPosition;
 
     }
 
 
     @Override
     public int getCount() {
-        return urls.size();
+        return photos.size();
     }
 
     @Override
@@ -53,10 +54,10 @@ public class ImageSliderPagerAdapter extends PagerAdapter
       View view = layoutInflater.inflate(R.layout.swipe, container ,false);
 
       PhotoView photoView =  view.findViewById(R.id.photoViewTest);
-      if(urls.get(position)!=null) {
+      if(photos.get(photoPosition).getPath()!=null) {
           Glide
                   .with(context)
-                  .load(urls.get(position))
+                  .load(photos.get(photoPosition).getPath())
                   .diskCacheStrategy(DiskCacheStrategy.ALL)
                   .into(photoView);
       }
@@ -71,3 +72,4 @@ public class ImageSliderPagerAdapter extends PagerAdapter
         container.invalidate();
     }
 }
+*/

@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#064acb</color>
     <color name="colorAccent">#D81B60</color>
     <color name="gainsboro">#DCDCDC</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="black">#000000</color>
 
 
 </resources>

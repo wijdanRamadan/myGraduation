@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,18 +13,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.R;
+import com.example.graduationprojectgallery.models.PhotoModel;
 
 import java.util.List;
 
 import static com.example.graduationprojectgallery.R.id.photos_fragment_recycler_image;
+import static com.example.graduationprojectgallery.activities.MainActivity.photos;
+import static com.example.graduationprojectgallery.activities.MainActivity.urls;
 
 
 public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAdapter.PhotosFragmentViewHolder>  {
 
-    private List<String> photos;
     private Context mContext;
-    private int globalPosition;
-    private  int x ;
+    TextView date;
+    private List<PhotoModel> photoModelList;
+
+
 
     public PhotoClickListener getPhotoClickListener() {
         if (photoClickListener==null)
@@ -48,9 +53,9 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
 
 
 
-    public PhotosFragmentAdapter(Context context, List<String> photos  ) {
+    public PhotosFragmentAdapter(Context context  ) {
         mContext = context;
-        this.photos = photos;
+
     }
 
 
@@ -65,41 +70,54 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
     @Override
     public void onBindViewHolder(@NonNull PhotosFragmentAdapter.PhotosFragmentViewHolder holder, int position) {
 
-        if (photos != null) {
-            globalPosition=position;
-            String photo = photos.get(position);
-            holder.Bind(photo);
-
-
+        if (urls != null) {
+          //  String photo = urls.get(position);
+            PhotoModel photo = photos.get(position);
+            holder.Bind(photo , position);
         }
-
 
     }
 
     @Override
     public int getItemCount() {
-        return photos.size();
+        return urls.size();
     }
 
     public class PhotosFragmentViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView photosFragmentImageView;
+        public TextView imageDate;
 
         public PhotosFragmentViewHolder(@NonNull View itemView) {
             super(itemView);
 
             photosFragmentImageView = itemView.findViewById(photos_fragment_recycler_image);
+            imageDate=itemView.findViewById(R.id.date_header);
 
         }
-        public  void Bind(final String photoPath)
+        public  void Bind(final String photoPath , final int position)
         {
-            HelperClass.show(photoPath , mContext ,photosFragmentImageView);
+            HelperClass.show(photoPath, mContext ,photosFragmentImageView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   getPhotoClickListener().OnPhotoClick(globalPosition);
+                   getPhotoClickListener().OnPhotoClick(position);
                 }
             });
+        }
+
+        public void Bind(final PhotoModel photoModel ,final int position)
+        {
+
+            HelperClass.show(photoModel ,mContext,photosFragmentImageView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getPhotoClickListener().OnPhotoClick(position);
+                }
+            });
+
+
         }
 
     }
