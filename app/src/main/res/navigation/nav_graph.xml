@@ -9,22 +9,19 @@
         android:id="@+id/photosFragment"
         android:name="com.example.graduationprojectgallery.presentation.photos.PhotosFragment"
         android:label="photos_fragment_layout"
-        tools:layout="@layout/fragment_photos" >
+        tools:layout="@layout/fragment_photos">
         <action
             android:id="@+id/action_photosFragment_to_albumsFragment"
             app:destination="@id/albumsFragment" />
         <action
             android:id="@+id/action_photosFragment_to_searchFragment2"
             app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_photosFragment_to_slideShowDialogFragment"
-            app:destination="@id/slideShowDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/albumsFragment"
         android:name="com.example.graduationprojectgallery.presentation.foryou.AlbumFragment"
         android:label="fragment_albums"
-        tools:layout="@layout/fragment_album" >
+        tools:layout="@layout/fragment_album">
         <action
             android:id="@+id/action_foryouFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
@@ -36,7 +33,7 @@
         android:id="@+id/searchFragment"
         android:name="com.example.graduationprojectgallery.presentation.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_photosFragment"
             app:destination="@id/photosFragment" />
@@ -48,7 +45,7 @@
         android:id="@+id/mainActivityFragment"
         android:name="com.example.graduationprojectgallery.ui.mainactivity.MainActivityFragment"
         android:label="main_activity2_fragment"
-        tools:layout="@layout/main_activity_fragment" >
+        tools:layout="@layout/main_activity_fragment">
         <action
             android:id="@+id/action_mainActivityFragment_to_photosFragment"
             app:destination="@id/photosFragment" />
@@ -60,13 +57,5 @@
             app:destination="@id/searchFragment" />
 
     </fragment>
-    <fragment
-        android:id="@+id/slideShowDialogFragment"
-        android:name="com.example.graduationprojectgallery.presentation.photos.slideshow.SlideShowDialogFragment"
-        android:label="fragment_slide_show_dialog"
-        tools:layout="@layout/fragment_slide_show_dialog" >
-        <action
-            android:id="@+id/action_slideShowDialogFragment_to_photosFragment"
-            app:destination="@id/photosFragment" />
-    </fragment>
+
 </navigation>

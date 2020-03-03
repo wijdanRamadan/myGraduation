@@ -2,46 +2,45 @@ package com.example.graduationprojectgallery.presentation.photos;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.activities.PhotosViewActivity;
 import com.example.graduationprojectgallery.base.BaseFragment;
-import com.example.graduationprojectgallery.helperClasses.RecyclerItemDecoration;
 import com.example.graduationprojectgallery.models.PhotoModel;
 import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.List;
-
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
+import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 
 public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapter.PhotoClickListener {
 
-
-    private PhotosFragmentAdapter mAdapter;
-    private BottomNavigationView bottomNavigationView;
-
-    private PhotosFragmentAdapter.PhotoClickListener photoClickListener;
-    private RecyclerView recyclerView;
-
+    Toolbar toolbar;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private PhotosFragmentAdapter mAdapter;
+    private BottomNavigationView bottomNavigationView;
+    private PhotosFragmentAdapter.PhotoClickListener photoClickListener;
+    private RecyclerView recyclerView;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -65,6 +64,8 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         super.onCreate(savedInstanceState);
 
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav);
+        toolbar = getActivity().findViewById(R.id.app_toolbar);
+
     }
 
     @Override
@@ -122,12 +123,22 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
+        ArrayAdapter<String> detailesAdapter = new ArrayAdapter<String>(getActivity()
+                ,android.R.layout.simple_list_item_1
+        );
+        detailesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
         mAdapter = new PhotosFragmentAdapter(getActivity());
         mAdapter.setPhotoClickListener(this);
 
         recyclerView = view.findViewById(R.id.photos_recycler_view);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 3));
+
+        toolbar.setTitle(R.string.photos);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
 
     }
@@ -151,8 +162,9 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
 
     @Override
     public void OnPhotoClick(int position) {
+        PhotoModel photoModel = photos.get(position);
         Intent intent = new Intent(getContext(), PhotosViewActivity.class);
-        intent.putExtra("position" , position);
+        intent.putExtra("photo", photoModel);
         startActivity(intent);
 
     }
@@ -160,9 +172,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
     @Override
     public void onResume() {
         super.onResume();
-        bottomNavigationView.setVisibility(View.VISIBLE);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-
 
     }
 }

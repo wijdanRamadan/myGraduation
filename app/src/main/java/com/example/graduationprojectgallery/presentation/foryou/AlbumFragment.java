@@ -2,19 +2,26 @@ package com.example.graduationprojectgallery.presentation.foryou;
 
 
 import android.app.ActionBar;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import java.util.ArrayList;
@@ -25,19 +32,23 @@ import static androidx.navigation.fragment.NavHostFragment.findNavController;
 public class AlbumFragment extends BaseFragment {
 
     //region crap tazzy didn't create
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "AlbumAdapter";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     RecyclerView recyclerView;
     View view;
     LayoutInflater inflater;
     ViewGroup container;
-    ActionBar actionBar;
+    Toolbar toolbar;
+
+    private String mParam1;
+    private String mParam2;
+    //vars
+    private ArrayList<String> mNames = new ArrayList<>();
+//endregion
+    private ArrayList<String> mImageUrls = new ArrayList<>();
 
     /**
      * Use this factory method to create a new instance of
@@ -60,7 +71,6 @@ public class AlbumFragment extends BaseFragment {
 
 
     }
-
 
     public void setNav() {
 
@@ -90,27 +100,18 @@ public class AlbumFragment extends BaseFragment {
 
 
     }
-//endregion
-
-    private static final String TAG = "AlbumAdapter";
-
-    //vars
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        setHasOptionsMenu(true);
+        toolbar=getActivity().findViewById(R.id.app_toolbar);
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         getImages();
     }
@@ -167,6 +168,7 @@ public class AlbumFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
 
 
+
         return view;
     }
 
@@ -176,5 +178,21 @@ public class AlbumFragment extends BaseFragment {
         setNav();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        toolbar.setTitle(R.string.albums);
+        Drawable drawable = ContextCompat.getDrawable(getContext(),R.drawable.plus);
+        toolbar.setOverflowIcon(drawable);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
+
+    }
+
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.albums_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 }

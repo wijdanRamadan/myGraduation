@@ -2,13 +2,13 @@ package com.example.graduationprojectgallery.base;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+
 import com.example.graduationprojectgallery.R;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
@@ -26,8 +26,7 @@ public class BaseFragment extends Fragment {
     }
 
 
-    public void setNav ()
-    {
+    public void setNav() {
         BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
         BottomNavigationItemView search = getActivity().findViewById(R.id.search);
         BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
@@ -36,7 +35,7 @@ public class BaseFragment extends Fragment {
         photos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(BaseFragment.this).getCurrentDestination().getId()!= R.id.photosFragment){
+                if (findNavController(BaseFragment.this).getCurrentDestination().getId() != R.id.photosFragment) {
                     findNavigationController().navigate(R.id.action_mainActivityFragment_to_photosFragment);
                 }
             }
@@ -45,16 +44,17 @@ public class BaseFragment extends Fragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(BaseFragment.this).getCurrentDestination().getId()!= R.id.searchFragment) {
+                if (findNavController(BaseFragment.this).getCurrentDestination().getId() != R.id.searchFragment) {
 
                     findNavigationController().navigate(R.id.action_mainActivityFragment_to_searchFragment);
-                }            }
+                }
+            }
         });
 
         albums.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(BaseFragment.this).getCurrentDestination().getId()!= R.id.albumsFragment) {
+                if (findNavController(BaseFragment.this).getCurrentDestination().getId() != R.id.albumsFragment) {
 
                     findNavigationController().navigate(R.id.action_mainActivityFragment_to_albumsFragment);
                 }
@@ -62,8 +62,6 @@ public class BaseFragment extends Fragment {
         });
 
     }
-
-
 
 
 }
