@@ -13,4 +13,9 @@
     <string name="share">share</string>
     <string name="favorite">favorite</string>
     <string name="delete">delete</string>
+    <string name="details">Image Details</string>
+    <string name="size">size</string>
+    <string name="date">date</string>
+    <string name="albums_add_sign">albums add sign</string>
+    <string name="videos">videos</string>
 </resources>

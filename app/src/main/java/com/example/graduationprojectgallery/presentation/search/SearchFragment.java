@@ -1,13 +1,14 @@
 package com.example.graduationprojectgallery.presentation.search;
 
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
@@ -17,12 +18,12 @@ import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 
 public class SearchFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
+
+    Toolbar toolbar;
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -56,6 +57,9 @@ public class SearchFragment extends BaseFragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        toolbar = getActivity().findViewById(R.id.app_toolbar);
+
     }
 
     @Override
@@ -64,8 +68,8 @@ public class SearchFragment extends BaseFragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
-    public void setNav ()
-    {
+
+    public void setNav() {
         BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
         BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
         BottomNavigationItemView search = getActivity().findViewById(R.id.search);
@@ -74,7 +78,7 @@ public class SearchFragment extends BaseFragment {
         photos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(SearchFragment.this).getCurrentDestination().getId()!= R.id.photosFragment){
+                if (findNavController(SearchFragment.this).getCurrentDestination().getId() != R.id.photosFragment) {
                     findNavigationController().navigate(R.id.action_searchFragment_to_photosFragment);
                 }
             }
@@ -82,21 +86,29 @@ public class SearchFragment extends BaseFragment {
         // TODO: fix navigation bug :D
 
 
-
         albums.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (findNavController(SearchFragment.this).getCurrentDestination().getId()!= R.id.albumsFragment) {
+                if (findNavController(SearchFragment.this).getCurrentDestination().getId() != R.id.albumsFragment) {
 
                     findNavigationController().navigate(R.id.action_searchFragment_to_albumsFragment);
-                }            }
-        });
+                }
             }
+        });
+    }
+
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        toolbar.setTitle(R.string.search);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+    }
+
+
+        @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }
 

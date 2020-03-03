@@ -11,8 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.R;
+import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.models.PhotoModel;
 
 import java.util.List;
@@ -22,21 +22,24 @@ import static com.example.graduationprojectgallery.activities.MainActivity.photo
 import static com.example.graduationprojectgallery.activities.MainActivity.urls;
 
 
-public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAdapter.PhotosFragmentViewHolder>  {
+public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAdapter.PhotosFragmentViewHolder> {
 
-    private Context mContext;
     TextView date;
+    PhotoClickListener photoClickListener;
+    private Context mContext;
     private List<PhotoModel> photoModelList;
 
+    public PhotosFragmentAdapter(Context context) {
+        mContext = context;
 
+    }
 
     public PhotoClickListener getPhotoClickListener() {
-        if (photoClickListener==null)
-        {
+        if (photoClickListener == null) {
             photoClickListener = new PhotoClickListener() {
                 @Override
                 public void OnPhotoClick(int position) {
-                    Toast.makeText(mContext , "null" ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "null", Toast.LENGTH_LONG).show();
 
                 }
 
@@ -48,16 +51,6 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
     public void setPhotoClickListener(PhotoClickListener photoClickListener) {
         this.photoClickListener = photoClickListener;
     }
-
-    PhotoClickListener photoClickListener;
-
-
-
-    public PhotosFragmentAdapter(Context context  ) {
-        mContext = context;
-
-    }
-
 
     @NonNull
     @Override
@@ -71,9 +64,9 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
     public void onBindViewHolder(@NonNull PhotosFragmentAdapter.PhotosFragmentViewHolder holder, int position) {
 
         if (urls != null) {
-          //  String photo = urls.get(position);
+            //  String photo = urls.get(position);
             PhotoModel photo = photos.get(position);
-            holder.Bind(photo , position);
+            holder.Bind(photo, position);
         }
 
     }
@@ -82,6 +75,8 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
     public int getItemCount() {
         return urls.size();
     }
+
+
 
     public class PhotosFragmentViewHolder extends RecyclerView.ViewHolder {
 
@@ -92,24 +87,21 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
             super(itemView);
 
             photosFragmentImageView = itemView.findViewById(photos_fragment_recycler_image);
-            imageDate=itemView.findViewById(R.id.date_header);
-
         }
-        public  void Bind(final String photoPath , final int position)
-        {
-            HelperClass.show(photoPath, mContext ,photosFragmentImageView);
+
+        public void Bind(final String photoPath, final int position) {
+            HelperClass.show(photoPath, mContext, photosFragmentImageView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   getPhotoClickListener().OnPhotoClick(position);
+                    getPhotoClickListener().OnPhotoClick(position);
                 }
             });
         }
 
-        public void Bind(final PhotoModel photoModel ,final int position)
-        {
+        public void Bind(final PhotoModel photoModel, final int position) {
 
-            HelperClass.show(photoModel ,mContext,photosFragmentImageView);
+            HelperClass.show(photoModel, mContext, photosFragmentImageView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -3,24 +3,32 @@ package com.example.graduationprojectgallery.activities;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
+import com.example.graduationprojectgallery.models.PhotoModel;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 
-import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 public class PhotosViewActivity extends AppCompatActivity {
 
     PhotoView photoView;
+    String photoPath;
+    PhotoModel photoModel;
+
+   Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +37,19 @@ public class PhotosViewActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_photos_view);
         Intent intent = getIntent();
-        photoView = findViewById(R.id.photoView);
 
+        photoView = findViewById(R.id.photoView);
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        toolbar=findViewById(R.id.photos_view_toolbar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setActionBar(toolbar);
+        }
+
+        photoModel= (PhotoModel) intent.getSerializableExtra("photo");
+        if (photoModel!=null)
+        photoPath= photoModel.getPath();
+
+        HelperClass.show(photoPath, this, photoView);
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -47,16 +65,27 @@ public class PhotosViewActivity extends AppCompatActivity {
                     startActivity(Intent.createChooser(intent, "ShareVia"));
 
                 }
+                else {
+                    HelperClass.DeletePhoto(photoModel,getBaseContext());
+                }
 
                 return true;
 
             }
         });
 
-        HelperClass.show(photos.get(intent.getExtras().getInt("position")).getPath(), this, photoView);
-
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.show_detailes_menu , menu);
+
+        menu.add("title : "+photoModel.getTitle());
+        menu.add("date : "+HelperClass.ConvertTimeStampToDate(Long.valueOf(photoModel.getDate())));
+        menu.add("size : " +HelperClass.getImageSize(Long.valueOf(photoModel.getSize())));
+
+        return true;
+    }
 
 }

@@ -7,24 +7,19 @@
     <!-- TODO: Update blank fragment layout -->
 
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="left|center_vertical"
+        android:src="@drawable/plus"
+        android:contentDescription="@string/albums_add_sign"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bold"
+        android:gravity="center"
+        android:text="@string/albums"
+        android:textColor="#000000"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:foregroundGravity="left|center_vertical"
-            android:src="@drawable/plus">
-
-
-        </ImageView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/albums"
-            android:fontFamily="@font/bold"
-            android:textColor="#000000"
-            ></TextView>
-
-    </RelativeLayout>
+</RelativeLayout>

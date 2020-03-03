@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/photos"
-    android:title="@string/photos"
-        android:icon="@drawable/photos"/>
+    <item
+        android:id="@+id/photos"
+        android:icon="@drawable/photos"
+        android:title="@string/photos" />
 
-    <item android:id="@+id/albums"
-        android:title="@string/albums"
-        android:icon="@drawable/albums"/>
-    <item android:id="@+id/search"
-        android:title="@string/search"
+    <item
+        android:id="@+id/albums"
+        android:icon="@drawable/albums"
+        android:title="@string/albums" />
+    <item
+        android:id="@+id/search"
         android:icon="@drawable/search"
-      />
+        android:title="@string/search" />
 
 </menu>

@@ -1,56 +1,61 @@
 package com.example.graduationprojectgallery.models;
 
+import android.widget.Spinner;
+
 import androidx.room.Entity;
+
+import java.io.Serializable;
 
 
 @Entity
-public class PhotoModel {
+public class PhotoModel implements Serializable {
 
-        public PhotoModel(String path, String date, String title) {
-                this.path = path;
-                this.date = date;
-                this.title = title;
-
-        }
+    private String path;
+    private String date;
+    private String title;
+    private String size;
 
 
-        public String path;
+    public PhotoModel(String path, String date, String title, String size) {
+        this.path = path;
+        this.date = date;
+        this.title = title;
+        this.size=size;
 
-        public PhotoModel() {
-        }
+    }
 
-        public String getPath() {
-                return path;
-        }
+    public PhotoModel() {
+    }
 
-        public void setPath(String path) {
-                this.path =path;
-        }
+    public String getPath() {
+        return path;
+    }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-        public String date;
+    public String getDate() {
+        return date;
+    }
 
-        public String getDate() {
-                return date;
-        }
+    public void setDate(String date) {
+        this.date = date;
+    }
 
-        public void setDate(String date) {
-                this.date = date;
-        }
+    public String getTitle() {
+        return title;
+    }
 
-        public String title;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getSize() {
+        return size;
+    }
 
-        public String getTitle() {
-                return title;
-        }
-
-        public void setTitle(String title) {
-                this.title = title;
-        }
-
-
-
-
-
+    public void setSize(String size) {
+        this.size = size;
+    }
 
 }
