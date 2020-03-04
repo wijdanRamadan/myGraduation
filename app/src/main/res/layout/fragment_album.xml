@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    android:theme="@style/AppTheme3">
-
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,6 +18,48 @@
         android:id="@+id/albums_mother_constraint_layout">
 
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/albums_titlebar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#ffff"
+
+
+            android:minHeight="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            android:theme="@style/NoShadowNormalTheme">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/plus_imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/plus"
+                    android:scaleType="fitXY"
+                    android:focusableInTouchMode="true" />
+
+                <TextView
+                    android:id="@+id/albums_word_textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/bold"
+                    android:text="@string/albums"
+                    android:textColor="@android:color/black"
+                    android:textSize="21sp" />
+            </RelativeLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
 
         <RelativeLayout
@@ -27,11 +67,12 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="#ffff"
+
             android:label="@string/my_albums"
             android:minHeight="?attr/actionBarSize"
             app:layout_constraintHorizontal_bias="1"
-            android:theme="@style/NoShadowBarTheme"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/albums_titlebar"
+            android:theme="@style/NoShadowBarTheme">
 
 
             <TextView
@@ -67,9 +108,9 @@
             android:layout_marginTop="20dp"
             android:background="@android:color/darker_gray"
             app:layout_constraintTop_toBottomOf="@id/foryou_recycleView"
-            android:id="@+id/horizontal_divider1"/> <!--tazzy this is the divider-->
+            android:id="@+id/horizontal_divider1" /> <!--tazzy this is the divider-->
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -87,16 +128,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/peopleNplaces_label"
+                    android:text="@string/peopleNplaces"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginStart="20dp"
                     android:layout_marginBottom="10dp"
                     android:contentDescription="@string/albums"
                     android:fontFamily="@font/bold"
                     android:textColor="@android:color/black"
-                    android:textSize="30sp"
-                    />
+                    android:textSize="30sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,7 +150,6 @@
                         android:orientation="vertical"
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
                         android:layout_below="@+id/album_name_textView"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp"
@@ -123,8 +163,7 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="0dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_launcher_background"
-                            android:contentDescription="@string/photos"/>  <!--tazzy remember to add id's in strings-->
+                            android:src="@drawable/ic_launcher_background" />  <!--tazzy remember to add id's in strings-->
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -136,7 +175,6 @@
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp"
                         android:layout_marginLeft="22dp"
-                        android:layout_marginStart="22dp"
                         android:id="@+id/places_roundedCorners_cardView">
 
                         <ImageView
@@ -147,19 +185,19 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="0dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_launcher_background"
-                            android:contentDescription="@string/photos"/>  <!--tazzy remember to add id's in strings-->
+                            android:src="@drawable/ic_launcher_background" />  <!--tazzy remember to add id's in strings-->
                     </androidx.cardview.widget.CardView>
 
 
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="20dp"
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/people_places_linear_layout"
-                    android:id="@+id/horizontal_divider2"/>
+                    android:id="@+id/horizontal_divider2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -175,9 +213,8 @@
                         android:fontFamily="@font/bold"
                         android:textColor="@android:color/black"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
                         android:textSize="30sp"
-                        />
+                        android:text="@string/hidden" />
 
                     <TextView
                         android:id="@+id/videos_label"
@@ -186,7 +223,6 @@
                         android:fontFamily="@font/bold"
                         android:textColor="@android:color/black"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
                         android:textSize="30sp"
                         android:text="@string/videos" />
 
@@ -195,9 +231,8 @@
             </LinearLayout>
 
 
-        </ScrollView>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </ScrollView>

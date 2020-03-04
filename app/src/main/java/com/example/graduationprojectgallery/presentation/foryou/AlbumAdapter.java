@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
 
 
-    private static final String TAG = "AlbumAdapter";
+    private static final String TAG = "RecyclerViewAdapter";
 
     //vars
     private ArrayList<String> mNames = new ArrayList<>();
@@ -82,5 +82,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
         }
 
+    }
+
+    public interface RecyclerViewClickListener {
+
+        void onClick(View view, int position);
     }
 }

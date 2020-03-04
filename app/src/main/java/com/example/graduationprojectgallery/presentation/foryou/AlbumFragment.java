@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,8 +31,9 @@ import java.util.ArrayList;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
+import androidx.fragment.app.DialogFragment;
 
-public class AlbumFragment extends BaseFragment {
+public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInputSelected {
 
     //region crap tazzy didn't create
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,17 +41,12 @@ public class AlbumFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "AlbumAdapter";
 
-    RecyclerView recyclerView;
-    View view;
-    LayoutInflater inflater;
-    ViewGroup container;
-    Toolbar toolbar;
 
     private String mParam1;
     private String mParam2;
     //vars
     private ArrayList<String> mNames = new ArrayList<>();
-//endregion
+    //endregion
     private ArrayList<String> mImageUrls = new ArrayList<>();
 
     /**
@@ -58,6 +57,16 @@ public class AlbumFragment extends BaseFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment AlbumFragment.
      */
+
+    RecyclerView recyclerView;
+    View view;
+    LayoutInflater inflater;
+    ViewGroup container;
+    ActionBar actionBar;
+    public ImageView new_album_plus_button;
+    public TextView new_album_name_input;
+    Toolbar toolbar;
+
     // TODO: Rename and change types and number of parameters
     public static AlbumFragment newInstance(String param1, String param2) {
         AlbumFragment fragment = new AlbumFragment();
@@ -105,13 +114,17 @@ public class AlbumFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         setHasOptionsMenu(true);
         toolbar=getActivity().findViewById(R.id.app_toolbar);
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
 
         getImages();
     }
@@ -159,14 +172,20 @@ public class AlbumFragment extends BaseFragment {
         // Inflate the layout for this fragment
 
         view = inflater.inflate(R.layout.fragment_album, container, false);
+        new_album_plus_button = view.findViewById(R.id.plus_imageView2);
+        new_album_plus_button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
 
-        recyclerView = view.findViewById(R.id.foryou_recycleView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, true);
-        //recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(layoutManager);
-        AlbumAdapter adapter = new AlbumAdapter(this.getContext(), mNames, mImageUrls);
-        recyclerView.setAdapter(adapter);
+                System.out.println("new album clicked");
+                NewAlbumDialog dialog = new NewAlbumDialog();
 
+                dialog.setTargetFragment(AlbumFragment.this, 1);
+
+                dialog.show(getFragmentManager(), "NewAlbumDialog");
+                return false;
+            }
+        });
 
 
         return view;
@@ -181,6 +200,11 @@ public class AlbumFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recyclerView = view.findViewById(R.id.foryou_recycleView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, true);
+        recyclerView.setLayoutManager(layoutManager);
+        AlbumAdapter adapter = new AlbumAdapter(this.getContext(), mNames, mImageUrls);
+        recyclerView.setAdapter(adapter);
 
         toolbar.setTitle(R.string.albums);
         Drawable drawable = ContextCompat.getDrawable(getContext(),R.drawable.plus);
@@ -194,5 +218,10 @@ public class AlbumFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.albums_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void sendInput(String input) {
+
     }
 }
