@@ -2,25 +2,34 @@ package com.example.graduationprojectgallery.presentation.foryou;
 
 
 import android.app.ActionBar;
-import android.content.Context;
+
 import android.os.Bundle;
-
-
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Transaction;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
-import com.google.android.material.appbar.AppBarLayout;
+import com.example.graduationprojectgallery.presentation.foryou.adapter.RecyclerViewAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import java.util.ArrayList;
@@ -28,7 +37,12 @@ import java.util.ArrayList;
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
 
-public class ForyouFragment extends BaseFragment {
+public class ForyouFragment extends BaseFragment implements NewAlbumDialog.OnInputSelected {
+
+    @Override
+    public void sendInput(String input) { //tazzy that's
+        System.out.println(input);
+    }
 
     //region crap tazzy didn't create
     // TODO: Rename parameter arguments, choose names that match
@@ -44,7 +58,8 @@ public class ForyouFragment extends BaseFragment {
     LayoutInflater inflater;
     ViewGroup container;
     ActionBar actionBar;
-
+    public ImageView new_album_plus_button;
+    public TextView new_album_name_input;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -126,22 +141,40 @@ public class ForyouFragment extends BaseFragment {
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
 
+    public DialogFragment dialog;
 
+    // public Dialog dialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
 
         getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
         getImages();
     }
 
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // new_album_plus_button = (ImageView) getActivity().findViewById(R.id.plus_imageView2);
+        recyclerView = view.findViewById(R.id.foryou_recycleView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, true);
+        recyclerView.setLayoutManager(layoutManager);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(), mNames, mImageUrls);
+        recyclerView.setAdapter(adapter);
+
+
+    }
 
     private void getImages(){
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
@@ -183,17 +216,32 @@ public class ForyouFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         view = inflater.inflate(R.layout.fragment_foryou, container, false);
+        new_album_plus_button = view.findViewById(R.id.plus_imageView2);
+        new_album_plus_button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
 
-        recyclerView = view.findViewById(R.id.foryou_recycleView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, true );
-        //recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(layoutManager);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this.getContext(), mNames, mImageUrls);
-        recyclerView.setAdapter(adapter);
+                System.out.println("new album clicked");
+                NewAlbumDialog dialog = new NewAlbumDialog();
 
+                dialog.setTargetFragment(ForyouFragment.this, 1);
 
+                dialog.show(getFragmentManager(), "NewAlbumDialog");
+                return false;
+            }
+        }); //tazzy tried onclick instead and it wasn't as efficient
+//        new_album_plus_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                System.out.println("new album clicked");
+//                NewAlbumDialog dialog = new NewAlbumDialog();
+//
+//                dialog.setTargetFragment(ForyouFragment.this, 1);
+//
+//                dialog.show(getFragmentManager(), "NewAlbumDialog");
+//            }
+//        });
         return view;
     }
 

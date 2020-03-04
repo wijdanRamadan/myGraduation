@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="250dp"
+    android:layout_height="200dp"
+    tools:context=".presentation.foryou.ForyouFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Album"
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:id="@+id/new_album_heading"
+            android:gravity="center"
+            android:fontFamily="@font/bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter a name for this album"
+            android:layout_below="@id/new_album_heading"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:fontFamily="@font/fts"
+            android:id="@+id/enter_album_name_label" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_album_name_label"
+            android:layout_marginTop="20dp"
+            android:gravity="start"
+            android:background="@null"
+            android:textColor="#000"
+            android:hint="Title"
+            android:textSize="20sp"
+            android:textAlignment="textStart"
+            android:fontFamily="@font/fts"
+            android:id="@+id/new_album_input" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textSize="18sp"
+            android:fontFamily="@font/fts"
+            android:textColor="@color/text_disables_color"
+            android:id="@+id/action_save"
+            android:focusableInTouchMode="true"
+            android:enabled="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="20dp"
+            android:fontFamily="@font/fts"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:id="@+id/action_cancel"
+            android:focusableInTouchMode="true" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
