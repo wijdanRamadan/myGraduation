@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.widget.ImageView;
-import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.graduationprojectgallery.models.PhotoModel;
@@ -63,7 +62,7 @@ public class HelperClass {
                 );
 
 
-        List<String> result = new ArrayList<String>(cursor.getCount());
+        List<String> result = new ArrayList<>(cursor.getCount());
 
         if (cursor.moveToFirst()) {
             final int image_path_col = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
