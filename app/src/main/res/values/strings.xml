@@ -18,4 +18,6 @@
     <string name="date">date</string>
     <string name="albums_add_sign">albums add sign</string>
     <string name="videos">videos</string>
+    <string name="peopleNplaces"><![CDATA[People & Places]]></string>
+    <string name="hidden">Hidden</string>
 </resources>
