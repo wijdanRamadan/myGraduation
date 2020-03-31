@@ -25,15 +25,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
+import com.example.graduationprojectgallery.presentation.photos.PhotosFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import java.util.ArrayList;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
-import androidx.fragment.app.DialogFragment;
-
 public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInputSelected {
+
+    @Override
+    public void sendInput(String input) {  //tazzy input is the name of new album entered by user
+        System.out.println(input);
+        HelperClass.createAlbumDirectory(input, getActivity());
+    }
 
     //region crap tazzy didn't create
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -115,8 +120,8 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
 
         super.onCreate(savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide(); //tazzy this hides the original bar
+        //getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -132,35 +137,14 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
 
     private void getImages() {
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
+        HelperClass.loadAlbumsNames(this.getActivity());
 
-        mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
-        mNames.add("Havasu Falls");
+        for (String name : HelperClass.albums_names_array) {
 
-        mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-        mNames.add("Trondheim");
+            mNames.add(name);
+            mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
 
-        mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
-        mNames.add("Portugal");
-
-        mImageUrls.add("https://i.redd.it/j6myfqglup501.jpg");
-        mNames.add("Rocky Mountain National Park");
-
-
-        mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mNames.add("Mahahual");
-
-        mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mNames.add("Frozen Lake");
-
-
-        mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
-        mNames.add("White Sands Desert");
-
-        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-        mNames.add("Austrailia");
-
-        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-        mNames.add("Washington");
+        }
 
 
     } //tazzy this is to have place holders for testing
@@ -173,20 +157,20 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
 
         view = inflater.inflate(R.layout.fragment_album, container, false);
         new_album_plus_button = view.findViewById(R.id.plus_imageView2);
-        new_album_plus_button.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
 
+
+        new_album_plus_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {   //tazzy create new album dialog
                 System.out.println("new album clicked");
                 NewAlbumDialog dialog = new NewAlbumDialog();
 
                 dialog.setTargetFragment(AlbumFragment.this, 1);
 
                 dialog.show(getFragmentManager(), "NewAlbumDialog");
-                return false;
+
             }
         });
-
 
         return view;
     }
@@ -220,8 +204,5 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public void sendInput(String input) {
 
-    }
 }

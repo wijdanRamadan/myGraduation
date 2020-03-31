@@ -1,6 +1,7 @@
 package com.example.graduationprojectgallery.presentation.foryou;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.graduationprojectgallery.R;
+import com.example.graduationprojectgallery.base.BaseFragment;
+import com.example.graduationprojectgallery.helperClasses.HelperClass;
+import com.example.graduationprojectgallery.presentation.photos.PhotosFragment;
 
 import java.util.ArrayList;
 
@@ -58,14 +65,20 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on an image : " + mNames.get(position));
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+
+                HelperClass.goToAlbum(view);
                 Toast.makeText(mContext, mNames.get(position) + "", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
 
     @Override
     public int getItemCount() {
+
         return mNames.size();
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -88,4 +101,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
         void onClick(View view, int position);
     }
+
+
 }

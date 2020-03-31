@@ -42,11 +42,11 @@
                     android:id="@+id/plus_imageView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="22dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="22dp"
                     app:srcCompat="@drawable/plus"
-                    android:scaleType="fitXY"
-                    android:focusableInTouchMode="true" />
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
 
                 <TextView
                     android:id="@+id/albums_word_textView2"
