@@ -1,14 +1,12 @@
 package com.example.graduationprojectgallery.presentation.foryou;
 
 
-import android.app.ActionBar;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,27 +15,49 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
-import com.example.graduationprojectgallery.presentation.photos.PhotosFragment;
+import com.example.graduationprojectgallery.models.Album;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import static android.net.Uri.fromFile;
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
+import static com.example.graduationprojectgallery.activities.MainActivity.urls;
 
 public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInputSelected {
 
-    @Override
-    public void sendInput(String input) {  //tazzy input is the name of new album entered by user
+    private ArrayList<Album> mAlbums = new ArrayList<>();
+    private ArrayList<Uri> mUri = new ArrayList<>();
+    static AlbumAdapter adapter;
+    RecyclerView recyclerView;
+    View view;
+    GridLayoutManager layoutManager;
+
+    public ImageView new_album_plus_button;
+    public TextView see_all_button;
+    String new_album;
+
+
+    //tazzy this :https://www.youtube.com/watch?v=LGpf6PBZ3uw&list=PLcOTVcLpJoBXaQQkoiloQDrmyuTEv6E-2&index=2
+
+    @Override //tazzy input is the name of new album ENTERED by user
+    public void sendInput(String input) {
         System.out.println(input);
-        HelperClass.createAlbumDirectory(input, getActivity());
+        new_album = input;
+        HelperClass.createNewAlbumDirectory(input, getActivity());
+        insertAlbum();
+        adapter.notifyItemInserted(HelperClass.albums_count + 1);
+        recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+
+        Log.d(TAG, "album count is" + HelperClass.albums_count + " and album is " + HelperClass.albums_names_array[HelperClass.albums_count + 1]);
     }
 
     //region crap tazzy didn't create
@@ -47,32 +67,9 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
     private static final String TAG = "AlbumAdapter";
 
 
-    private String mParam1;
-    private String mParam2;
-    //vars
-    private ArrayList<String> mNames = new ArrayList<>();
     //endregion
-    private ArrayList<String> mImageUrls = new ArrayList<>();
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AlbumFragment.
-     */
 
-    RecyclerView recyclerView;
-    View view;
-    LayoutInflater inflater;
-    ViewGroup container;
-    ActionBar actionBar;
-    public ImageView new_album_plus_button;
-    public TextView new_album_name_input;
-    Toolbar toolbar;
-
-    // TODO: Rename and change types and number of parameters
     public static AlbumFragment newInstance(String param1, String param2) {
         AlbumFragment fragment = new AlbumFragment();
         Bundle args = new Bundle();
@@ -123,27 +120,42 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide(); //tazzy this hides the original bar
         //getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         setHasOptionsMenu(true);
-        toolbar=getActivity().findViewById(R.id.app_toolbar);
 
+        LoadDataSet();
 
-        getImages();
+    }
+
+    //TODO fix this mess
+    public void insertAlbum() {
+        mAlbums.add(new Album(new_album, HelperClass.pathToUri("mipmap-xxxhdpi/empty_album_round.png")));
+        Uri uri = fromFile(new File(urls.get(1)));
+        mUri.add(uri);
+        uri = fromFile(new File(urls.get(2)));
+        mUri.add(uri);
+        uri = fromFile(new File(urls.get(3)));
+        mUri.add(uri);
+        HelperClass.addImageToAlbum(mUri, new_album, getActivity());
+        adapter.notifyItemInserted(mAlbums.size() - 1);
     }
 
 
-    private void getImages() {
-        Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
-        HelperClass.loadAlbumsNames(this.getActivity());
+    public void deleteAlbum(int position) {
 
+        mAlbums.remove(position);
+        adapter.notifyItemRemoved(position);
+    }
+
+
+    private void LoadDataSet() { //updating arraylist of the adapter
+        Log.d(TAG, "Album Fragment : LoadDataSet");
+
+        HelperClass.loadAlbums(this.getActivity());
+        mAlbums.removeAll(mAlbums);
         for (String name : HelperClass.albums_names_array) {
 
-            mNames.add(name);
-            mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
-
+            mAlbums = new ArrayList<Album>(HelperClass.mAlbums);
         }
 
 
@@ -172,6 +184,17 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
             }
         });
 
+        see_all_button = view.findViewById(R.id.see_all_button);
+
+        see_all_button.setOnClickListener(new View.OnClickListener() {
+
+
+            public void onClick(View v) {
+                findNavigationController().navigate(R.id.action_albumsFragment_to_seeAllAlbumsFragment);
+
+            }
+        });
+
         return view;
     }
 
@@ -184,16 +207,8 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.foryou_recycleView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, true);
-        recyclerView.setLayoutManager(layoutManager);
-        AlbumAdapter adapter = new AlbumAdapter(this.getContext(), mNames, mImageUrls);
-        recyclerView.setAdapter(adapter);
 
-        toolbar.setTitle(R.string.albums);
-        Drawable drawable = ContextCompat.getDrawable(getContext(),R.drawable.plus);
-        toolbar.setOverflowIcon(drawable);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        BuildRecyclerView();
 
 
     }
@@ -204,5 +219,24 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        BottomNavigationView navigationView = getActivity().findViewById(R.id.bottom_nav);
+        navigationView.setVisibility(View.VISIBLE);
+
+    }
+
+    public void BuildRecyclerView() {
+
+        recyclerView = view.findViewById(R.id.foryou_recycleView);
+        layoutManager = new GridLayoutManager(this.getActivity(), 2, GridLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        adapter = new AlbumAdapter(this.getContext(), mAlbums);
+        recyclerView.setAdapter(adapter);
+
+    }
 
 }

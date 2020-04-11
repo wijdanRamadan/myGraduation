@@ -14,6 +14,7 @@ public class PhotoModel implements Serializable {
     private String date;
     private String title;
     private String size;
+    private String latitude;
 
 
     public PhotoModel(String path, String date, String title, String size) {

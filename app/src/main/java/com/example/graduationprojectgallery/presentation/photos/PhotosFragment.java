@@ -2,13 +2,11 @@ package com.example.graduationprojectgallery.presentation.photos;
 
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -124,9 +122,8 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         super.onViewCreated(view, savedInstanceState);
 
 
-
         ArrayAdapter<String> detailesAdapter = new ArrayAdapter<String>(getActivity()
-                ,android.R.layout.simple_list_item_1
+                , android.R.layout.simple_list_item_1
         );
         detailesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
@@ -138,7 +135,7 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 3));
 
         toolbar.setTitle(R.string.photos);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
 
     }
@@ -172,6 +169,8 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
     @Override
     public void onResume() {
         super.onResume();
-
+        BottomNavigationView navigationView = getActivity().findViewById(R.id.bottom_nav);
+        navigationView.setVisibility(View.VISIBLE);
+        toolbar.setVisibility(View.VISIBLE);
     }
 }

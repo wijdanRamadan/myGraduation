@@ -28,6 +28,12 @@
         <action
             android:id="@+id/action_foryouFragment_to_photosFragment"
             app:destination="@id/photosFragment" />
+        <action
+            android:id="@+id/action_albumsFragment_to_seeAllAlbumsFragment"
+            app:destination="@id/seeAllAlbumsFragment" />
+        <action
+            android:id="@+id/action_albumsFragment_to_openAlbumFragment"
+            app:destination="@id/openAlbumFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -56,6 +62,36 @@
             android:id="@+id/action_mainActivityFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/seeAllAlbumsFragment"
+        android:name="com.example.graduationprojectgallery.presentation.foryou.SeeAllAlbumsFragment"
+        android:label="fragment_display_all_albums"
+        tools:layout="@layout/fragment_display_all_albums">
+        <action
+            android:id="@+id/action_seeAllAlbumsFragment_to_albumsFragment"
+            app:destination="@id/albumsFragment" />
+        <action
+            android:id="@+id/action_seeAllAlbumsFragment_to_photosFragment"
+            app:destination="@id/photosFragment" />
+        <action
+            android:id="@+id/action_seeAllAlbumsFragment_to_openAlbumFragment"
+            app:destination="@id/openAlbumFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/openAlbumFragment"
+        android:name="com.example.graduationprojectgallery.presentation.foryou.OpenAlbumFragment"
+        android:label="fragment_open_album"
+        tools:layout="@layout/fragment_open_album">
+        <action
+            android:id="@+id/action_openAlbumFragment_to_albumsFragment"
+            app:destination="@id/albumsFragment" />
+        <argument
+            android:name="album_name"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_openAlbumFragment_to_seeAllAlbumsFragment"
+            app:destination="@id/seeAllAlbumsFragment" />
     </fragment>
 
 </navigation>

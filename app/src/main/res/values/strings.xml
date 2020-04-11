@@ -20,4 +20,8 @@
     <string name="videos">videos</string>
     <string name="peopleNplaces"><![CDATA[People & Places]]></string>
     <string name="hidden">Hidden</string>
+    <string name="Edit">Edit</string>
+    <string name="Done">Done</string>
+    <string name="Select">Select</string>
+    <string name="Cancel">Cancel</string>
 </resources>

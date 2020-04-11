@@ -88,6 +88,22 @@
                 android:textColor="@android:color/black"
                 android:textSize="30sp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/see_all"
+                android:id="@+id/see_all_button"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:fontFamily="fts"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="22sp"
+                android:focusable="false"
+
+                android:focusableInTouchMode="false" />
+
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView

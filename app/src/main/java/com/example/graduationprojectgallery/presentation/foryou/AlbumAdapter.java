@@ -2,6 +2,7 @@ package com.example.graduationprojectgallery.presentation.foryou;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.Fragment;
@@ -20,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
+import com.example.graduationprojectgallery.models.Album;
 import com.example.graduationprojectgallery.presentation.photos.PhotosFragment;
 
 import java.util.ArrayList;
@@ -31,17 +35,18 @@ import java.util.ArrayList;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
 
 
-    private static final String TAG = "RecyclerViewAdapter";
-
+    private static final String TAG = "AlbumsRecyclerAdapter";
     //vars
+    private ArrayList<Album> mAlbums;
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private Context mContext;
 
-    public AlbumAdapter(Context mContext, ArrayList<String> mNames, ArrayList<String> mImageUrls) {
-        this.mNames = mNames;
-        this.mImageUrls = mImageUrls;
+    public AlbumAdapter(Context mContext, ArrayList<Album> mAlbums) {
+//        this.mNames = mNames;
+//        this.mImageUrls = mImageUrls;
         this.mContext = mContext;
+        this.mAlbums = mAlbums;
     }
 
 
@@ -57,27 +62,37 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) { // tazzy binding items to albums thumbnails
-        Log.d(TAG, "onCreateViewHolder: called. ");
-        Glide.with(mContext).asBitmap().load(mImageUrls.get(position)).into(holder.album_thumbnail); // tazzy taking imageUrls & assigning them to album thumbnails
-        holder.album_name.setText(mNames.get(position));
+        holder.itemView.setTag(mAlbums.get(position));
+        holder.album_name.setText(mAlbums.get(position).getName());
+        holder.album_thumbnail.setImageURI(mAlbums.get(position).getThumbnail_path());
+
+
 
         holder.album_thumbnail.setOnClickListener(new View.OnClickListener() {  // tazzy when clicking on an album thumbnail
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on an image : " + mNames.get(position));
+                Log.d(TAG, "OnBindViewHolder: onClick: clicked on an image : " + mAlbums.get(position));
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
 
-                HelperClass.goToAlbum(view);
-                Toast.makeText(mContext, mNames.get(position) + "", Toast.LENGTH_SHORT).show();
+                NavController nav = Navigation.findNavController(view);
+                if (mAlbums.get(position).getName() == "Recent") {
+                    nav.navigate(R.id.action_foryouFragment_to_photosFragment);
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("album_name", mAlbums.get(position).getName());
+                    nav.navigate(R.id.action_albumsFragment_to_openAlbumFragment, bundle);
+                }
+                Toast.makeText(mContext, mAlbums.get(position).getName() + "", Toast.LENGTH_SHORT).show();
 
             }
         });
     }
 
+
     @Override
     public int getItemCount() {
 
-        return mNames.size();
+        return mAlbums.size();
 
     }
 
@@ -92,6 +107,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
             album_thumbnail = itemView.findViewById(R.id.album_thumbnail_imageView);
             album_name = itemView.findViewById(R.id.album_name_textView);
+
 
         }
 

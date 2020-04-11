@@ -38,6 +38,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.2.1'
     implementation 'androidx.navigation:navigation-ui:2.2.1'
     implementation 'androidx.navigation:navigation-runtime:2.2.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
 
     // recyclerView
@@ -64,5 +65,6 @@ dependencies {
     //Cardview
     implementation "androidx.cardview:cardview:1.0.0"
 
-
+    //Cicrle Image
+    implementation 'de.hdodenhof:circleimageview:3.0.2'
 }
