@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +42,7 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
     RecyclerView recyclerView;
     View view;
     GridLayoutManager layoutManager;
-
+    Toolbar toolbar;
     public ImageView new_album_plus_button;
     public TextView see_all_button;
     String new_album;
@@ -141,12 +143,6 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
     }
 
 
-    public void deleteAlbum(int position) {
-
-        mAlbums.remove(position);
-        adapter.notifyItemRemoved(position);
-    }
-
 
     private void LoadDataSet() { //updating arraylist of the adapter
         Log.d(TAG, "Album Fragment : LoadDataSet");
@@ -176,9 +172,8 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
             public void onClick(View view) {   //tazzy create new album dialog
                 System.out.println("new album clicked");
                 NewAlbumDialog dialog = new NewAlbumDialog();
-
                 dialog.setTargetFragment(AlbumFragment.this, 1);
-
+                dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
                 dialog.show(getFragmentManager(), "NewAlbumDialog");
 
             }

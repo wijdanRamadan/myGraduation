@@ -77,6 +77,9 @@
         <action
             android:id="@+id/action_seeAllAlbumsFragment_to_openAlbumFragment"
             app:destination="@id/openAlbumFragment" />
+        <action
+            android:id="@+id/action_seeAllAlbumsFragment_to_editAlbumsDialog"
+            app:destination="@id/editAlbumsDialog" />
     </fragment>
     <fragment
         android:id="@+id/openAlbumFragment"
@@ -93,5 +96,13 @@
             android:id="@+id/action_openAlbumFragment_to_seeAllAlbumsFragment"
             app:destination="@id/seeAllAlbumsFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/editAlbumsDialog"
+        android:name="com.example.graduationprojectgallery.presentation.foryou.EditAlbumsDialog"
+        android:label="EditAlbumsDialog">
+        <argument
+            android:name="album_name"
+            app:argType="string" />
+    </dialog>
 
 </navigation>

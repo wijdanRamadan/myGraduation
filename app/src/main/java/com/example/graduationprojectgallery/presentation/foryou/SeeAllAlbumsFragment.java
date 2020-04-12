@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class SeeAllAlbumsFragment extends BaseFragment implements SeeAllAlbumsAdapter.RecyclerViewClickListener {
+public class SeeAllAlbumsFragment extends BaseFragment implements EditAlbumsDialog.OnInputSelected {
 
 
     private ArrayList<Album> mAlbums = new ArrayList<>();
@@ -40,14 +40,18 @@ public class SeeAllAlbumsFragment extends BaseFragment implements SeeAllAlbumsAd
     public ImageView disabled_back_album_button;
     public TextView edit_albums_button;
     public TextView done_albums_button;
+    public ArrayList<ImageView> minus_button;
     public ImageView minus_albums_button;
     static boolean first_click = false;
 
-
     @Override
-    public void onClick(int position) {
-
+    public void sendInput(String input, int position) {
+        System.out.println(input);
+        Toast.makeText(getContext(), "Dialog closed safely!!", Toast.LENGTH_LONG).show();
+        HelperClass.deleteAlbum(input, getActivity());
+        deleteAlbum(position);
     }
+
 
     //region crap I tried
     public interface OnMinusClicked {
@@ -56,33 +60,39 @@ public class SeeAllAlbumsFragment extends BaseFragment implements SeeAllAlbumsAd
 
         void hideMinusIcon();
 
-        void recyclerViewListClicked(View v, int position);
+        void InitiateDeleteAlbumDialog(View v, int position);
     }
 
     public OnMinusClicked minusClicked = new OnMinusClicked() {
         @Override
         public void showMinusIcon() {
-//            SeeAllAlbumsAdapter.minus_button.animate().alpha(1.0f);
-//            SeeAllAlbumsAdapter.minus_button.setVisibility(View.VISIBLE);
+//            for(int position = 0; position <adapter.minus_button.size(); position++){
+//            adapter.minus_button.get(position).animate().alpha(1.0f);
+//            adapter.minus_button.get(position).setVisibility(View.VISIBLE);
 //            adapter.notifyDataSetChanged();
             first_click = true;
-            Toast.makeText(getContext(), "" + first_click, Toast.LENGTH_SHORT);
-            //adapter.notifyDataSetChanged();
-        }
+            Toast.makeText(getContext(), "" + first_click, Toast.LENGTH_SHORT).show();
+//        }
 
-        @Override
+        }
         public void hideMinusIcon() {
-//            SeeAllAlbumsAdapter.minus_button.animate().alpha(0.1f);
-//            SeeAllAlbumsAdapter.minus_button.setVisibility(View.GONE);
-//            adapter.notifyDataSetChanged();
-            first_click = false;
-            //adapter.notifyDataSetChanged();
+//            for(int position = 0; position <minus_button.size(); position++) {
+//                adapter.minus_button.get(position).animate().alpha(0.1f);
+//                adapter.minus_button.get(position).setVisibility(View.GONE);
+            SeeAllAlbumsFragment.first_click = false;
+//                adapter.notifyDataSetChanged();
+//            }
+            //Toast.makeText(mContext, "" + first_click, Toast.LENGTH_SHORT).show();
         }
 
-        @Override
-        public void recyclerViewListClicked(View v, int position) {
-            System.out.println("item clicked in Adapter");
+
+        public void InitiateDeleteAlbumDialog(View v, int position) {
+
+
+
         }
+
+
     };
 
 //endregion
@@ -121,7 +131,7 @@ public class SeeAllAlbumsFragment extends BaseFragment implements SeeAllAlbumsAd
         edit_albums_button = view.findViewById(R.id.edit_albums_button);
         disabled_back_album_button = view.findViewById(R.id.gray_back_imageView);
         done_albums_button = view.findViewById(R.id.done_albums_button);
-        minus_albums_button = view2.findViewById(R.id.minus_albums);
+
         edit_albums_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +139,7 @@ public class SeeAllAlbumsFragment extends BaseFragment implements SeeAllAlbumsAd
                 disabled_back_album_button.setVisibility(View.VISIBLE);
                 edit_albums_button.setVisibility(View.GONE);
                 done_albums_button.setVisibility(View.VISIBLE);
-                //minusClicked.showMinusIcon();
+                minusClicked.showMinusIcon();
                 //  LoadDataSet();
 
 
@@ -144,7 +154,7 @@ public class SeeAllAlbumsFragment extends BaseFragment implements SeeAllAlbumsAd
                 disabled_back_album_button.setVisibility(View.GONE);
                 edit_albums_button.setVisibility(View.VISIBLE);
                 done_albums_button.setVisibility(View.GONE);
-                // minusClicked.hideMinusIcon();
+                minusClicked.hideMinusIcon();
                 //  LoadDataSet();
             }
         });
@@ -190,7 +200,7 @@ public class SeeAllAlbumsFragment extends BaseFragment implements SeeAllAlbumsAd
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        adapter = new SeeAllAlbumsAdapter(this.getContext(), mAlbums);
+        adapter = new SeeAllAlbumsAdapter(this.getContext(), mAlbums, SeeAllAlbumsFragment.this, getParentFragmentManager());
         recyclerView.setAdapter(adapter);
 
     }
@@ -201,5 +211,10 @@ public class SeeAllAlbumsFragment extends BaseFragment implements SeeAllAlbumsAd
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    public void deleteAlbum(int position) {
+
+        mAlbums.remove(position);
+        adapter.notifyItemRemoved(position);
+    }
 
 }

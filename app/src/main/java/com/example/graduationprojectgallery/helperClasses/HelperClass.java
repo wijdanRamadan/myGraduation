@@ -23,9 +23,11 @@ import com.example.graduationprojectgallery.models.Album;
 import com.example.graduationprojectgallery.models.PhotoModel;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -525,7 +527,7 @@ public class HelperClass extends Fragment {
             album_thumbnails_uri.add(uri);
             if (album_name == "Recent") {
 
-                uri = fromFile(new File(urls.get(urls.size() - 1)));
+                uri = fromFile(new File(urls.get(1)));
             }
 
             fr.close();
@@ -596,6 +598,109 @@ public class HelperClass extends Fragment {
         return fromFile(new File(path));
     }
 
+    public static void deleteAlbum(String album_name, Activity activity) {
+
+        File appDir = createAppDirectory(activity);
+
+        //region creating/opening albums directory
+        if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Log.v(TAG, "Permission is NOT granted");
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    100); // this 100 here is MY_PERMISSIONS_REQUEST_READ_CONTACTS
+
+        } else {
+            Log.v(TAG, "Permission is granted");
+        }
+
+
+        String directory_name = "Albums";
+        File albumsDir = new File(appDir, directory_name);
+        try {
+            if (albumsDir.exists()) {
+                Log.v(TAG, "album directory already exists!");
+            }
+
+            if (!albumsDir.exists()) {
+
+                albumsDir.mkdir();
+                Log.v(TAG, "album directory created!");
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //endregion
+
+        //region opening albums txt file checking if album already exists
+        File f1 = new File(appDir, "Albums.txt");
+        String[] words = null;
+
+        try {
+            FileReader fr = new FileReader(f1);  //Creation of File Reader object
+            BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+            String s;
+            int count = 0;
+            while ((s = br.readLine()) != null)   //Reading Content from the file
+            {
+                words = s.split("\\$");  //Split the word using space
+                for (String word : words) {
+                    if (word.equals(album_name))   //Search for the given word
+                    {
+                        count++;    //If Present increase the count by one
+                        Log.d(TAG, "createNewAlbumDirectory: album exists " + count);
+                        fr.close();
+                        br.close();
+                    }
+                }
+            }
+            fr.close();
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //endregion
+
+        //region deleting album name from albums.txt
+
+        File tempFile = new File(appDir, "Albums.txt");
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(f1));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+            String lineToRemove = album_name + "$";
+            String currentLine;
+
+            while ((currentLine = reader.readLine()) != null)   //Reading Content from the file
+            {
+                words = currentLine.split("\\$");  //Split the word using space
+                for (String word : words) {
+                    if (word.equals(lineToRemove))   //Search for the given word
+                    {
+                        continue;
+                    }
+                    writer.write(word + "$");
+                }
+                writer.close();
+                reader.close();
+            }
+            boolean successful = tempFile.renameTo(f1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //endregion
+
+        //region remove album txt file from albums directory
+        File f2 = new File(albumsDir, album_name + ".txt");
+        boolean deleted = f2.delete();
+
+        //endregion
+    }
 
     //endregion
 

@@ -38,8 +38,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     private static final String TAG = "AlbumsRecyclerAdapter";
     //vars
     private ArrayList<Album> mAlbums;
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
+
     private Context mContext;
 
     public AlbumAdapter(Context mContext, ArrayList<Album> mAlbums) {
