@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.example.graduationprojectgallery.helperClasses.Create_Empty_Icon;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.models.Album;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -54,12 +56,7 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
     public void sendInput(String input) {
         System.out.println(input);
         new_album = input;
-        HelperClass.createNewAlbumDirectory(input, getActivity());
-        insertAlbum();
-        adapter.notifyItemInserted(HelperClass.albums_count + 1);
-        recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-
-        Log.d(TAG, "album count is" + HelperClass.albums_count + " and album is " + HelperClass.albums_names_array[HelperClass.albums_count + 1]);
+        insertAlbum(input);
     }
 
     //region crap tazzy didn't create
@@ -120,8 +117,6 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
         super.onCreate(savedInstanceState);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide(); //tazzy this hides the original bar
-        //getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
 
         setHasOptionsMenu(true);
 
@@ -129,22 +124,28 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
 
     }
 
-    //TODO fix this mess
-    public void insertAlbum() {
-        mAlbums.add(new Album(new_album, HelperClass.pathToUri("mipmap-xxxhdpi/empty_album_round.png")));
-        Uri uri = fromFile(new File(urls.get(1)));
-        mUri.add(uri);
-        uri = fromFile(new File(urls.get(2)));
-        mUri.add(uri);
-        uri = fromFile(new File(urls.get(3)));
-        mUri.add(uri);
-        HelperClass.addImageToAlbum(mUri, new_album, getActivity());
-        adapter.notifyItemInserted(mAlbums.size() - 1);
+    //TODO fix this mess with photos selection
+    public void insertAlbum(String input) {
+        HelperClass.createNewAlbumDirectory(input, getActivity());
+        if (!HelperClass.album_already_exists) {
+            mAlbums.add(new Album(new_album, HelperClass.empty_icon));
+            Uri uri = fromFile(new File(urls.get(1)));
+            mUri.add(uri);
+            uri = fromFile(new File(urls.get(2)));
+            mUri.add(uri);
+            uri = fromFile(new File(urls.get(3)));
+            mUri.add(uri);
+            HelperClass.addImageToAlbum(mUri, new_album, getActivity());
+            adapter.notifyItemInserted(mAlbums.size() - 1);
+            recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+        }
+        if (HelperClass.album_already_exists) {
+            Toast.makeText(getContext(), new_album + " alreay exists!", Toast.LENGTH_SHORT).show();
+            recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+        }
     }
 
-
-
-    private void LoadDataSet() { //updating arraylist of the adapter
+    private void LoadDataSet() {
         Log.d(TAG, "Album Fragment : LoadDataSet");
 
         HelperClass.loadAlbums(this.getActivity());
@@ -155,7 +156,7 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
         }
 
 
-    } //tazzy this is to have place holders for testing
+    }
 
 
     @Override
@@ -202,7 +203,6 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         BuildRecyclerView();
 
 
@@ -225,6 +225,7 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
 
     public void BuildRecyclerView() {
 
+        Create_Empty_Icon create_empty_icon = new Create_Empty_Icon(getActivity()); //this loads the empty album icon to phone
         recyclerView = view.findViewById(R.id.foryou_recycleView);
         layoutManager = new GridLayoutManager(this.getActivity(), 2, GridLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);

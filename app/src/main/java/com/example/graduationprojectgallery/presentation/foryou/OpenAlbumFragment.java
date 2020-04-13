@@ -1,6 +1,7 @@
 package com.example.graduationprojectgallery.presentation.foryou;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,19 +23,22 @@ import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.models.PhotoModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 public class OpenAlbumFragment extends BaseFragment implements OpenAlbumAdapter.PhotoClickListener {
 
-    GridLayoutManager layoutManager;
+    private GridLayoutManager layoutManager;
     public OpenAlbumAdapter mAdapter;
     private RecyclerView recyclerView;
     private View view;
-    TextView album_name_header;
-    TextView albums_back_button;
-    ImageView back_button;
-    Toolbar toolbar;
+    private TextView album_name_header;
+    private TextView albums_back_button;
+    private ImageView back_button;
+    private Toolbar toolbar;
+    private ArrayList<Uri> album_image_uri = new ArrayList<>();
 
     private OpenAlbumAdapter.PhotoClickListener photoClickListener;
 
@@ -99,8 +103,8 @@ public class OpenAlbumFragment extends BaseFragment implements OpenAlbumAdapter.
         );
         detailesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
-        HelperClass.getAlbumImages(getArguments().getString("album_name"), getActivity());
-        mAdapter = new OpenAlbumAdapter(getActivity(), getArguments().getString("album_name"), HelperClass.album_images_uri);
+        album_image_uri = HelperClass.getAlbumImages(getArguments().getString("album_name"), getActivity());
+        mAdapter = new OpenAlbumAdapter(getActivity(), getArguments().getString("album_name"), album_image_uri);
         mAdapter.setPhotoClickListener(this);
         recyclerView = view.findViewById(R.id.open_album_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -114,7 +118,7 @@ public class OpenAlbumFragment extends BaseFragment implements OpenAlbumAdapter.
     public void OnPhotoClick(int position) {
 
         for (PhotoModel p : photos) {
-            String bug = (HelperClass.album_images_uri.get(position).getPath()).toString();
+            String bug = (album_image_uri.get(position).getPath()).toString();
             if (p.getPath() != null && p.getPath().contains(bug)) {
                 Intent intent = new Intent(getContext(), PhotosViewActivity.class);
                 intent.putExtra("photo", p); //tazzy do NOT change "photo" !!!!!!!!!
@@ -122,11 +126,6 @@ public class OpenAlbumFragment extends BaseFragment implements OpenAlbumAdapter.
                 break;
             }
         }
-//        PhotoModel photoModel = HelperClass.getPhotos(getContext(), HelperClass.album_images_uri, position);
-//        PhotoModel photoModel2 = new PhotoModel(photoModel.getPath(), photoModel.getDate(), photoModel.getTitle(), photoModel.getSize());
-//        Intent intent = new Intent(getContext(), PhotosViewActivity.class);
-//        intent.putExtra("photo", photoModel2);
-//        startActivity(intent);
 
     }
 

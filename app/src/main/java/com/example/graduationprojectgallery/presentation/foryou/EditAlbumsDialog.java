@@ -15,8 +15,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.graduationprojectgallery.R;
-import com.example.graduationprojectgallery.helperClasses.HelperClass;
-import com.example.graduationprojectgallery.presentation.foryou.SeeAllAlbumsFragment.*;
 
 public class EditAlbumsDialog extends DialogFragment {
 
@@ -27,13 +25,13 @@ public class EditAlbumsDialog extends DialogFragment {
     public EditAlbumsDialog.OnInputSelected mOnInputSelected;
 
     private static final String TAG = "DeleteAlbumDialog";
-    Button cancel_button;
-    Button delete_button;
-    TextView album_name;
-    String album_name_string;
-    Context mcontext;
-    Fragment targetFragment;
-    int position;
+    private Button cancel_button;
+    private Button delete_button;
+    private TextView album_name;
+    private String album_name_string;
+    private Context mcontext;
+    private Fragment targetFragment;
+    private int position;
 
     public EditAlbumsDialog(String input, Context context, Fragment fragment, int position) {
 

@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
+
         urls = HelperClass.getImagePaths(this);
 
         photos=HelperClass.getPhotos(this);

@@ -1,7 +1,6 @@
 package com.example.graduationprojectgallery.presentation.foryou;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,18 +12,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.graduationprojectgallery.R;
-import com.example.graduationprojectgallery.base.BaseFragment;
-import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.models.Album;
-import com.example.graduationprojectgallery.presentation.photos.PhotosFragment;
 
 import java.util.ArrayList;
 
@@ -38,12 +33,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     private static final String TAG = "AlbumsRecyclerAdapter";
     //vars
     private ArrayList<Album> mAlbums;
-
     private Context mContext;
 
+
     public AlbumAdapter(Context mContext, ArrayList<Album> mAlbums) {
-//        this.mNames = mNames;
-//        this.mImageUrls = mImageUrls;
         this.mContext = mContext;
         this.mAlbums = mAlbums;
     }
@@ -60,11 +53,15 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) { // tazzy binding items to albums thumbnails
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.itemView.setTag(mAlbums.get(position));
         holder.album_name.setText(mAlbums.get(position).getName());
-        holder.album_thumbnail.setImageURI(mAlbums.get(position).getThumbnail_path());
-
+        Glide
+                .with(mContext)
+                .load(mAlbums.get(position).getThumbnail_path())
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.album_thumbnail);
 
 
         holder.album_thumbnail.setOnClickListener(new View.OnClickListener() {  // tazzy when clicking on an album thumbnail
@@ -110,11 +107,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
         }
 
-    }
-
-    public interface RecyclerViewClickListener {
-
-        void onClick(View view, int position);
     }
 
 

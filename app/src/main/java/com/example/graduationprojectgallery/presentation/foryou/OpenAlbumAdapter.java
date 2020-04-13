@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,21 +18,16 @@ import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.models.PhotoModel;
 
-import java.io.File;
 import java.util.ArrayList;
 
-import static android.net.Uri.fromFile;
-import static com.example.graduationprojectgallery.R.id.container;
 import static com.example.graduationprojectgallery.R.id.open_album_recycler_image;
-import static com.example.graduationprojectgallery.activities.MainActivity.photos;
-import static com.example.graduationprojectgallery.activities.MainActivity.urls;
 
 public class OpenAlbumAdapter extends RecyclerView.Adapter<OpenAlbumAdapter.OpenAlbumViewHolder> {
 
     private ArrayList<Uri> mUri;
     private Context mContext;
-    PhotoClickListener photoClickListener;
-    String album_name;
+    private PhotoClickListener photoClickListener;
+    private String album_name;
 
 
     public OpenAlbumAdapter(Context mContext, String album_name, ArrayList<Uri> mUri) {
@@ -104,7 +98,7 @@ public class OpenAlbumAdapter extends RecyclerView.Adapter<OpenAlbumAdapter.Open
         public ImageView photosFragmentImageView;
 
         public OpenAlbumViewHolder(@NonNull View itemView) {
-            super((RelativeLayout) (itemView));
+            super(itemView);
 
             photosFragmentImageView = itemView.findViewById(open_album_recycler_image);
         }

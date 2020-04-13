@@ -45,9 +45,11 @@ public class HelperClass extends Fragment {
     public static ArrayList<Album> mAlbums = new ArrayList<>();
     public static String[] albums_names_array;
     public static int albums_count = 0;
+    public Context context;
+    public static Uri empty_icon;
     public static ArrayList<Uri> album_thumbnails_uri = new ArrayList<>();
     public static ArrayList<Uri> album_images_uri = new ArrayList<>();
-
+    public static boolean album_already_exists = false; // tazzy this is to make sure we don't add same album twice in adapter
 
     //endregion
     public static List<PhotoModel> getPhotos(Context context) {
@@ -277,7 +279,7 @@ public class HelperClass extends Fragment {
     }
 
     public static void createNewAlbumDirectory(String album_name, Activity activity) {
-
+        album_already_exists = false;
         File appDir = createAppDirectory(activity);
 
         //region creating/opening albums directory
@@ -329,9 +331,11 @@ public class HelperClass extends Fragment {
                     {
                         count++;    //If Present increase the count by one
                         Log.d(TAG, "createNewAlbumDirectory: album already exists " + count);
-                        Toast.makeText(activity, album_name + "Already Exists!", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(activity, album_name + "Already Exists!", Toast.LENGTH_LONG).show();
+                        album_already_exists = true;
                         fr.close();
                         br.close();
+
                         return;
                     }
                 }
@@ -407,7 +411,7 @@ public class HelperClass extends Fragment {
 
         File f1 = new File(appDirectory, "Albums.txt");
         String[] words = null;
-        mAlbums.removeAll(mAlbums);
+        mAlbums.clear();
         try {
             FileReader fr = new FileReader(f1);
             BufferedReader br = new BufferedReader(fr);
@@ -441,9 +445,8 @@ public class HelperClass extends Fragment {
 
             for (int i = 0; i < albums_names_array.length; i++) {
 
-                mAlbums.add(new Album(albums_names_array[i], getAlbumImages(albums_names_array[i], activity)));
+                mAlbums.add(new Album(albums_names_array[i], getAlbumThumbnail(albums_names_array[i], activity)));
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -451,11 +454,9 @@ public class HelperClass extends Fragment {
 
     }
 
+    public static ArrayList<Uri> getAlbumImages(String album_name, Activity activity) {
 
-    public static Uri getAlbumImages(String album_name, Activity activity) {
-
-        Uri uri;
-        album_images_uri.removeAll(album_images_uri);
+        ArrayList<Uri> album_images_uri = new ArrayList<>();
         File appDirectory = createAppDirectory(activity);
 
         //region checking/creating the album text file
@@ -477,8 +478,54 @@ public class HelperClass extends Fragment {
 
         //endregion
 
-        //region empty album icon
-        File f1 = new File(albumsDir, "/Users/tugbacanoglu/Desktop/myGraduationMarch/app/src/main/res/mipmap-xhdpi/empty_album_foreground.png");
+        //region reading the album name txt file for images
+
+        String s;
+        try {
+            FileReader fr = new FileReader(f2);
+            BufferedReader br = new BufferedReader(fr);
+            String[] words = null;
+
+            while ((s = br.readLine()) != null)   //Reading Content from the file
+            {
+                words = s.split("\\$");  //Split the word using space
+
+
+                for (String word : words) {
+                    album_images_uri.add(Uri.parse(word));
+                }
+            }
+
+            fr.close();
+            br.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        //endregion
+
+        return album_images_uri;
+
+    }
+
+    public static Uri getAlbumThumbnail(String album_name, Activity activity) {
+
+        File appDirectory = createAppDirectory(activity);
+        File albumsDir = new File(appDirectory, "Albums");
+        Uri uri = Uri.fromFile(new File(albumsDir, "empty_album.png"));
+        empty_icon = Uri.fromFile(new File(albumsDir, "empty_album.png"));
+        if (album_name == "Recent") {
+
+            uri = fromFile(new File(urls.get(1)));
+            return uri;
+        }
+
+        //region checking/creating the album text file
+        File f2 = new File(albumsDir, album_name + ".txt");
+
         try {
             f2.createNewFile();
 
@@ -494,16 +541,7 @@ public class HelperClass extends Fragment {
 
         //endregion
 
-
-        uri = fromFile(f1);
-
-
-        //region reading the album name txt file for images
-
         String s;
-        int count = 0;
-
-
         try {
             FileReader fr = new FileReader(f2);
             BufferedReader br = new BufferedReader(fr);
@@ -511,40 +549,32 @@ public class HelperClass extends Fragment {
 
             while ((s = br.readLine()) != null)   //Reading Content from the file
             {
-                words = s.split("\\$");  //Split the word using space
+                words = s.split("\\$");  //Split the word using $
 
 
                 for (String word : words) {
 
+                    uri = Uri.parse(word);
+                    fr.close();
+                    br.close();
 
-                    album_images_uri.add(Uri.parse(word));
-                    count++;
-                    //  albums_names_array = Arrays.copyOf(words, words.length);
+                    return uri;
                 }
-                //uri_count = words.length;
-                uri = album_images_uri.get(album_images_uri.size() - 1);
-            }
-            album_thumbnails_uri.add(uri);
-            if (album_name == "Recent") {
 
-                uri = fromFile(new File(urls.get(1)));
             }
 
             fr.close();
             br.close();
-
-            System.out.println(uri);
 
         } catch (Exception e) {
             e.printStackTrace();
 
         }
 
-        //endregion
 
         return uri;
-
     }
+
 
     public static void addImageToAlbum(ArrayList<Uri> album_uris, String album_name, Activity activity) {
 
@@ -636,11 +666,13 @@ public class HelperClass extends Fragment {
 
         //region opening albums txt file checking if album already exists
         File f1 = new File(appDir, "Albums.txt");
+        File tempFile = new File(appDir, "Albums2.txt");
         String[] words = null;
 
         try {
             FileReader fr = new FileReader(f1);  //Creation of File Reader object
             BufferedReader br = new BufferedReader(fr); //Creation of BufferedReader object
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
             String s;
             int count = 0;
             while ((s = br.readLine()) != null)   //Reading Content from the file
@@ -649,15 +681,17 @@ public class HelperClass extends Fragment {
                 for (String word : words) {
                     if (word.equals(album_name))   //Search for the given word
                     {
-                        count++;    //If Present increase the count by one
-                        Log.d(TAG, "createNewAlbumDirectory: album exists " + count);
-                        fr.close();
-                        br.close();
+
+                        continue;
                     }
+                    writer.write(word + "$");
                 }
             }
+            boolean deleted = f1.delete();
+            boolean successful = tempFile.renameTo(f1);
             fr.close();
             br.close();
+            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -666,33 +700,34 @@ public class HelperClass extends Fragment {
 
         //region deleting album name from albums.txt
 
-        File tempFile = new File(appDir, "Albums.txt");
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(f1));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-
-            String lineToRemove = album_name + "$";
-            String currentLine;
-
-            while ((currentLine = reader.readLine()) != null)   //Reading Content from the file
-            {
-                words = currentLine.split("\\$");  //Split the word using space
-                for (String word : words) {
-                    if (word.equals(lineToRemove))   //Search for the given word
-                    {
-                        continue;
-                    }
-                    writer.write(word + "$");
-                }
-                writer.close();
-                reader.close();
-            }
-            boolean successful = tempFile.renameTo(f1);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        File tempFile = new File(appDir, "Albums.txt");
+//
+//        try {
+//            BufferedReader reader = new BufferedReader(new FileReader(f1));
+//            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+//
+//            String lineToRemove = album_name + "$";
+//            String currentLine;
+//
+//            while ((currentLine = reader.readLine()) != null)   //Reading Content from the file
+//            {
+//                words = currentLine.split("\\$");  //Split the word using space
+//                for (String word : words) {
+//                    if (word.equals(lineToRemove))   //Search for the given word
+//                    {
+//                        continue;
+//                    }
+//                    writer.write(word + "$");
+//                }
+//                writer.close();
+//                reader.close();
+//            }
+//            boolean deleted = f1.delete();
+//            boolean successful = tempFile.renameTo(f1);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         //endregion
 
         //region remove album txt file from albums directory
@@ -702,6 +737,5 @@ public class HelperClass extends Fragment {
         //endregion
     }
 
-    //endregion
 
 }

@@ -32,66 +32,43 @@ public class SeeAllAlbumsFragment extends BaseFragment implements EditAlbumsDial
 
     private ArrayList<Album> mAlbums = new ArrayList<>();
 
-    static SeeAllAlbumsAdapter adapter;
-    RecyclerView recyclerView;
-    View view;
-    View view2;
-    public ImageView back_albums_button;
-    public ImageView disabled_back_album_button;
-    public TextView edit_albums_button;
-    public TextView done_albums_button;
-    public ArrayList<ImageView> minus_button;
-    public ImageView minus_albums_button;
+    private static SeeAllAlbumsAdapter adapter;
+    private RecyclerView recyclerView;
+    private View view;
+    private View view2;
+    private ImageView back_albums_button;
+    private ImageView disabled_back_album_button;
+    private TextView edit_albums_button;
+    private TextView done_albums_button;
     static boolean first_click = false;
 
     @Override
     public void sendInput(String input, int position) {
         System.out.println(input);
-        Toast.makeText(getContext(), "Dialog closed safely!!", Toast.LENGTH_LONG).show();
-        HelperClass.deleteAlbum(input, getActivity());
-        deleteAlbum(position);
+        deleteAlbum(position, input);
     }
 
 
     //region crap I tried
-    public interface OnMinusClicked {
+    public interface OnEditClick {
 
-        void showMinusIcon();
+        void StartDeleteMode();
 
-        void hideMinusIcon();
+        void EndDeleteMode();
 
-        void InitiateDeleteAlbumDialog(View v, int position);
+
     }
 
-    public OnMinusClicked minusClicked = new OnMinusClicked() {
+    public OnEditClick minusClicked = new OnEditClick() {
         @Override
-        public void showMinusIcon() {
-//            for(int position = 0; position <adapter.minus_button.size(); position++){
-//            adapter.minus_button.get(position).animate().alpha(1.0f);
-//            adapter.minus_button.get(position).setVisibility(View.VISIBLE);
-//            adapter.notifyDataSetChanged();
+        public void StartDeleteMode() {
             first_click = true;
             Toast.makeText(getContext(), "" + first_click, Toast.LENGTH_SHORT).show();
-//        }
-
         }
-        public void hideMinusIcon() {
-//            for(int position = 0; position <minus_button.size(); position++) {
-//                adapter.minus_button.get(position).animate().alpha(0.1f);
-//                adapter.minus_button.get(position).setVisibility(View.GONE);
+
+        public void EndDeleteMode() {
             SeeAllAlbumsFragment.first_click = false;
-//                adapter.notifyDataSetChanged();
-//            }
-            //Toast.makeText(mContext, "" + first_click, Toast.LENGTH_SHORT).show();
         }
-
-
-        public void InitiateDeleteAlbumDialog(View v, int position) {
-
-
-
-        }
-
 
     };
 
@@ -139,8 +116,7 @@ public class SeeAllAlbumsFragment extends BaseFragment implements EditAlbumsDial
                 disabled_back_album_button.setVisibility(View.VISIBLE);
                 edit_albums_button.setVisibility(View.GONE);
                 done_albums_button.setVisibility(View.VISIBLE);
-                minusClicked.showMinusIcon();
-                //  LoadDataSet();
+                minusClicked.StartDeleteMode();
 
 
             }
@@ -154,8 +130,8 @@ public class SeeAllAlbumsFragment extends BaseFragment implements EditAlbumsDial
                 disabled_back_album_button.setVisibility(View.GONE);
                 edit_albums_button.setVisibility(View.VISIBLE);
                 done_albums_button.setVisibility(View.GONE);
-                minusClicked.hideMinusIcon();
-                //  LoadDataSet();
+                minusClicked.EndDeleteMode();
+                //  LoadDataSet(); //tazyy do NOT do this, does NOT work
             }
         });
 
@@ -190,7 +166,7 @@ public class SeeAllAlbumsFragment extends BaseFragment implements EditAlbumsDial
         }
 
 
-    } //tazzy this is to have place holders for testing
+    }
 
 
     public void BuildRecyclerView() {
@@ -205,16 +181,18 @@ public class SeeAllAlbumsFragment extends BaseFragment implements EditAlbumsDial
 
     }
 
-    //TODO create custom menu for deletion
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.display_albums_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void deleteAlbum(int position) {
-
+    public void deleteAlbum(int position, String input) {
+        HelperClass.deleteAlbum(input, getActivity());
         mAlbums.remove(position);
         adapter.notifyItemRemoved(position);
+        adapter.notifyItemRangeChanged(position, mAlbums.size());
+        recyclerView.smoothScrollToPosition(position);
+
     }
 
 }

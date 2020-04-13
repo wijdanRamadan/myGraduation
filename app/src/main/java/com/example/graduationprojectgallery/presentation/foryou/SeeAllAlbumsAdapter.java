@@ -2,11 +2,9 @@ package com.example.graduationprojectgallery.presentation.foryou;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,57 +18,39 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.models.Album;
 
 import java.util.ArrayList;
 
 
-public class SeeAllAlbumsAdapter extends RecyclerView.Adapter<SeeAllAlbumsAdapter.ViewHolder> implements SeeAllAlbumsFragment.OnMinusClicked {
+public class SeeAllAlbumsAdapter extends RecyclerView.Adapter<SeeAllAlbumsAdapter.ViewHolder> implements SeeAllAlbumsFragment.OnEditClick {
 
 
     private static final String TAG = "SeeAllAlbumsAdapter";
 
     //vars
     private ArrayList<Album> mAlbums = new ArrayList<>();
-    public static SeeAllAlbumsAdapter.RecyclerViewClickListener itemListener;
     private Context mContext;
     public Fragment f;
     public FragmentManager fm;
-    public static ArrayList<ImageView> minus_button;
 
 
-    public void showMinusIcon() {
+    public void StartDeleteMode() {
         SeeAllAlbumsFragment.first_click = true;
-//      for(int position = 0; position <minus_button.size(); position++){
-//        this.minus_button.get(position).animate().alpha(1.0f);
-//        this.minus_button.get(position).setVisibility(View.VISIBLE);
-//        this.notifyDataSetChanged();
-//      }
-        // Toast.makeText(mContext, "" + first_click, Toast.LENGTH_SHORT).show();
     }
 
-    public void hideMinusIcon() {
-//        for(int position = 0; position <minus_button.size(); position++) {
-//            this.minus_button.get(position).animate().alpha(0.1f);
-//            this.minus_button.get(position).setVisibility(View.GONE);
-//
-//            this.notifyDataSetChanged();
-//        }
+    public void EndDeleteMode() {
         SeeAllAlbumsFragment.first_click = false;
-
     }
 
-
-    public void InitiateDeleteAlbumDialog(View v, int position) {
-
-    }
 
     public SeeAllAlbumsAdapter(Context mContext, ArrayList<Album> mAlbums, Fragment f, FragmentManager fm) {
 
         this.mContext = mContext;
         this.mAlbums = mAlbums;
-        this.itemListener = itemListener;
         this.fm = fm;
         this.f = f;
     }
@@ -84,26 +64,20 @@ public class SeeAllAlbumsAdapter extends RecyclerView.Adapter<SeeAllAlbumsAdapte
     }
 
 
-    //TODO get mImageUrl from the actuall albums and fix the onclicklistener
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.itemView.setTag(mAlbums.get(position));
         holder.album_name.setText(mAlbums.get(position).getName());
-        //minus_button.add(holder.return_minus_icon());
-        holder.album_thumbnail.setImageURI(mAlbums.get(position).getThumbnail_path());
-
-        if (SeeAllAlbumsFragment.first_click) {
-            Toast.makeText(mContext, mAlbums.get(position).getName() + "delete mode", Toast.LENGTH_SHORT).show();
-
-        } else {
-            holder.delete_icon.setVisibility(View.GONE);
-        }
+        Glide
+                .with(mContext)
+                .load(mAlbums.get(position).getThumbnail_path())
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.album_thumbnail);
 
         holder.album_thumbnail.setOnClickListener(new View.OnClickListener() {  // tazzy when clicking on an album thumbnail
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on an image : " + mAlbums.get(position).getName());
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 NavController nav = Navigation.findNavController(view);
                 if (!SeeAllAlbumsFragment.first_click) {
@@ -115,7 +89,8 @@ public class SeeAllAlbumsAdapter extends RecyclerView.Adapter<SeeAllAlbumsAdapte
                         nav.navigate(R.id.action_seeAllAlbumsFragment_to_openAlbumFragment, bundle);
                     }
                     Toast.makeText(mContext, mAlbums.get(position).getName() + "", Toast.LENGTH_SHORT).show();
-                } else {
+                } else if (SeeAllAlbumsFragment.first_click
+                        && mAlbums.get(position).getName() != "Recent" && mAlbums.get(position).getName() != "Favorites") {
 
                     final EditAlbumsDialog dialog = new EditAlbumsDialog(mAlbums.get(position).getName(), mContext, f, position);
                     dialog.setTargetFragment(f, 0);
@@ -137,17 +112,14 @@ public class SeeAllAlbumsAdapter extends RecyclerView.Adapter<SeeAllAlbumsAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public ImageView album_thumbnail;
-        public TextView album_name;
-        public ImageView delete_icon;
+        private ImageView album_thumbnail;
+        private TextView album_name;
 
-
-        public ViewHolder(@NonNull View itemView) {
+        private ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             album_name = itemView.findViewById(R.id.see_all_album_name_textView);
             album_thumbnail = itemView.findViewById(R.id.see_all_album_thumbnail_imageView);
-            delete_icon = itemView.findViewById(R.id.minus_albums);
 
             itemView.setOnClickListener(this);
         }
@@ -159,11 +131,5 @@ public class SeeAllAlbumsAdapter extends RecyclerView.Adapter<SeeAllAlbumsAdapte
         }
 
     }
-
-    public interface RecyclerViewClickListener {
-
-        void onClick(int position);
-    }
-
 
 }
