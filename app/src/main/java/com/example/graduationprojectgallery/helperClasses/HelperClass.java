@@ -54,7 +54,7 @@ public class HelperClass extends Fragment {
     //endregion
     public static List<PhotoModel> getPhotos(Context context) {
         // The list of columns we're interested in:
-        String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.DATE_ADDED, MediaStore.Images.ImageColumns.TITLE, MediaStore.Images.Media.SIZE};
+        String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.DATE_ADDED, MediaStore.Images.ImageColumns.TITLE, MediaStore.Images.Media.SIZE, MediaStore.Images.Media.LATITUDE, MediaStore.Images.Media.LONGITUDE};
 
         final Cursor cursor = context.getContentResolver().
                 query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, // Specify the provider
@@ -73,55 +73,18 @@ public class HelperClass extends Fragment {
             final int date = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED);
             final int title = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE);
             final int size = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE);
+            final int latitude = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.LATITUDE);
+            final int longitude = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.LONGITUDE);
+
             do {
 
-                result.add(new PhotoModel(cursor.getString(imagePath), cursor.getString(date), cursor.getString(title), cursor.getString(size)));
+                result.add(new PhotoModel(cursor.getString(imagePath), cursor.getString(date), cursor.getString(title), cursor.getString(size), cursor.getString(latitude), cursor.getString(longitude)));
             } while (cursor.moveToNext());
         }
         cursor.close();
 
         return result;
     }
-
-/*
-//    public static PhotoModel getPhotos(Context context, ArrayList<Uri> mUri, int position) {
-//        // The list of columns we're interested in:
-//
-//        String projection[] = {
-//                MediaStore.Images.Media.DATA
-//                , MediaStore.Images.Media.DATE_ADDED
-//                , MediaStore.Images.Media.TITLE
-//                , MediaStore.Images.Media.SIZE
-//        };
-//
-//        Uri uri = Uri.parse("content://storage/emulated/0/Download/images");
-//        final Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
-////                .query(mUri.get(position) , new String[]{MediaStore.Images.Media.DATA} , null, null, null);
-//        cursor.moveToFirst();
-//        if (cursor == null) {
-//
-//            cursor.close();
-//        }
-//
-//        List<PhotoModel> result = new ArrayList<>(cursor.getCount());
-//
-//        if (cursor.moveToFirst()) {
-//
-//            final int imagePath = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//            final int date = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED);
-//            final int title = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE);
-//            final int size = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE);
-//            do {
-//
-//                result.add(new PhotoModel(cursor.getString(imagePath), cursor.getString(date), cursor.getString(title), cursor.getString(size)));
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//
-//        return result.get(position);
-//    }
-
-*/
 
     public static List<String> getImagePaths(Context context) {
         // The list of columns we're interested in:
@@ -159,7 +122,6 @@ public class HelperClass extends Fragment {
         Toast.makeText(context, "-1", Toast.LENGTH_LONG).show();*/
 
     }
-
 
     public static void show(final String photo, Context context, ImageView container) {
         Glide
