@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "46865590527",
-    "firebase_url": "https://graduation-45fcf.firebaseio.com",
-    "project_id": "graduation-45fcf",
-    "storage_bucket": "graduation-45fcf.appspot.com"
+    "project_number": "38653348608",
+    "firebase_url": "https://smartgallery-a07a0.firebaseio.com",
+    "project_id": "smartgallery-a07a0",
+    "storage_bucket": "smartgallery-a07a0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:46865590527:android:48c8fa5fc3e897f30204ca",
+        "mobilesdk_app_id": "1:38653348608:android:137989484817cbbbe141e5",
         "android_client_info": {
           "package_name": "com.example.graduationprojectgallery"
         }
       },
       "oauth_client": [
         {
-          "client_id": "46865590527-unt08e90ef6pcosn5u53g5s30r8e8pum.apps.googleusercontent.com",
+          "client_id": "38653348608-43jvn265usi3afhpguu4gkc5g66irbq3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBhHXUR3SCzAUeWnN79lNZLu4CymsgyOvU"
+          "current_key": "AIzaSyBqAHhW6dHZScMFdowcp_fh2WkoIay1r30"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "46865590527-unt08e90ef6pcosn5u53g5s30r8e8pum.apps.googleusercontent.com",
+              "client_id": "38653348608-43jvn265usi3afhpguu4gkc5g66irbq3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

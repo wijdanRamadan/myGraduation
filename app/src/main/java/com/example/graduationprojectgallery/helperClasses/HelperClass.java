@@ -2,6 +2,10 @@ package com.example.graduationprojectgallery.helperClasses;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaRouter;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.widget.ImageView;
@@ -9,6 +13,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.graduationprojectgallery.models.PhotoModel;
 
+
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -16,6 +23,11 @@ import java.util.Locale;
 
 
 public class HelperClass {
+
+
+
+
+
 
 
     public static List<PhotoModel> getPhotos(Context context) {
@@ -28,6 +40,7 @@ public class HelperClass {
                         null, // A WHERE-filter query
                         null, // The arguments for the filter-query
                         MediaStore.Images.Media.DATE_ADDED + " DESC" // Order the results, newest first
+
                 );
 
 
@@ -42,32 +55,6 @@ public class HelperClass {
             do {
 
                 result.add(new PhotoModel(cursor.getString(imagePath), cursor.getString(date), cursor.getString(title),cursor.getString(size)));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        return result;
-    }
-
-    public static List<String> getImagePaths(Context context) {
-        // The list of columns we're interested in:
-        String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.DATE_ADDED};
-
-        final Cursor cursor = context.getContentResolver().
-                query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, // Specify the provider
-                        columns, // The columns we're interested in
-                        null, // A WHERE-filter query
-                        null, // The arguments for the filter-query
-                        MediaStore.Images.Media.DATE_ADDED + " DESC" // Order the results, newest first
-                );
-
-
-        List<String> result = new ArrayList<>(cursor.getCount());
-
-        if (cursor.moveToFirst()) {
-            final int image_path_col = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            do {
-                result.add(cursor.getString(image_path_col));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -100,7 +87,18 @@ public class HelperClass {
     public static void show(final PhotoModel photo, Context context, ImageView container) {
         Glide
                 .with(context)
-                .load(photo.getPath())
+                .load(pathToUri(photo.getPath()))
+                .override(300, 300)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(container);
+
+    }
+
+    public static void show(Bitmap bitmap, Context context, ImageView container) {
+        Glide
+                .with(context)
+                .load(bitmap)
                 .override(300, 300)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -126,5 +124,25 @@ public class HelperClass {
                 : b <= 0xfffccccccccccccL ? String.format("%.1f PB", (bytes >> 10) / 0x1p40)
                 : String.format("%.1f EB", (bytes >> 20) / 0x1p40);
     }
+
+    public static Uri pathToUri(String path)
+    {
+        return Uri.fromFile(new File(path));
+    }
+
+    public static Bitmap pathToBitmap(Context context , String path)
+    {
+        Bitmap bitmap = null;
+        InputStream is = null;
+        try {
+            is = context.getContentResolver().openInputStream(pathToUri(path));
+            bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
 
 }

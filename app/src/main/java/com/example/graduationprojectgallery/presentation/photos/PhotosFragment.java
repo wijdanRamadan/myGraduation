@@ -1,14 +1,11 @@
 package com.example.graduationprojectgallery.presentation.photos;
 
-
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +18,7 @@ import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.activities.PhotosViewActivity;
 import com.example.graduationprojectgallery.base.BaseFragment;
 import com.example.graduationprojectgallery.models.PhotoModel;
-import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
+import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -29,7 +26,7 @@ import static androidx.navigation.fragment.NavHostFragment.findNavController;
 import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 
-public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapter.PhotoClickListener {
+public class PhotosFragment extends BaseFragment implements PhotosAdapter.PhotoClickListener {
 
     Toolbar toolbar;
 
@@ -37,9 +34,9 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private PhotosFragmentAdapter mAdapter;
+    private PhotosAdapter mAdapter;
     private BottomNavigationView bottomNavigationView;
-    private PhotosFragmentAdapter.PhotoClickListener photoClickListener;
+    private PhotosAdapter.PhotoClickListener photoClickListener;
     private RecyclerView recyclerView;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -47,7 +44,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
 
     public PhotosFragment() {
     }
-
 
     public static PhotosFragment newInstance(String param1, String param2) {
 
@@ -65,7 +61,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
 
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav);
         toolbar = getActivity().findViewById(R.id.app_toolbar);
-
     }
 
     @Override
@@ -73,6 +68,7 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
+
 
 
         return view;
@@ -117,20 +113,17 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
                 }
             }
         });
-
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
         ArrayAdapter<String> detailesAdapter = new ArrayAdapter<String>(getActivity()
-                ,android.R.layout.simple_list_item_1
+                , android.R.layout.simple_list_item_1
         );
         detailesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
-        mAdapter = new PhotosFragmentAdapter(getActivity());
+        mAdapter = new PhotosAdapter(getActivity());
         mAdapter.setPhotoClickListener(this);
 
         recyclerView = view.findViewById(R.id.photos_recycler_view);
@@ -138,32 +131,13 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 3));
 
         toolbar.setTitle(R.string.photos);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-
-
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
-
- /*   private RecyclerItemDecoration.SectionCallback getSectionCallback(final List<PhotoModel> list) {
-
-        return new RecyclerItemDecoration.SectionCallback() {
-            @Override
-            public boolean isSectionHeader(int position) {
-                return position == 0 || !list.get(position).getDate().equals(list.get(position - 1).date);
-
-            }
-
-            @Override
-            public String getSetionHeader(int position) {
-                return list.get(position).getDate();
-            }
-        };
-    }
-*/
 
     @Override
     public void OnPhotoClick(int position) {
         PhotoModel photoModel = photos.get(position);
-        Intent intent = new Intent(getContext(), PhotosViewActivity.class);
+        Intent intent = new Intent(getContext(), PhotosViewActivity.class );
         intent.putExtra("photo", photoModel);
         startActivity(intent);
 
@@ -172,6 +146,7 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
     @Override
     public void onResume() {
         super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
     }
 }
