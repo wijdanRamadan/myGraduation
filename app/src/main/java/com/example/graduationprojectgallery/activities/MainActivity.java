@@ -1,6 +1,5 @@
 package com.example.graduationprojectgallery.activities;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toolbar;
@@ -22,9 +21,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
-    public static List<String> urls;
     public static List<PhotoModel> photos;
-    Toolbar toolbar;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -33,8 +30,7 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        urls = HelperClass.getImagePaths(this);
-
+        if(HelperClass.getPhotos(this)!=null)
         photos=HelperClass.getPhotos(this);
 
 

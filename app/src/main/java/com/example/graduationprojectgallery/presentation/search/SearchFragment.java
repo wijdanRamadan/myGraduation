@@ -1,9 +1,15 @@
 package com.example.graduationprojectgallery.presentation.search;
 
+
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,7 +18,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
+
+import com.example.graduationprojectgallery.helperClasses.HelperClass;
+
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+
+
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
@@ -20,7 +34,13 @@ import static androidx.navigation.fragment.NavHostFragment.findNavController;
 public class SearchFragment extends BaseFragment {
 
     Toolbar toolbar;
+    ImageView imageView;
+
+
+
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -58,13 +78,16 @@ public class SearchFragment extends BaseFragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        toolbar = getActivity().findViewById(R.id.app_toolbar);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        toolbar = getActivity().findViewById(R.id.app_toolbar);
+        imageView=getActivity().findViewById(R.id.searchFregmentTestImage);
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
@@ -83,8 +106,6 @@ public class SearchFragment extends BaseFragment {
                 }
             }
         });
-        // TODO: fix navigation bug :D
-
 
         albums.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,21 +116,46 @@ public class SearchFragment extends BaseFragment {
                 }
             }
         });
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(findNavController(SearchFragment.this).getCurrentDestination().getId() !=R.id.searchFragment)
+                {
+
+                }
+            }
+        });
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        toolbar.setTitle(R.string.search);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+
+        imageView=getActivity().findViewById(R.id.searchFregmentTestImage);
+
+
+
     }
 
 
-        @Override
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
+        inflater.inflate(R.menu.search_option_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+    }
+
+
+    @Override
     public void onResume() {
         super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
+
+
 }
 
 
