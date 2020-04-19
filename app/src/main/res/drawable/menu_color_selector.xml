@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:tint="#1a9bcb" />
+    <item android:state_checked="true" android:tint="#1a9bcb" />
+    <item android:state_checked="false" android:tint="#000" />
+    <item android:state_focused="false" android:tint="#000" />
+    <item android:state_first="true" android:tint="#1a9bcb" />
+
+</selector>

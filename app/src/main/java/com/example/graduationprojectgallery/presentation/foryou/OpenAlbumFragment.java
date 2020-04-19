@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,7 @@ public class OpenAlbumFragment extends BaseFragment implements OpenAlbumAdapter.
 
     private GridLayoutManager layoutManager;
     public OpenAlbumAdapter mAdapter;
+    private BottomNavigationView deleteBottomBar;
     private RecyclerView recyclerView;
     private View view;
     private TextView album_name_header;
@@ -39,7 +42,13 @@ public class OpenAlbumFragment extends BaseFragment implements OpenAlbumAdapter.
     private ImageView back_button;
     private Toolbar toolbar;
     private ArrayList<Uri> album_image_uri = new ArrayList<>();
-
+    //region selection vars
+    private TextView select_button;
+    private TextView done_button;
+    public static boolean first_click = false;
+    public static ArrayList<PhotoModel> selected_photos = new ArrayList<>();
+    public static ArrayList<ImageView> selected_image_views = new ArrayList<>();
+    //endregion
     private OpenAlbumAdapter.PhotoClickListener photoClickListener;
 
 
@@ -62,7 +71,11 @@ public class OpenAlbumFragment extends BaseFragment implements OpenAlbumAdapter.
 
         view = inflater.inflate(R.layout.fragment_open_album, container, false);
         album_name_header = view.findViewById(R.id.album_name_header_textview);
+        select_button = view.findViewById(R.id.edit_albums_button);
+        done_button = view.findViewById(R.id.done_albums_button);
         album_name_header.setText(getArguments().getString("album_name"));
+        deleteBottomBar = (BottomNavigationView) view.findViewById(R.id.album_delete_nav_bar);
+        deleteBottomBar.setVisibility(View.VISIBLE);
 
         back_button = view.findViewById(R.id.back_to_albums_imageView);
         back_button.setOnClickListener(new View.OnClickListener() {
@@ -76,10 +89,85 @@ public class OpenAlbumFragment extends BaseFragment implements OpenAlbumAdapter.
         albums_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findNavController(OpenAlbumFragment.this).popBackStack();
+                findNavigationController().navigate(R.id.action_openAlbumFragment_to_albumsFragment);
             }
         });
 
+        select_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {   //tazzy create new album dialog
+                first_click = true;
+                select_button.setVisibility(View.GONE);
+                done_button.setVisibility(View.VISIBLE);
+                select_button.setVisibility(View.GONE);
+                deleteBottomBar.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+        done_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                first_click = false;
+                select_button.setVisibility(View.VISIBLE);
+                done_button.setVisibility(View.GONE);
+                select_button.setVisibility(View.VISIBLE);
+                deleteBottomBar.setVisibility(View.GONE);
+                if (!selected_photos.isEmpty()) {
+                    for (ImageView photo : selected_image_views) {
+                        photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                    }
+
+                }
+                // mAdapter.notifyItemRangeChanged();
+
+            }
+        });
+
+
+        deleteBottomBar.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//                        switch (menuItem.getItemId()) {
+//                            case R.id.action_favorites:
+//                                if (!selected_photos.isEmpty()){
+//                                    HelperClass.addImageToAlbum(selected_photos, "Favorites", getActivity() );
+//                                    selected_photos.clear();}
+//                                if (!selected_image_views.isEmpty()){
+//                                    for (ImageView photo : selected_image_views){
+//                                        photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+//                                    }
+//                                    selected_image_views.clear();
+//
+//                                }
+//                                break;
+//                            case R.id.action_add:
+//                                if (!selected_photos.isEmpty()) {
+//                                    findNavigationController().navigate(R.id.action_photosFragment_to_chooseAlbumFragment);
+//                                }
+//                                break;
+//
+//                            case R.id.action_delete:
+//                                if (!selected_photos.isEmpty()){
+//                                    for (PhotoModel photo : selected_photos) {
+//                                        HelperClass.DeletePhoto(photo , getActivity());
+//                                        int position = photos.indexOf(photo);
+//                                        //photos.remove(photo);
+////                                        urls.remove(photo);
+////                                        mAdapter.notifyItemRemoved(position);
+////                                        mAdapter.notifyItemRangeChanged(position, photos.size()-1);
+//                                        mAdapter.notifyDataSetChanged();
+//                                    }
+//                                }
+//                                Toast.makeText(getContext(), "to be deleted", Toast.LENGTH_SHORT);
+//                                break;
+//
+//                        }
+                        return false;
+                    }
+                }
+        );
 
         return view;
     }
@@ -94,6 +182,7 @@ public class OpenAlbumFragment extends BaseFragment implements OpenAlbumAdapter.
         BottomNavigationView navigationView = getActivity().findViewById(R.id.bottom_nav); //hides bottom navigation menu
         navigationView.setVisibility(View.GONE);
         toolbar = getActivity().findViewById(R.id.app_toolbar);
+        deleteBottomBar = getActivity().findViewById(R.id.album_delete_nav_bar);
     }
 
     public void BuildRecyclerView() {

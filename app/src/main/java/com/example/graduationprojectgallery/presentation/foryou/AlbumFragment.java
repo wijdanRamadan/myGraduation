@@ -129,13 +129,6 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
         HelperClass.createNewAlbumDirectory(input, getActivity());
         if (!HelperClass.album_already_exists) {
             mAlbums.add(new Album(new_album, HelperClass.empty_icon));
-            Uri uri = fromFile(new File(urls.get(1)));
-            mUri.add(uri);
-            uri = fromFile(new File(urls.get(2)));
-            mUri.add(uri);
-            uri = fromFile(new File(urls.get(3)));
-            mUri.add(uri);
-            HelperClass.addImageToAlbum(mUri, new_album, getActivity());
             adapter.notifyItemInserted(mAlbums.size() - 1);
             recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
         }
@@ -172,6 +165,17 @@ public class AlbumFragment extends BaseFragment implements NewAlbumDialog.OnInpu
             @Override
             public void onClick(View view) {   //tazzy create new album dialog
                 System.out.println("new album clicked");
+                NewAlbumDialog dialog = new NewAlbumDialog();
+                dialog.setTargetFragment(AlbumFragment.this, 1);
+                dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                dialog.show(getFragmentManager(), "NewAlbumDialog");
+
+            }
+        });
+        new_album_plus_button.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                System.out.println("new album focused");
                 NewAlbumDialog dialog = new NewAlbumDialog();
                 dialog.setTargetFragment(AlbumFragment.this, 1);
                 dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);

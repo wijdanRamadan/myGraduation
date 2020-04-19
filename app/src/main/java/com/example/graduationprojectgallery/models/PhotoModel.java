@@ -16,13 +16,14 @@ public class PhotoModel implements Serializable {
     private String size;
     private String latitude;
     private String longitude;
+    private boolean isSelect;
 
 
     public PhotoModel(String path, String date, String title, String size, String latitude, String longitude) {
         this.path = path;
         this.date = date;
         this.title = title;
-        this.size=size;
+        this.size = size;
         this.latitude = latitude;
         this.longitude = longitude;
 
@@ -54,6 +55,7 @@ public class PhotoModel implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
+
     public String getSize() {
         return size;
     }
@@ -78,4 +80,11 @@ public class PhotoModel implements Serializable {
         this.longitude = longitude;
     }
 
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        this.isSelect = select;
+    }
 }

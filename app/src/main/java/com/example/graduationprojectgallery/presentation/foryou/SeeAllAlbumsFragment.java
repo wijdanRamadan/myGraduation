@@ -49,7 +49,6 @@ public class SeeAllAlbumsFragment extends BaseFragment implements EditAlbumsDial
     }
 
 
-    //region crap I tried
     public interface OnEditClick {
 
         void StartDeleteMode();
@@ -72,14 +71,13 @@ public class SeeAllAlbumsFragment extends BaseFragment implements EditAlbumsDial
 
     };
 
-//endregion
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide(); //tazzy this hides the original bar
 
-        setHasOptionsMenu(false); // if menu added, this needs to be true
+        setHasOptionsMenu(true); // if menu added, this needs to be true
 
 
         BottomNavigationView navigationView = getActivity().findViewById(R.id.bottom_nav); //hides bottom navigation menu

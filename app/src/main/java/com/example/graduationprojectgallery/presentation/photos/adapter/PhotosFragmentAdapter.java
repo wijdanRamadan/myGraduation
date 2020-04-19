@@ -13,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
+import com.example.graduationprojectgallery.helperClasses.Selector;
 import com.example.graduationprojectgallery.models.PhotoModel;
+import com.example.graduationprojectgallery.presentation.foryou.SeeAllAlbumsFragment;
+import com.example.graduationprojectgallery.presentation.photos.PhotosFragment;
 
 import java.util.List;
 
@@ -22,23 +25,35 @@ import static com.example.graduationprojectgallery.activities.MainActivity.photo
 import static com.example.graduationprojectgallery.activities.MainActivity.urls;
 
 
-public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAdapter.PhotosFragmentViewHolder> {
+public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAdapter.PhotosFragmentViewHolder> implements Selector.turnSelectorModeOn {
 
     TextView date;
     PhotoClickListener photoClickListener;
     private Context mContext;
     private List<PhotoModel> photoModelList;
 
+    @Override
+    public void onSelectClick(int position, PhotoModel model) {
+        PhotosFragment.first_click = true;
+    }
+
+    @Override
+    public void onDoneClick() {
+        PhotosFragment.first_click = false;
+    }
+
+
+
+
     public PhotosFragmentAdapter(Context context) {
         mContext = context;
-
     }
 
     public PhotoClickListener getPhotoClickListener() {
         if (photoClickListener == null) {
             photoClickListener = new PhotoClickListener() {
                 @Override
-                public void OnPhotoClick(int position) {
+                public void OnPhotoClick(int position, ImageView photoView) {
                     Toast.makeText(mContext, "null", Toast.LENGTH_LONG).show();
 
                 }
@@ -69,12 +84,14 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
             holder.Bind(photo, position);
         }
 
+
     }
 
     @Override
     public int getItemCount() {
         return urls.size();
     }
+
 
 
 
@@ -94,7 +111,7 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    getPhotoClickListener().OnPhotoClick(position);
+                    getPhotoClickListener().OnPhotoClick(position, photosFragmentImageView);
                 }
             });
         }
@@ -102,10 +119,14 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
         public void Bind(final PhotoModel photoModel, final int position) {
 
             HelperClass.show(photoModel, mContext, photosFragmentImageView);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    getPhotoClickListener().OnPhotoClick(position);
+                    if (photoModel.isSelect()) {//tazzy this is for multiple selection
+                        Toast.makeText(mContext, "dkjfnbkhfb", Toast.LENGTH_SHORT);
+                    }
+                    getPhotoClickListener().OnPhotoClick(position, photosFragmentImageView);
                 }
             });
 
@@ -115,7 +136,7 @@ public class PhotosFragmentAdapter extends RecyclerView.Adapter<PhotosFragmentAd
     }
 
     public interface PhotoClickListener {
-        void OnPhotoClick(int position);
+        void OnPhotoClick(int position, ImageView photoView);
 
     }
 }

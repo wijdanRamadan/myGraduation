@@ -53,7 +53,7 @@ public class OpenAlbumAdapter extends RecyclerView.Adapter<OpenAlbumAdapter.Open
 
         Glide
                 .with(mContext)
-                .load(mUri.get(position))
+                .load(mUri.get(position).toString())
                 .override(300, 300)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

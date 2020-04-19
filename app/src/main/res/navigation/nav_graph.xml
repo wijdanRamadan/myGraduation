@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_photosFragment_to_searchFragment2"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_photosFragment_to_chooseAlbumFragment"
+            app:destination="@id/chooseAlbumFragment" />
     </fragment>
     <fragment
         android:id="@+id/albumsFragment"
@@ -33,6 +36,9 @@
             app:destination="@id/seeAllAlbumsFragment" />
         <action
             android:id="@+id/action_albumsFragment_to_openAlbumFragment"
+            app:destination="@id/openAlbumFragment" />
+        <action
+            android:id="@+id/action_albumsFragment_to_openAlbumFragment2"
             app:destination="@id/openAlbumFragment" />
     </fragment>
     <fragment
@@ -95,6 +101,9 @@
         <action
             android:id="@+id/action_openAlbumFragment_to_seeAllAlbumsFragment"
             app:destination="@id/seeAllAlbumsFragment" />
+        <action
+            android:id="@+id/action_openAlbumFragment_to_albumsFragment2"
+            app:destination="@id/albumsFragment" />
     </fragment>
     <dialog
         android:id="@+id/editAlbumsDialog"
@@ -104,5 +113,16 @@
             android:name="album_name"
             app:argType="string" />
     </dialog>
+    <fragment
+        android:id="@+id/chooseAlbumFragment"
+        android:name="com.example.graduationprojectgallery.presentation.foryou.ChooseAlbumFragment"
+        android:label="ChooseAlbumFragment">
+        <action
+            android:id="@+id/action_chooseAlbumFragment_to_photosFragment"
+            app:destination="@id/photosFragment" />
+        <argument
+            android:name="album_name"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

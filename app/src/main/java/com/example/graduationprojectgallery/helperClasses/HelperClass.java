@@ -2,6 +2,7 @@ package com.example.graduationprojectgallery.helperClasses;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -15,10 +16,12 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.graduationprojectgallery.BuildConfig;
 import com.example.graduationprojectgallery.models.Album;
 import com.example.graduationprojectgallery.models.PhotoModel;
 
@@ -53,6 +56,8 @@ public class HelperClass extends Fragment {
 
     //endregion
     public static List<PhotoModel> getPhotos(Context context) {
+
+
         // The list of columns we're interested in:
         String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.DATE_ADDED, MediaStore.Images.ImageColumns.TITLE, MediaStore.Images.Media.SIZE, MediaStore.Images.Media.LATITUDE, MediaStore.Images.Media.LONGITUDE};
 
@@ -113,13 +118,26 @@ public class HelperClass extends Fragment {
     }
 
     // TODO: 3/3/2020 implement delete photo
-    public static void DeletePhoto(PhotoModel path, Context context) {
-      /*  String[] columns = {MediaStore.Images.Media.DATA};
-        final int cursor = context.getContentResolver().delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, path.getTitle(), columns);
-        if (cursor == -1) {
+    public static void DeletePhoto(PhotoModel model, Context context) {
 
-        }
-        Toast.makeText(context, "-1", Toast.LENGTH_LONG).show();*/
+        String picturePath = model.getPath();
+        Uri uri = pathToUri(model.getPath());
+        String[] projection = {MediaStore.Images.Media.DATA};
+
+        Uri contentUri = FileProvider.getUriForFile(
+                context, BuildConfig.APPLICATION_ID + ".provider", new File(model.getPath()));
+
+//        Cursor imagecursor = context.getContentResolver().query(contentUri, projection, null, null, null);
+//        File sdDir = Environment.getExternalStorageDirectory();
+
+//        File fuck = new File(sdDir, model.getPath());
+//        if (fuck.exists()){
+//
+//            System.out.println("FUCK THIS SHIT");
+//        }
+//
+//        int deleted = context.getContentResolver().delete(contentUri,null,null);
+//
 
     }
 
@@ -164,7 +182,6 @@ public class HelperClass extends Fragment {
 
 
     //region tazzy albums methods
-
 
     public static File createAppDirectory(Activity activity) {
         if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -516,7 +533,7 @@ public class HelperClass extends Fragment {
 
                 for (String word : words) {
 
-                    uri = Uri.parse(word);
+                    uri = Uri.parse(words[words.length - 1]);
                     fr.close();
                     br.close();
 
@@ -538,7 +555,7 @@ public class HelperClass extends Fragment {
     }
 
 
-    public static void addImageToAlbum(ArrayList<Uri> album_uris, String album_name, Activity activity) {
+    public static void addUrisToAlbum(ArrayList<Uri> album_uris, String album_name, Activity activity) {
 
         File appDirectory = createAppDirectory(activity);
 
@@ -580,6 +597,70 @@ public class HelperClass extends Fragment {
         }
 
         album_uris.removeAll(album_uris);
+
+        //endregion
+
+    }
+
+    public static void addImageToAlbum(ArrayList<PhotoModel> photoModels, String album_name, Activity activity) {
+
+        File appDirectory = createAppDirectory(activity);
+
+        //region checking/creating the album text file
+        File albumsDir = new File(appDirectory, "Albums");
+        File f2 = new File(albumsDir, album_name + ".txt");
+        try {
+            f2.createNewFile();
+
+            if (f2.exists()) {
+                Log.d(TAG, album_name + "txt file created ");
+            }
+            if (!f2.exists()) {
+                Log.d(TAG, album_name + "txt file NOT created ");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //endregion
+
+        //region eliminating duplicates
+        ArrayList<Uri> existing_images = new ArrayList<>();
+        existing_images = getAlbumImages(album_name, activity);
+        ArrayList<Uri> new_images = new ArrayList<>();
+
+        for (PhotoModel photo : photoModels) {
+            new_images.add(pathToUri(photo.getPath()));
+        }
+        ArrayList<Uri> union = new ArrayList<Uri>(new_images);
+        union.addAll(existing_images);
+
+        ArrayList<Uri> intersection = new ArrayList<Uri>(new_images);
+        intersection.retainAll(existing_images);
+
+        union.removeAll(intersection);
+
+        //endregion
+
+        //region writing image to file
+
+
+        FileOutputStream fout;
+        try {
+            fout = new FileOutputStream(f2, true);
+            OutputStreamWriter writer = new OutputStreamWriter(fout);
+
+            for (int i = 0; i < photoModels.size(); i++) {
+                writer.write(union.get(i) + "$");
+            }
+
+            writer.flush();
+            writer.close();
+            Toast.makeText(activity, album_name + "Done!", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        photoModels.removeAll(photoModels);
 
         //endregion
 

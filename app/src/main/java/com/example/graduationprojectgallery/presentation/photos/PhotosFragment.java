@@ -4,9 +4,13 @@ package com.example.graduationprojectgallery.presentation.photos;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,50 +22,50 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.activities.PhotosViewActivity;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.models.PhotoModel;
+import com.example.graduationprojectgallery.presentation.foryou.ChooseAlbumAdapter;
+import com.example.graduationprojectgallery.presentation.foryou.SeeAllAlbumsFragment;
 import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 import static com.example.graduationprojectgallery.activities.MainActivity.photos;
+import static com.example.graduationprojectgallery.activities.MainActivity.urls;
 
 
-public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapter.PhotoClickListener {
+public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapter.PhotoClickListener, ChooseAlbumAdapter.OnAlbumSelected {
 
     Toolbar toolbar;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private PhotosFragmentAdapter mAdapter;
     private BottomNavigationView bottomNavigationView;
+    private BottomNavigationView deleteBottomBar;
     private PhotosFragmentAdapter.PhotoClickListener photoClickListener;
     private RecyclerView recyclerView;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TextView select_button;
+    private TextView done_button;
+    public static boolean first_click = false;
+    public static ArrayList<PhotoModel> selected_photos = new ArrayList<>();
+    public static ArrayList<ImageView> selected_image_views = new ArrayList<>();
 
     public PhotosFragment() {
     }
 
-
-    public static PhotosFragment newInstance(String param1, String param2) {
+    public static PhotosFragment newInstance() {
 
         PhotosFragment fragment = new PhotosFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav);
+        deleteBottomBar = getActivity().findViewById(R.id.delete_nav_bar);
         toolbar = getActivity().findViewById(R.id.app_toolbar);
 
     }
@@ -69,9 +73,92 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
+        deleteBottomBar = (BottomNavigationView) view.findViewById(R.id.delete_nav_bar);
+        select_button = view.findViewById(R.id.select_photos_button);
+        bottomNavigationView = getActivity().findViewById(R.id.bottom_nav); //hides bottom navigation menu
+        deleteBottomBar.setItemIconSize(30);
+        select_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {   //tazzy create new album dialog
+                first_click = true;
+                select_button.setVisibility(View.GONE);
+                done_button.setVisibility(View.VISIBLE);
+                bottomNavigationView.setVisibility(View.GONE);
+                select_button.setVisibility(View.GONE);
+                deleteBottomBar.setVisibility(View.VISIBLE);
+            }
 
+        });
+
+        done_button = view.findViewById(R.id.done_photos_button);
+        done_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                first_click = false;
+                select_button.setVisibility(View.VISIBLE);
+                done_button.setVisibility(View.GONE);
+                select_button.setVisibility(View.VISIBLE);
+                bottomNavigationView.setVisibility(View.VISIBLE);
+                deleteBottomBar.setVisibility(View.GONE);
+                if (!selected_photos.isEmpty()) {
+                    for (ImageView photo : selected_image_views) {
+                        photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                    }
+                    for (PhotoModel photo : selected_photos) {
+                        photo.setSelect(false);
+                    }
+
+                }
+
+                // mAdapter.notifyItemRangeChanged();
+
+            }
+        });
+
+        deleteBottomBar.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.action_favorites:
+                                if (!selected_photos.isEmpty()) {
+                                    HelperClass.addImageToAlbum(selected_photos, "Favorites", getActivity());
+                                    selected_photos.clear();
+                                }
+                                if (!selected_image_views.isEmpty()) {
+                                    for (ImageView photo : selected_image_views) {
+                                        photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                                    }
+                                    selected_image_views.clear();
+
+                                }
+                                break;
+                            case R.id.action_add:
+                                if (!selected_photos.isEmpty()) {
+                                    findNavigationController().navigate(R.id.action_photosFragment_to_chooseAlbumFragment);
+                                }
+                                break;
+
+                            case R.id.action_delete:
+                                if (!selected_photos.isEmpty()) {
+                                    for (PhotoModel photo : selected_photos) {
+                                        HelperClass.DeletePhoto(photo, getActivity());
+                                        int position = photos.indexOf(photo);
+                                        //photos.remove(photo);
+//                                        urls.remove(photo);
+//                                        mAdapter.notifyItemRemoved(position);
+//                                        mAdapter.notifyItemRangeChanged(position, photos.size()-1);
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                                Toast.makeText(getContext(), "to be deleted", Toast.LENGTH_SHORT);
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
 
         return view;
     }
@@ -134,36 +221,36 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 3));
 
-        toolbar.setTitle(R.string.photos);
+        // Set
+//        textCustomTitle.setTypeface(customFont);
+        toolbar.setTitle(R.string.Photos);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
+        toolbar.setVisibility(View.GONE);
 
     }
 
- /*   private RecyclerItemDecoration.SectionCallback getSectionCallback(final List<PhotoModel> list) {
-
-        return new RecyclerItemDecoration.SectionCallback() {
-            @Override
-            public boolean isSectionHeader(int position) {
-                return position == 0 || !list.get(position).getDate().equals(list.get(position - 1).date);
-
-            }
-
-            @Override
-            public String getSetionHeader(int position) {
-                return list.get(position).getDate();
-            }
-        };
-    }
-*/
-
-    @Override
-    public void OnPhotoClick(int position) {
+    public void OnPhotoClick(int position, ImageView photosFragmentImageView) {
         PhotoModel photoModel = photos.get(position);
-        Intent intent = new Intent(getContext(), PhotosViewActivity.class);
-        intent.putExtra("photo", photoModel);
-        startActivity(intent);
-
+        if (first_click) {
+            if (photoModel.isSelect()) {
+                photosFragmentImageView.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                photoModel.setSelect(false);
+                selected_photos.remove(photoModel);
+                return;
+            }
+            if (!photoModel.isSelect()) {
+                photoModel.setSelect(true);
+                photosFragmentImageView.setBackgroundColor(getContext().getResources().getColor(R.color.black));
+                Toast.makeText(this.getContext(), "Selector mode on ", Toast.LENGTH_SHORT).show();
+                selected_photos.add(photoModel);
+                selected_image_views.add(photosFragmentImageView);
+                return;
+            }
+        } else {
+            Intent intent = new Intent(getContext(), PhotosViewActivity.class);
+            intent.putExtra("photo", photoModel);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -171,6 +258,21 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         super.onResume();
         BottomNavigationView navigationView = getActivity().findViewById(R.id.bottom_nav);
         navigationView.setVisibility(View.VISIBLE);
-        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void sendInput(String input) {
+        first_click = false;
+        String album_name = input;
+        HelperClass.addImageToAlbum(selected_photos, album_name, getActivity());
+        selected_photos.clear();
+        if (!selected_image_views.isEmpty()) {
+            for (ImageView photo : selected_image_views) {
+                photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+            }
+            selected_image_views.clear();
+        }
+        Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT);
     }
 }

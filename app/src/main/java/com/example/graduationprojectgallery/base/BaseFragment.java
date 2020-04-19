@@ -58,6 +58,7 @@ public class BaseFragment extends Fragment {
 
                     findNavigationController().navigate(R.id.action_mainActivityFragment_to_albumsFragment);
                 }
+
             }
         });
 

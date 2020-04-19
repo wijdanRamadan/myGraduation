@@ -67,4 +67,7 @@ dependencies {
 
     //Cicrle Image
     implementation 'de.hdodenhof:circleimageview:3.0.2'
+
+    //desgin bottomBar
+    implementation 'com.roughike:bottom-bar:2.3.1'
 }
