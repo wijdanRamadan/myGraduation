@@ -18,7 +18,7 @@ import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.activities.PhotosViewActivity;
 import com.example.graduationprojectgallery.base.BaseFragment;
 import com.example.graduationprojectgallery.models.PhotoModel;
-import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosAdapter;
+import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentPhotosAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -26,7 +26,7 @@ import static androidx.navigation.fragment.NavHostFragment.findNavController;
 import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 
-public class PhotosFragment extends BaseFragment implements PhotosAdapter.PhotoClickListener {
+public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotosAdapter.PhotoClickListener {
 
     Toolbar toolbar;
 
@@ -34,9 +34,9 @@ public class PhotosFragment extends BaseFragment implements PhotosAdapter.PhotoC
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private PhotosAdapter mAdapter;
+    private PhotosFragmentPhotosAdapter mAdapter;
     private BottomNavigationView bottomNavigationView;
-    private PhotosAdapter.PhotoClickListener photoClickListener;
+    private PhotosFragmentPhotosAdapter.PhotoClickListener photoClickListener;
     private RecyclerView recyclerView;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -123,7 +123,7 @@ public class PhotosFragment extends BaseFragment implements PhotosAdapter.PhotoC
         );
         detailesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
-        mAdapter = new PhotosAdapter(getActivity());
+        mAdapter = new PhotosFragmentPhotosAdapter(getActivity());
         mAdapter.setPhotoClickListener(this);
 
         recyclerView = view.findViewById(R.id.photos_recycler_view);

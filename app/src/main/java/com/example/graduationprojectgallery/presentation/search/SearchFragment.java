@@ -1,42 +1,50 @@
 package com.example.graduationprojectgallery.presentation.search;
 
-
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.base.BaseFragment;
 
-import com.example.graduationprojectgallery.helperClasses.HelperClass;
 
+import com.example.graduationprojectgallery.helperClasses.FirebaseFunctions;
+import com.example.graduationprojectgallery.models.PhotoModel;
+import com.example.graduationprojectgallery.presentation.search.adapter.SearchFragmentPhotosAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
+import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 
 public class SearchFragment extends BaseFragment {
 
     Toolbar toolbar;
-    ImageView imageView;
+    SearchView simpleSearchView;
+    List<PhotoModel> photoModelList  = new ArrayList<>();
 
 
+
+
+    private SearchFragmentPhotosAdapter mAdapter;
+    private SearchFragmentPhotosAdapter.PhotoClickListener photoClickListener;
+    private RecyclerView recyclerView;
 
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,6 +86,11 @@ public class SearchFragment extends BaseFragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        for (int i=0 ; i<3 ; i++)
+        {
+            photoModelList.add(photos.get(i));
+        }
+
     }
 
     @Override
@@ -85,7 +98,6 @@ public class SearchFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         toolbar = getActivity().findViewById(R.id.app_toolbar);
-        imageView=getActivity().findViewById(R.id.searchFregmentTestImage);
 
 
         // Inflate the layout for this fragment
@@ -132,10 +144,38 @@ public class SearchFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        simpleSearchView = (SearchView)getActivity().findViewById(R.id.searchbar);
 
-        imageView=getActivity().findViewById(R.id.searchFregmentTestImage);
+        simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(final String query) {
+
+              simpleSearchView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mAdapter = new SearchFragmentPhotosAdapter(getActivity() , photoModelList);
+                        recyclerView = getActivity().findViewById(R.id.search_fragment_photos_recycler_view);
+                        recyclerView.setAdapter(mAdapter);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 3));
 
 
+                    }
+                });
+
+
+
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+
+                return false;
+            }
+        });
 
     }
 
@@ -154,6 +194,9 @@ public class SearchFragment extends BaseFragment {
         super.onResume();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
+
+
+
 
 
 }

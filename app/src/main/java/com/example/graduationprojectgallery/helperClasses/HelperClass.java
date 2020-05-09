@@ -20,13 +20,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Observable;
 
 
 public class HelperClass {
-
-
-
-
 
 
 
@@ -99,8 +96,6 @@ public class HelperClass {
         Glide
                 .with(context)
                 .load(bitmap)
-                .override(300, 300)
-                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(container);
 

@@ -28,6 +28,8 @@ public class PhotoModel implements Serializable {
 
     }
 
+    public PhotoModel( ) { }
+
 
     public String getPath() {
         return path;
