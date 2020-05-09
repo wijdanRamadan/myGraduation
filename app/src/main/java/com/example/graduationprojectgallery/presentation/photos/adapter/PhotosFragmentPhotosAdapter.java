@@ -15,12 +15,12 @@ import com.example.graduationprojectgallery.models.PhotoModel;
 import static com.example.graduationprojectgallery.R.id.photos_fragment_recycler_image;
 import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
-public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosFragmentViewHolder> {
+public class PhotosFragmentPhotosAdapter extends RecyclerView.Adapter< PhotosFragmentPhotosAdapter.PhotosFragmentViewHolder> {
 
     PhotoClickListener photoClickListener;
     private Context mContext;
 
-    public PhotosAdapter(Context context) {
+    public  PhotosFragmentPhotosAdapter(Context context) {
         mContext = context;
 
     }
@@ -45,14 +45,14 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosFrag
 
     @NonNull
     @Override
-    public PhotosAdapter.PhotosFragmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public  PhotosFragmentPhotosAdapter.PhotosFragmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.photos_fragment_recycler_item, parent, false);
         return new PhotosFragmentViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PhotosAdapter.PhotosFragmentViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull  PhotosFragmentPhotosAdapter.PhotosFragmentViewHolder holder, int position) {
 
         if (photos != null) {
 
