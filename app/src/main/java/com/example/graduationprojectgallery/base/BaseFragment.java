@@ -18,19 +18,15 @@ public class BaseFragment extends Fragment {
         return findNavController(this);
     }
 
-
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setNav();
-
     }
-
 
     public void setNav() {
         BottomNavigationItemView photos = getActivity().findViewById(R.id.photos);
         BottomNavigationItemView search = getActivity().findViewById(R.id.search);
         BottomNavigationItemView albums = getActivity().findViewById(R.id.albums);
-
 
         photos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +58,5 @@ public class BaseFragment extends Fragment {
         });
 
     }
-
 
 }

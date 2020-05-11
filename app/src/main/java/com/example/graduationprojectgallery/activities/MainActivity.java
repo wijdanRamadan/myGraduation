@@ -1,8 +1,8 @@
 package com.example.graduationprojectgallery.activities;
 
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.Toolbar;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +22,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
 {
     public static List<PhotoModel> photos;
-
+    public static List<Uri> photosUris;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +30,13 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        if(HelperClass.getPhotos(this)!=null)
-        photos=HelperClass.getPhotos(this);
-
-
+        if(HelperClass.getPhotos(this)!=null) {
+            photos = HelperClass.getPhotos(this);
+            photosUris = HelperClass.getPhotosUris(this);
+        }
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         NavigationUI.setupWithNavController(bottomNav, navController);
-
-
     }
-
-
-
 }
 
