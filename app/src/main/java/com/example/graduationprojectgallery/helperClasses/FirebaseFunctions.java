@@ -2,15 +2,16 @@ package com.example.graduationprojectgallery.helperClasses;
 
 
 import android.content.Context;
-import android.database.Observable;
 import android.net.Uri;
 
-
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableList;
 
 import com.example.graduationprojectgallery.models.PhotoModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
@@ -20,69 +21,46 @@ import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Flowable;
+import io.reactivex.Notification;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
-public class FirebaseFunctions  {
+
+public class FirebaseFunctions {
     static String x = null;
 
+    public static Observable<String> getImagesBasedOnLabels(final Context context, final List<Uri> photoModels, final String searchedItem) {
+       final FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
 
-    public static List<PhotoModel> getImagesBasedOnLabels(Context context,List<PhotoModel> photoModels, final String searchedItem) {
+       return Observable.fromIterable(photoModels).flatMap(new Function<Uri, ObservableSource<Task<List<FirebaseVisionImageLabel>>>>() {
+           @Override
+           public ObservableSource<Task<List<FirebaseVisionImageLabel>>> apply(Uri uri) throws Exception {
+               FirebaseVisionImage image = FirebaseVisionImage.fromFilePath(context, uri);
+              return Observable.just(labeler.processImage(image));
+           }
+       }).map(new Function<Task<List<FirebaseVisionImageLabel>>, String>() {
+           @Override
+           public String apply(Task<List<FirebaseVisionImageLabel>> listTask) {
+              Iterator<> iterator = listTask.getResult().iterator();
+              while (iterator.hasNext()) {
+                  iterator.next();
+              }
+           }
+       });
 
-        final List<PhotoModel> result = new ArrayList<>();
-
-
-        FirebaseVisionObjectDetectorOptions options =
-                new FirebaseVisionObjectDetectorOptions.Builder()
-                        .setDetectorMode(FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE)
-                        .enableMultipleObjects()
-                        .enableClassification()
-                        .build();
-
-        FirebaseVisionObjectDetector objectDetector =
-                FirebaseVision.getInstance().getOnDeviceObjectDetector(options);
-        FirebaseVisionImage image;
-        FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance()
-                .getOnDeviceImageLabeler();
-        try {
-
-            for (final PhotoModel photo : photoModels) {
-                image = FirebaseVisionImage.fromFilePath(context, Uri.fromFile(new File(photo.getPath())));
-
-                labeler.processImage(image)
-                        .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
-                            @Override
-                            public void onSuccess(List<FirebaseVisionImageLabel> labels) {
-                                for (FirebaseVisionImageLabel label : labels) {
-                                    if (searchedItem.equals( label.getText())) {
-                                        result.add(photo);
-                                    }
-                                }
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Task failed with an exception
-                                // ...
-                            }
-                        });
-
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
     }
 
 
-
-    public  static String testFunction(PhotoModel photoModel, Context context)
-    {
+    public static String testFunction(PhotoModel photoModel, Context context) {
 
         FirebaseVisionObjectDetectorOptions options =
                 new FirebaseVisionObjectDetectorOptions.Builder()
@@ -104,7 +82,7 @@ public class FirebaseFunctions  {
                     .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
                         @Override
                         public void onSuccess(List<FirebaseVisionImageLabel> firebaseVisionImageLabels) {
-                            x =firebaseVisionImageLabels.get(0).getText();
+                            x = firebaseVisionImageLabels.get(0).getText();
                         }
                     });
         } catch (IOException e) {
@@ -114,20 +92,8 @@ public class FirebaseFunctions  {
         }
 
 
-
-
-
-
         return x;
     }
-
-
-    public static void test()
-    {
-       Observable<PhotoModel> observable;
-
-    }
-
 
 
 }

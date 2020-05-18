@@ -29,15 +29,16 @@ import static com.example.graduationprojectgallery.activities.MainActivity.photo
 public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotosAdapter.PhotoClickListener {
 
     Toolbar toolbar;
+    private PhotosFragmentPhotosAdapter mAdapter;
+    private BottomNavigationView bottomNavigationView;
+    private PhotosFragmentPhotosAdapter.PhotoClickListener photoClickListener;
+    private RecyclerView recyclerView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private PhotosFragmentPhotosAdapter mAdapter;
-    private BottomNavigationView bottomNavigationView;
-    private PhotosFragmentPhotosAdapter.PhotoClickListener photoClickListener;
-    private RecyclerView recyclerView;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -148,5 +149,10 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotos
         super.onResume();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

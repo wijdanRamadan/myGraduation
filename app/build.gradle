@@ -18,6 +18,9 @@ android {
         multiDexEnabled true
 
     }
+    dataBinding {
+        enabled = true
+    }
 
     buildTypes {
         release {
@@ -71,7 +74,6 @@ dependencies {
 
 
     // search bar
-    implementation 'com.github.mancj:MaterialSearchBar:0.3.1'
 
     //rxJava
     implementation "io.reactivex.rxjava2:rxjava:2.2.9"

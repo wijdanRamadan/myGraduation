@@ -11,16 +11,20 @@ import android.text.format.DateFormat;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.graduationprojectgallery.activities.MainActivity;
 import com.example.graduationprojectgallery.models.PhotoModel;
 
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
+
+import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 
 public class HelperClass {
@@ -140,4 +144,12 @@ public class HelperClass {
     }
 
 
+    public static List<Uri> getPhotosUris(MainActivity mainActivity) {
+        List<Uri> result = new ArrayList<>();
+        for (PhotoModel photo: photos) {
+            result.add(pathToUri(photo.getPath()));
+        }
+
+        return result;
+    }
 }
