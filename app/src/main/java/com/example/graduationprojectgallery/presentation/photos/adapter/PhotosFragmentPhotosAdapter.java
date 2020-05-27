@@ -30,7 +30,6 @@ public class PhotosFragmentPhotosAdapter extends RecyclerView.Adapter< PhotosFra
             photoClickListener = new PhotoClickListener() {
                 @Override
                 public void OnPhotoClick(int position) {
-                    Toast.makeText(mContext, "null", Toast.LENGTH_LONG).show();
 
                 }
 

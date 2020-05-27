@@ -1,11 +1,14 @@
 package com.example.graduationprojectgallery.presentation.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,19 +19,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduationprojectgallery.R;
+import com.example.graduationprojectgallery.activities.PhotosViewActivity;
 import com.example.graduationprojectgallery.base.BaseFragment;
+import com.example.graduationprojectgallery.models.PhotoModel;
 import com.example.graduationprojectgallery.presentation.search.adapter.SearchFragmentPhotosAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 
 import java.util.List;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
+import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 
-public class SearchFragment extends BaseFragment {
+public class SearchFragment extends BaseFragment  implements SearchFragmentPhotosAdapter.PhotoClickListener{
     private SearchFragmentPhotosAdapter mAdapter;
     private SearchFragmentPhotosAdapter.PhotoClickListener photoClickListener;
     private RecyclerView recyclerView;
+    EditText searchText;
+    Button searchButton;
+    SearchViewModel viewModel;
 
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,10 +63,13 @@ public class SearchFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new SearchFragmentPhotosAdapter();
+        mAdapter = new SearchFragmentPhotosAdapter(getActivity());
+        searchText=view.findViewById(R.id.searchbar);
+        searchButton=view.findViewById(R.id.search_button);
+
         recyclerView = view.findViewById(R.id.search_fragment_photos_recycler_view);
-        recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -75,15 +87,19 @@ public class SearchFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        SearchViewModel viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        viewModel.imagePaths.observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+         viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+
+    searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(List<String> strings) {
-                mAdapter.setPhotoModelList(strings);
+            public void onClick(View v) {
+                viewModel.imagePaths.observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+                    @Override
+                    public void onChanged(List<String> strings) { mAdapter.setPhotoModelList(strings);}});
+                viewModel.getImagesByLabels(searchText.getText().toString());
             }
         });
 
-        viewModel.getImagesByLables("Chair");
+
     }
 
     public void setNav() {
@@ -120,4 +136,11 @@ public class SearchFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void OnPhotoClick(int position) {
+        PhotoModel photoModel = photos.get(position);
+        Intent intent = new Intent(getContext(), PhotosViewActivity.class );
+        intent.putExtra("photo", photoModel);
+        startActivity(intent);
+    }
 }
