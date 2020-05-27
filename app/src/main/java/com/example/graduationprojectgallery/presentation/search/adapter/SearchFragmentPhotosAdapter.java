@@ -36,12 +36,30 @@ public class SearchFragmentPhotosAdapter  extends RecyclerView.Adapter<SearchFra
 
     }
 
-    public SearchFragmentPhotosAdapter() {
+    public SearchFragmentPhotosAdapter(Context context) {
+        this.mContext = context;
+    }
 
+    public PhotosFragmentPhotosAdapter.PhotoClickListener getPhotoClickListener() {
+        if (photoClickListener == null) {
+            photoClickListener = new PhotosFragmentPhotosAdapter.PhotoClickListener() {
+                @Override
+                public void OnPhotoClick(int position) {
+
+                }
+
+            };
+        }
+        return photoClickListener;
+    }
+
+    public void setPhotoClickListener(PhotosFragmentPhotosAdapter.PhotoClickListener photoClickListener) {
+        this.photoClickListener = photoClickListener;
     }
 
     public void setPhotoModelList (List <String> photoModelList) {
         this.photoModelList = photoModelList;
+        notifyDataSetChanged();
     }
 
     @NonNull

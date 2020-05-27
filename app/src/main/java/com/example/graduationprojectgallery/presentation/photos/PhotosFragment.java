@@ -69,9 +69,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotos
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
-
-
-
         return view;
     }
 
@@ -79,8 +76,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotos
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
     }
 
     public void setNav() {
@@ -95,7 +90,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotos
                 }
             }
         });
-
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +123,7 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotos
 
         recyclerView = view.findViewById(R.id.photos_recycler_view);
         recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 2));
 
         toolbar.setTitle(R.string.photos);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);

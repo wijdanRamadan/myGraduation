@@ -21,6 +21,7 @@ import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -38,26 +39,79 @@ import static com.example.graduationprojectgallery.activities.MainActivity.photo
 public class FirebaseFunctions {
     static String x = null;
 
-    public static Observable<String> getImagesBasedOnLabels(final Context context, final List<Uri> photoModels, final String searchedItem) {
-       final FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
+//    public static Observable<String> getImagesBasedOnLabels(final Context context, final List<Uri> photoModels, final String searchedItem) {
+//       final FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
+//
+//       return Observable.fromIterable(photoModels).flatMap(new Function<Uri, ObservableSource<Task<List<FirebaseVisionImageLabel>>>>() {
+//           @Override
+//           public ObservableSource<Task<List<FirebaseVisionImageLabel>>> apply(Uri uri) throws Exception {
+//               FirebaseVisionImage image = FirebaseVisionImage.fromFilePath(context, uri);
+//              return Observable.just(labeler.processImage(image));
+//           }
+//       }).map(new Function<Task<List<FirebaseVisionImageLabel>>, String>() {
+//           @Override
+//           public String apply(Task<List<FirebaseVisionImageLabel>> listTask) {
+//              Iterator<> iterator = listTask.getResult().iterator();
+//              while (iterator.hasNext()) {
+//                  iterator.next();
+//
+//              }
+//           }
+//       });
+//
+//    }
 
-       return Observable.fromIterable(photoModels).flatMap(new Function<Uri, ObservableSource<Task<List<FirebaseVisionImageLabel>>>>() {
-           @Override
-           public ObservableSource<Task<List<FirebaseVisionImageLabel>>> apply(Uri uri) throws Exception {
-               FirebaseVisionImage image = FirebaseVisionImage.fromFilePath(context, uri);
-              return Observable.just(labeler.processImage(image));
-           }
-       }).map(new Function<Task<List<FirebaseVisionImageLabel>>, String>() {
-           @Override
-           public String apply(Task<List<FirebaseVisionImageLabel>> listTask) {
-              Iterator<> iterator = listTask.getResult().iterator();
-              while (iterator.hasNext()) {
-                  iterator.next();
-              }
-           }
-       });
 
-    }
+
+//    public static List<PhotoModel> getImagesBasedOnLabels(Context context, final List<Uri> photoModels, final String searchedItem) {
+//
+//        final List<PhotoModel> result = new ArrayList<>();
+//
+//
+//        FirebaseVisionObjectDetectorOptions options =
+//                new FirebaseVisionObjectDetectorOptions.Builder()
+//                        .setDetectorMode(FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE)
+//                        .enableMultipleObjects()
+//                        .enableClassification()
+//                        .build();
+//
+//        FirebaseVisionObjectDetector objectDetector =
+//                FirebaseVision.getInstance().getOnDeviceObjectDetector(options);
+//        FirebaseVisionImage image;
+//        FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance()
+//                .getOnDeviceImageLabeler();
+//        try {
+//
+//            for (final Uri photo : photoModels) {
+//                image = FirebaseVisionImage.fromFilePath(context, photo);
+//
+//                labeler.processImage(image)
+//                        .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
+//                            @Override
+//                            public void onSuccess(List<FirebaseVisionImageLabel> labels) {
+//                                for (FirebaseVisionImageLabel label : labels) {
+//                                    if (searchedItem.equals( label.getText())) {
+//                                        result.add(photos.get(photoModels.indexOf(photo)).getPath());
+//                                    }
+//                                }
+//                            }
+//                        })
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                // Task failed with an exception
+//                                // ...
+//                            }
+//                        });
+//
+//
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
 
     public static String testFunction(PhotoModel photoModel, Context context) {

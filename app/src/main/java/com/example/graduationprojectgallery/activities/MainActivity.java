@@ -19,8 +19,7 @@ import java.util.List;
 
 
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     public static List<PhotoModel> photos;
     public static List<Uri> photosUris;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -39,4 +38,3 @@ public class MainActivity extends AppCompatActivity
         NavigationUI.setupWithNavController(bottomNav, navController);
     }
 }
-

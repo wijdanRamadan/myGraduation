@@ -76,7 +76,6 @@ try {
 catch (Exception e)
 {}
 
-        Toast.makeText(this , "hello" ,Toast.LENGTH_LONG).show();
 
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
