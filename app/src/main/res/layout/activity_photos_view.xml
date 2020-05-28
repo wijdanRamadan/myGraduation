@@ -35,9 +35,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#DCDCDC"
+        android:background="#D3D3D3"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_appbar_menu" />
+        app:menu="@menu/bottom_appbar_menu"
+        app:itemIconTint="@android:color/black"
+        app:itemTextColor="@android:color/black" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
