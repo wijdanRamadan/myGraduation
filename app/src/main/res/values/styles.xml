@@ -1,11 +1,42 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme2" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="NoShadowBarTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- remove shadow below action bar -->
+        <!-- <item name="android:elevation">0dp</item> -->
+        <!-- Support library compatibility -->
+
+        <item name="elevation">0dp</item>
+
+    </style>
+
+    <style name="NoShadowNormalTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#ffff</item>
+        <item name="colorPrimaryDark">#ffff</item>
+        <item name="colorAccent">#ffff</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    </style>
+
+    <style name="AppTheme3" parent="Theme.AppCompat.NoActionBar">
+
+        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+    </style>
+
+
+    <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/plus</item>
+    </style>
 </resources>

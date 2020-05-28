@@ -8,4 +8,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="image_content_description">description</string>
     <string name="drawee_recycler_title">xx</string>
+    <string name="my_albums">My Albums</string>
+    <string name="see_all">See All</string>
+    <string name="share">share</string>
+    <string name="favorite">favorite</string>
+    <string name="delete">delete</string>
+    <string name="details">Image Details</string>
+    <string name="size">size</string>
+    <string name="date">date</string>
+    <string name="albums_add_sign">albums add sign</string>
+    <string name="videos">videos</string>
+    <string name="peopleNplaces"><![CDATA[People & Places]]></string>
+    <string name="hidden">Hidden</string>
 </resources>
