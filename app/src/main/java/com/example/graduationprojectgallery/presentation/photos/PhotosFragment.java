@@ -25,7 +25,6 @@ import com.example.graduationprojectgallery.base.BaseFragment;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.models.PhotoModel;
 import com.example.graduationprojectgallery.presentation.foryou.ChooseAlbumAdapter;
-import com.example.graduationprojectgallery.presentation.foryou.SeeAllAlbumsFragment;
 import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,7 +33,6 @@ import java.util.ArrayList;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 import static com.example.graduationprojectgallery.activities.MainActivity.photos;
-import static com.example.graduationprojectgallery.activities.MainActivity.urls;
 
 
 public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapter.PhotoClickListener, ChooseAlbumAdapter.OnAlbumSelected {
@@ -67,6 +65,7 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav);
         deleteBottomBar = getActivity().findViewById(R.id.delete_nav_bar);
         toolbar = getActivity().findViewById(R.id.app_toolbar);
+        if(first_click )bottomNavigationView.setVisibility(View.GONE);
 
     }
 
@@ -124,6 +123,9 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
                             case R.id.action_favorites:
                                 if (!selected_photos.isEmpty()) {
                                     HelperClass.addImageToAlbum(selected_photos, "Favorites", getActivity());
+                                    for(PhotoModel photo : selected_photos){
+                                        photo.setSelect(false);
+                                    }
                                     selected_photos.clear();
                                 }
                                 if (!selected_image_views.isEmpty()) {
@@ -168,6 +170,9 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if(first_click )bottomNavigationView.setVisibility(View.GONE);
+//        FaceDetector detector = new FaceDetector( urls , getContext());
+//        detector.detect_face(urls.get(1), getContext());
 
     }
 
@@ -227,6 +232,7 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setVisibility(View.GONE);
 
+        if(first_click )bottomNavigationView.setVisibility(View.GONE);
     }
 
     public void OnPhotoClick(int position, ImageView photosFragmentImageView) {

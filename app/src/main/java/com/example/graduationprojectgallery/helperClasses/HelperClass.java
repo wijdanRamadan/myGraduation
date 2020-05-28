@@ -6,6 +6,8 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -22,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.graduationprojectgallery.BuildConfig;
+import com.example.graduationprojectgallery.activities.MainActivity;
 import com.example.graduationprojectgallery.models.Album;
 import com.example.graduationprojectgallery.models.PhotoModel;
 
@@ -31,6 +34,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,7 +43,7 @@ import java.util.Locale;
 
 import static android.net.Uri.fromFile;
 import static androidx.constraintlayout.widget.Constraints.TAG;
-import static com.example.graduationprojectgallery.activities.MainActivity.urls;
+import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 
 public class HelperClass extends Fragment {
@@ -162,6 +166,15 @@ public class HelperClass extends Fragment {
 
     }
 
+    public static void show(Bitmap bitmap, Context context, ImageView container) {
+        Glide
+                .with(context)
+                .load(bitmap)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(container);
+
+    }
+
     public static String ConvertTimeStampToDate(Long time) {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time * 1000L);
@@ -180,6 +193,34 @@ public class HelperClass extends Fragment {
                 : String.format("%.1f EB", (bytes >> 20) / 0x1p40);
     }
 
+    public static Uri pathToUri(String path)
+    {
+        return Uri.fromFile(new File(path));
+    }
+
+    public static Bitmap pathToBitmap(Context context , String path)
+    {
+        Bitmap bitmap = null;
+        InputStream is = null;
+        try {
+            is = context.getContentResolver().openInputStream(pathToUri(path));
+            bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+
+    public static List<Uri> getPhotosUris(MainActivity mainActivity) {
+        List<Uri> result = new ArrayList<>();
+        for (PhotoModel photo: photos) {
+            result.add(pathToUri(photo.getPath()));
+        }
+
+        return result;
+    }
 
     //region tazzy albums methods
 
@@ -498,7 +539,7 @@ public class HelperClass extends Fragment {
         empty_icon = Uri.fromFile(new File(albumsDir, "empty_album.png"));
         if (album_name == "Recent") {
 
-            uri = fromFile(new File(urls.get(1)));
+            uri = fromFile(new File(photos.get(1).getPath()));
             return uri;
         }
 
@@ -664,11 +705,6 @@ public class HelperClass extends Fragment {
 
         //endregion
 
-    }
-
-
-    public static Uri pathToUri(String path) {
-        return fromFile(new File(path));
     }
 
     public static void deleteAlbum(String album_name, Activity activity) {

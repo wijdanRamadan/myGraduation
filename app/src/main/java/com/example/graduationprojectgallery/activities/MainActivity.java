@@ -1,9 +1,8 @@
 package com.example.graduationprojectgallery.activities;
 
-import android.app.Activity;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.Toolbar;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,12 +19,10 @@ import java.util.List;
 
 
 
-public class MainActivity extends AppCompatActivity
-{
-    public static List<String> urls;
+public class MainActivity extends AppCompatActivity {
     public static List<PhotoModel> photos;
-    Toolbar toolbar;
-
+    public static List<Uri> photosUris;
+    public static List<String> urls;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,20 +30,13 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-
-        urls = HelperClass.getImagePaths(this);
-
-        photos=HelperClass.getPhotos(this);
-
-
+        if(HelperClass.getPhotos(this)!=null) {
+            photos = HelperClass.getPhotos(this);
+            photosUris = HelperClass.getPhotosUris(this);
+            urls = HelperClass.getImagePaths(this);
+        }
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         NavigationUI.setupWithNavController(bottomNav, navController);
-
-
     }
-
-
-
 }
-
