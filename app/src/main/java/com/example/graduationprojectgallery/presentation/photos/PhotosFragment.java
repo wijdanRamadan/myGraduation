@@ -123,10 +123,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
                             case R.id.action_favorites:
                                 if (!selected_photos.isEmpty()) {
                                     HelperClass.addImageToAlbum(selected_photos, "Favorites", getActivity());
-                                    for(PhotoModel photo : selected_photos){
-                                        photo.setSelect(false);
-                                    }
-                                    selected_photos.clear();
                                 }
                                 if (!selected_image_views.isEmpty()) {
                                     for (ImageView photo : selected_image_views) {
@@ -139,6 +135,16 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
                             case R.id.action_add:
                                 if (!selected_photos.isEmpty()) {
                                     findNavigationController().navigate(R.id.action_photosFragment_to_chooseAlbumFragment);
+                                    for(PhotoModel photo : selected_photos){
+                                        photo.setSelect(false);
+                                    }
+
+                                }
+                                if (!selected_image_views.isEmpty()) {
+                                    for (ImageView photo : selected_image_views) {
+                                        photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                                    }
+                                    selected_image_views.clear();
                                 }
                                 break;
 
@@ -152,6 +158,10 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
 //                                        mAdapter.notifyItemRemoved(position);
 //                                        mAdapter.notifyItemRangeChanged(position, photos.size()-1);
                                         mAdapter.notifyDataSetChanged();
+                                        for (ImageView photoi : selected_image_views) {
+                                            photoi.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                                        }
+                                        selected_image_views.clear();
                                     }
                                 }
                                 Toast.makeText(getContext(), "to be deleted", Toast.LENGTH_SHORT);
@@ -265,6 +275,12 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         BottomNavigationView navigationView = getActivity().findViewById(R.id.bottom_nav);
         navigationView.setVisibility(View.VISIBLE);
         toolbar.setVisibility(View.GONE);
+        if(!selected_photos.isEmpty()){
+            for(PhotoModel photo : selected_photos){
+                photo.setSelect(false);
+            }
+            selected_photos.clear();}
+        if (!selected_image_views.isEmpty())selected_image_views.clear();
     }
 
     @Override
@@ -272,13 +288,22 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentAdapte
         first_click = false;
         String album_name = input;
         HelperClass.addImageToAlbum(selected_photos, album_name, getActivity());
-        selected_photos.clear();
+
+        for(PhotoModel photo : selected_photos){
+            photo.setSelect(false);
+        }
         if (!selected_image_views.isEmpty()) {
             for (ImageView photo : selected_image_views) {
                 photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
             }
             selected_image_views.clear();
         }
+        selected_photos.clear();
         Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

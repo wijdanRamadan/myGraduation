@@ -680,6 +680,10 @@ public class HelperClass extends Fragment {
 
         union.removeAll(intersection);
 
+        for(int i = 0; i< intersection.size(); i++){
+            new_images.remove(intersection.get(i));
+        }
+
         //endregion
 
         //region writing image to file
@@ -690,8 +694,8 @@ public class HelperClass extends Fragment {
             fout = new FileOutputStream(f2, true);
             OutputStreamWriter writer = new OutputStreamWriter(fout);
 
-            for (int i = 0; i < photoModels.size(); i++) {
-                writer.write(union.get(i) + "$");
+            for (int i = 0; i < new_images.size(); i++) {
+                writer.write(new_images.get(i) + "$");
             }
 
             writer.flush();
@@ -702,6 +706,7 @@ public class HelperClass extends Fragment {
         }
 
         photoModels.removeAll(photoModels);
+        new_images.removeAll(new_images);
 
         //endregion
 
