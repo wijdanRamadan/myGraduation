@@ -10,6 +10,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.graduationprojectgallery.helperClasses.FaceRecognition;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.models.PhotoModel;
@@ -38,5 +39,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         NavigationUI.setupWithNavController(bottomNav, navController);
+
+        FaceRecognition.SendEverything();
     }
 }
