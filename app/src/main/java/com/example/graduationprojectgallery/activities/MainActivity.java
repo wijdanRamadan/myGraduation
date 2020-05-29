@@ -22,10 +22,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     public static List<PhotoModel> photos;
     public static List<Uri> photosUris;
-
-    public static List<String> urls;
-
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +32,6 @@ public class MainActivity extends AppCompatActivity {
         if(HelperClass.getPhotos(this)!=null) {
             photos = HelperClass.getPhotos(this);
             photosUris = HelperClass.getPhotosUris(this);
-
-            urls = HelperClass.getImagePaths(this);
-
-
         }
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
