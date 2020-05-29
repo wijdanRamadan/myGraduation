@@ -18,11 +18,7 @@ import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.activities.PhotosViewActivity;
 import com.example.graduationprojectgallery.base.BaseFragment;
 import com.example.graduationprojectgallery.models.PhotoModel;
-import com.example.graduationprojectgallery.presentation.foryou.ChooseAlbumAdapter;
-import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
-
 import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentPhotosAdapter;
-
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -66,104 +62,11 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotos
 
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav);
         toolbar = getActivity().findViewById(R.id.app_toolbar);
-        if(first_click )bottomNavigationView.setVisibility(View.GONE);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_photos, container, false);
-        deleteBottomBar = (BottomNavigationView) view.findViewById(R.id.delete_nav_bar);
-        select_button = view.findViewById(R.id.select_photos_button);
-        bottomNavigationView = getActivity().findViewById(R.id.bottom_nav); //hides bottom navigation menu
-        deleteBottomBar.setItemIconSize(30);
-        select_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {   //tazzy create new album dialog
-                first_click = true;
-                select_button.setVisibility(View.GONE);
-                done_button.setVisibility(View.VISIBLE);
-                bottomNavigationView.setVisibility(View.GONE);
-                select_button.setVisibility(View.GONE);
-                deleteBottomBar.setVisibility(View.VISIBLE);
-            }
-
-        });
-
-        done_button = view.findViewById(R.id.done_photos_button);
-        done_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                first_click = false;
-                select_button.setVisibility(View.VISIBLE);
-                done_button.setVisibility(View.GONE);
-                select_button.setVisibility(View.VISIBLE);
-                bottomNavigationView.setVisibility(View.VISIBLE);
-                deleteBottomBar.setVisibility(View.GONE);
-                if (!selected_photos.isEmpty()) {
-                    for (ImageView photo : selected_image_views) {
-                        photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
-                    }
-                    for (PhotoModel photo : selected_photos) {
-                        photo.setSelect(false);
-                    }
-
-                }
-
-                // mAdapter.notifyItemRangeChanged();
-
-            }
-        });
-
-        deleteBottomBar.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.action_favorites:
-                                if (!selected_photos.isEmpty()) {
-                                    HelperClass.addImageToAlbum(selected_photos, "Favorites", getActivity());
-                                    for(PhotoModel photo : selected_photos){
-                                        photo.setSelect(false);
-                                    }
-                                    selected_photos.clear();
-                                }
-                                if (!selected_image_views.isEmpty()) {
-                                    for (ImageView photo : selected_image_views) {
-                                        photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
-                                    }
-                                    selected_image_views.clear();
-
-                                }
-                                break;
-                            case R.id.action_add:
-                                if (!selected_photos.isEmpty()) {
-                                    findNavigationController().navigate(R.id.action_photosFragment_to_chooseAlbumFragment);
-                                }
-                                break;
-
-                            case R.id.action_delete:
-                                if (!selected_photos.isEmpty()) {
-                                    for (PhotoModel photo : selected_photos) {
-                                        HelperClass.DeletePhoto(photo, getActivity());
-                                        int position = photos.indexOf(photo);
-                                        //photos.remove(photo);
-//                                        urls.remove(photo);
-//                                        mAdapter.notifyItemRemoved(position);
-//                                        mAdapter.notifyItemRangeChanged(position, photos.size()-1);
-                                        mAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                                Toast.makeText(getContext(), "to be deleted", Toast.LENGTH_SHORT);
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
-
 
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
         return view;
@@ -173,12 +76,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotos
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
-        if(first_click )bottomNavigationView.setVisibility(View.GONE);
-//        FaceDetector detector = new FaceDetector( urls , getContext());
-//        detector.detect_face(urls.get(1), getContext());
-
     }
 
     public void setNav() {
@@ -230,10 +127,6 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotos
 
         toolbar.setTitle(R.string.photos);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setVisibility(View.GONE);
-
-        if(first_click )bottomNavigationView.setVisibility(View.GONE);
-
     }
 
     @Override
