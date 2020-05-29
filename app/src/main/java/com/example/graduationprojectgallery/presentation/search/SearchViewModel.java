@@ -86,7 +86,9 @@ public class SearchViewModel extends AndroidViewModel {
                             PhotoModel photoModel = null;
                             for (FirebaseVisionImageLabel label : firebaseVisionImageLabels) {
                                 if (searchedItem.equals(label.getText())) {
+
                                     if(label.getConfidence()>=0.80)
+
                                     {
                                         photoModel = photos.get(photosUris.indexOf(uri));
                                         images.add(photoModel.getPath());

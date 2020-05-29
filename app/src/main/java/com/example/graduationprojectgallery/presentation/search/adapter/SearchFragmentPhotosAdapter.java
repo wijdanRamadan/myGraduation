@@ -12,16 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.models.PhotoModel;
+
 import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
-import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
+
+import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentPhotosAdapter;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class SearchFragmentPhotosAdapter extends RecyclerView.Adapter<SearchFragmentPhotosAdapter.SearchFragmentViewHolder> {
 
-    private PhotosFragmentAdapter.PhotoClickListener photoClickListener;
+
+
+    private PhotosFragmentPhotosAdapter.PhotoClickListener photoClickListener;
+
     private Context mContext;
     private List<String> photoModelList = new ArrayList<>();
 
@@ -41,11 +48,13 @@ public class SearchFragmentPhotosAdapter extends RecyclerView.Adapter<SearchFrag
         this.mContext = context;
     }
 
-    public PhotosFragmentAdapter.PhotoClickListener getPhotoClickListener() {
+
+    public PhotosFragmentPhotosAdapter.PhotoClickListener getPhotoClickListener() {
         if (photoClickListener == null) {
-            photoClickListener = new PhotosFragmentAdapter.PhotoClickListener() {
+            photoClickListener = new PhotosFragmentPhotosAdapter.PhotoClickListener() {
                 @Override
-                public void OnPhotoClick(int position, ImageView photoView) {
+                public void OnPhotoClick(int position) {
+
 
                 }
 
@@ -54,7 +63,7 @@ public class SearchFragmentPhotosAdapter extends RecyclerView.Adapter<SearchFrag
         return photoClickListener;
     }
 
-    public void setPhotoClickListener(PhotosFragmentAdapter.PhotoClickListener photoClickListener) {
+    public void setPhotoClickListener(PhotosFragmentPhotosAdapter.PhotoClickListener photoClickListener) {
         this.photoClickListener = photoClickListener;
     }
 

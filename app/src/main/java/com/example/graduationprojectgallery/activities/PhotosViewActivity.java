@@ -2,12 +2,14 @@ package com.example.graduationprojectgallery.activities;
 
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.io.File;
 import java.util.ArrayList;
 
+import java.io.InputStream;
+import java.util.List;
+
+import static com.example.graduationprojectgallery.helperClasses.HelperClass.pathToUri;
+
+
 
 public class PhotosViewActivity extends AppCompatActivity {
 
@@ -29,6 +37,9 @@ public class PhotosViewActivity extends AppCompatActivity {
     String photoPath;
     PhotoModel photoModel;
     ArrayList<PhotoModel> tempList = new ArrayList<>();
+
+    public static PhotoModel photoModel1;
+
    Toolbar toolbar;
 
     @Override
@@ -47,10 +58,29 @@ public class PhotosViewActivity extends AppCompatActivity {
         }
 
         photoModel= (PhotoModel) intent.getSerializableExtra("photo");
+
         if (photoModel!=null)
         photoPath= photoModel.getPath();
 
-        HelperClass.show(photoPath, this, photoView);
+        Bitmap bitmap = null;
+        InputStream is = null;
+        try {
+            is = getContentResolver().openInputStream(pathToUri(photoModel.getPath()));
+            bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+try {
+
+
+    HelperClass.show(bitmap, this, photoView);
+}
+catch (Exception e)
+{}
+
+
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -80,7 +110,6 @@ public class PhotosViewActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     @Override
@@ -89,8 +118,7 @@ public class PhotosViewActivity extends AppCompatActivity {
 
         menu.add("title : "+photoModel.getTitle());
         menu.add("date : "+HelperClass.ConvertTimeStampToDate(Long.valueOf(photoModel.getDate())));
-        menu.add("size : " +HelperClass.getImageSize(Long.valueOf(photoModel.getSize())));
-
+     //   menu.add("size : " +HelperClass.getImageSize(Long.valueOf(photoModel.getSize())));
         return true;
     }
 

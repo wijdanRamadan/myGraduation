@@ -6,6 +6,16 @@ import android.net.Uri;
 
 import com.example.graduationprojectgallery.models.PhotoModel;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableList;
+
+import com.example.graduationprojectgallery.models.PhotoModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
@@ -16,6 +26,19 @@ import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Flowable;
+import io.reactivex.Notification;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+
+import static com.example.graduationprojectgallery.activities.MainActivity.photos;
 
 
 public class FirebaseFunctions {
