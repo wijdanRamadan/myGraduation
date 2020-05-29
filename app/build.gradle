@@ -12,6 +12,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+
     }
 
     defaultConfig {   // your config code
@@ -21,6 +27,7 @@ android {
     dataBinding {
         enabled = true
     }
+
 
     buildTypes {
         release {
@@ -36,6 +43,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.11.0@aar") {
         transitive = true
     }
+
 
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -73,14 +81,22 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-vision-image-label-model:20.0.0'
 
 
-    // search bar
+
+
+
+
+
+    //Cicrle Image
+    implementation 'de.hdodenhof:circleimageview:3.0.2'
+
+    //desgin bottomBar
+    implementation 'com.roughike:bottom-bar:2.3.1'
 
     //rxJava
     implementation "io.reactivex.rxjava2:rxjava:2.2.9"
     implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
-
-
-
-
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.4.1'
 
 }

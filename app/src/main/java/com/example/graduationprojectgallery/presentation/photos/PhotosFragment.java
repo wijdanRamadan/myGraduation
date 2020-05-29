@@ -67,8 +67,107 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotos
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
+      
+        deleteBottomBar = (BottomNavigationView) view.findViewById(R.id.delete_nav_bar);
+        select_button = view.findViewById(R.id.select_photos_button);
+        bottomNavigationView = getActivity().findViewById(R.id.bottom_nav); //hides bottom navigation menu
+        deleteBottomBar.setItemIconSize(30);
+        select_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {   //tazzy create new album dialog
+                first_click = true;
+                select_button.setVisibility(View.GONE);
+                done_button.setVisibility(View.VISIBLE);
+                bottomNavigationView.setVisibility(View.GONE);
+                select_button.setVisibility(View.GONE);
+                deleteBottomBar.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+        done_button = view.findViewById(R.id.done_photos_button);
+        done_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                first_click = false;
+                select_button.setVisibility(View.VISIBLE);
+                done_button.setVisibility(View.GONE);
+                select_button.setVisibility(View.VISIBLE);
+                bottomNavigationView.setVisibility(View.VISIBLE);
+                deleteBottomBar.setVisibility(View.GONE);
+                if (!selected_photos.isEmpty()) {
+                    for (ImageView photo : selected_image_views) {
+                        photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                    }
+                    for (PhotoModel photo : selected_photos) {
+                        photo.setSelect(false);
+                    }
+
+                }
+
+                // mAdapter.notifyItemRangeChanged();
+
+            }
+        });
+
+        deleteBottomBar.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.action_favorites:
+                                if (!selected_photos.isEmpty()) {
+                                    HelperClass.addImageToAlbum(selected_photos, "Favorites", getActivity());
+                                }
+                                if (!selected_image_views.isEmpty()) {
+                                    for (ImageView photo : selected_image_views) {
+                                        photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                                    }
+                                    selected_image_views.clear();
+
+                                }
+                                break;
+                            case R.id.action_add:
+                                if (!selected_photos.isEmpty()) {
+                                    findNavigationController().navigate(R.id.action_photosFragment_to_chooseAlbumFragment);
+                                    for(PhotoModel photo : selected_photos){
+                                        photo.setSelect(false);
+                                    }
+
+                                }
+                                if (!selected_image_views.isEmpty()) {
+                                    for (ImageView photo : selected_image_views) {
+                                        photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                                    }
+                                    selected_image_views.clear();
+                                }
+                                break;
+
+                            case R.id.action_delete:
+                                if (!selected_photos.isEmpty()) {
+                                    for (PhotoModel photo : selected_photos) {
+                                        HelperClass.DeletePhoto(photo, getActivity());
+                                        int position = photos.indexOf(photo);
+                                        //photos.remove(photo);
+//                                        urls.remove(photo);
+//                                        mAdapter.notifyItemRemoved(position);
+//                                        mAdapter.notifyItemRangeChanged(position, photos.size()-1);
+                                        mAdapter.notifyDataSetChanged();
+                                        for (ImageView photoi : selected_image_views) {
+                                            photoi.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                                        }
+                                        selected_image_views.clear();
+                                    }
+                                }
+                                Toast.makeText(getContext(), "to be deleted", Toast.LENGTH_SHORT);
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+
         return view;
     }
 
@@ -141,7 +240,40 @@ public class PhotosFragment extends BaseFragment implements PhotosFragmentPhotos
     @Override
     public void onResume() {
         super.onResume();
+
+        BottomNavigationView navigationView = getActivity().findViewById(R.id.bottom_nav);
+        navigationView.setVisibility(View.VISIBLE);
+        toolbar.setVisibility(View.GONE);
+        if(!selected_photos.isEmpty()){
+            for(PhotoModel photo : selected_photos){
+                photo.setSelect(false);
+            }
+            selected_photos.clear();}
+        if (!selected_image_views.isEmpty())selected_image_views.clear();
+    }
+
+    @Override
+    public void sendInput(String input) {
+        first_click = false;
+        String album_name = input;
+        HelperClass.addImageToAlbum(selected_photos, album_name, getActivity());
+
+        for(PhotoModel photo : selected_photos){
+            photo.setSelect(false);
+        }
+        if (!selected_image_views.isEmpty()) {
+            for (ImageView photo : selected_image_views) {
+                photo.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+            }
+            selected_image_views.clear();
+        }
+        selected_photos.clear();
+        Toast.makeText(getContext(), "added!", Toast.LENGTH_SHORT);
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+
+    }
+
 
     }
 

@@ -72,11 +72,13 @@ public class SearchFragment extends BaseFragment  implements SearchFragmentPhoto
         recyclerView.setAdapter(mAdapter);
     }
 
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search_option_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
 
     @Override
     public void onResume() {
@@ -87,10 +89,12 @@ public class SearchFragment extends BaseFragment  implements SearchFragmentPhoto
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-         viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
-    searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
+        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+
+             @Override
             public void onClick(View v) {
                 viewModel.imagePaths.observe(getViewLifecycleOwner(), new Observer<List<String>>() {
                     @Override

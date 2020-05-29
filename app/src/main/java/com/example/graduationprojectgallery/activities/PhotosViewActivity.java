@@ -22,10 +22,13 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
+import java.util.ArrayList;
+
 import java.io.InputStream;
 import java.util.List;
 
 import static com.example.graduationprojectgallery.helperClasses.HelperClass.pathToUri;
+
 
 
 public class PhotosViewActivity extends AppCompatActivity {
@@ -33,6 +36,7 @@ public class PhotosViewActivity extends AppCompatActivity {
     PhotoView photoView;
     String photoPath;
     PhotoModel photoModel;
+    ArrayList<PhotoModel> tempList = new ArrayList<>();
 
     public static PhotoModel photoModel1;
 
@@ -92,8 +96,13 @@ catch (Exception e)
                     startActivity(Intent.createChooser(intent, "ShareVia"));
 
                 }
-                else {
-                    HelperClass.DeletePhoto(photoModel,getBaseContext());
+
+                   // HelperClass.DeletePhoto(photoModel,getBaseContext());
+
+                if (id == R.id.favorite){
+                    tempList.add(photoModel);
+                    HelperClass.addImageToAlbum(tempList, "Favorites", PhotosViewActivity.this);
+                    tempList.clear();
                 }
 
                 return true;

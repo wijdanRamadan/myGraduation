@@ -12,15 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.graduationprojectgallery.R;
 import com.example.graduationprojectgallery.helperClasses.HelperClass;
 import com.example.graduationprojectgallery.models.PhotoModel;
+
+import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentAdapter;
+
 import com.example.graduationprojectgallery.presentation.photos.adapter.PhotosFragmentPhotosAdapter;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SearchFragmentPhotosAdapter  extends RecyclerView.Adapter<SearchFragmentPhotosAdapter.SearchFragmentViewHolder> {
+
+public class SearchFragmentPhotosAdapter extends RecyclerView.Adapter<SearchFragmentPhotosAdapter.SearchFragmentViewHolder> {
+
+
 
     private PhotosFragmentPhotosAdapter.PhotoClickListener photoClickListener;
+
     private Context mContext;
     private List<String> photoModelList = new ArrayList<>();
 
@@ -40,11 +48,13 @@ public class SearchFragmentPhotosAdapter  extends RecyclerView.Adapter<SearchFra
         this.mContext = context;
     }
 
+
     public PhotosFragmentPhotosAdapter.PhotoClickListener getPhotoClickListener() {
         if (photoClickListener == null) {
             photoClickListener = new PhotosFragmentPhotosAdapter.PhotoClickListener() {
                 @Override
                 public void OnPhotoClick(int position) {
+
 
                 }
 
